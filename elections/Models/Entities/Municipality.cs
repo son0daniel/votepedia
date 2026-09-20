@@ -14,6 +14,9 @@ namespace elections.Models.Entities
         [Required]
         public long TseId { get; set; }
 
+        [Column("ibge_id")]
+        public long? IbgeId { get; set; }
+
         [Column("is_capital")]
         [Required]
         public bool IsCapital { get; set; }

@@ -17,11 +17,13 @@ namespace elections.Data.Configurations
             builder.Property(x => x.Name).IsRequired().HasComment("Nome do município.");
             builder.Property(x => x.IsCapital).HasComment("Determina se o município é a capital do Estado. Válido apenas para cidades brasileiras.");
             builder.Property(x => x.TseId).HasComment("Código do TSE ligado ao município que pode ser visto nos arquivos de resultados.");
+            builder.Property(x => x.IbgeId).HasComment("ID do município no IBGE.");
             builder.Property(x => x.StateId).HasComment("ID interno da UF na qual o município está localizado.");
             builder.Property(x => x.MetropolitanAreaId).HasComment("ID interno da região metropolitana na qual o município pode estar localizado.");
 
             builder.HasIndex(x => x.Uid).IsUnique().HasDatabaseName("IX_municipality_uid");
             builder.HasIndex(x => x.TseId).IsUnique().HasDatabaseName("IX_municipality_tse_id");
+            builder.HasIndex(x => x.IbgeId).IsUnique().HasDatabaseName("IX_municipality_ibge_id");
 
             builder.HasOne(x => x.State)
                 .WithMany(x => x.Municipalities)
