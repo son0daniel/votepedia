@@ -18,6 +18,7 @@ namespace elections.Data.Configurations
             builder.Property(x => x.IsCapital).HasComment("Determina se o município é a capital do Estado. Válido apenas para cidades brasileiras.");
             builder.Property(x => x.TseId).HasComment("Código do TSE ligado ao município que pode ser visto nos arquivos de resultados.");
             builder.Property(x => x.StateId).HasComment("ID interno da UF na qual o município está localizado.");
+            builder.Property(x => x.MetropolitanAreaId).HasComment("ID interno da região metropolitana na qual o município pode estar localizado.");
 
             builder.HasIndex(x => x.Uid).IsUnique().HasDatabaseName("IX_municipality_uid");
             builder.HasIndex(x => x.TseId).IsUnique().HasDatabaseName("IX_municipality_tse_id");
@@ -27,6 +28,12 @@ namespace elections.Data.Configurations
                 .HasForeignKey(x => x.StateId)
                 .OnDelete(DeleteBehavior.Restrict)
                 .HasConstraintName("FK_municipality_state");
+
+            builder.HasOne(x => x.MetropolitanArea)
+                .WithMany(x => x.Municipalities)
+                .HasForeignKey(x => x.MetropolitanAreaId)
+                .OnDelete(DeleteBehavior.SetNull)
+                .HasConstraintName("FK_municipality_metropolitan_area");
 
         }
     }

@@ -22,6 +22,11 @@ namespace elections.Models.Entities
         [Required]
         public long StateId { get; set; }
 
+        [Column("metropolitan_area_id")]
+        public long? MetropolitanAreaId { get; set; }
+
         public State State { get; set; } = default!;
+
+        public MetropolitanArea? MetropolitanArea { get; set; }
     }
 }
