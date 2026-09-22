@@ -17,6 +17,8 @@ namespace elections.Data
         public DbSet<Candidate> Candidates { get; set; }
         public DbSet<Party> Parties { get; set; }
         public DbSet<CandidateParty> CandidateParties { get; set; }
+        public DbSet<Election> Elections { get; set; }
+        public DbSet<ElectionRound> ElectionRounds { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

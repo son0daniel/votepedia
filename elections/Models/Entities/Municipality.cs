@@ -31,5 +31,7 @@ namespace elections.Models.Entities
         public State State { get; set; } = default!;
 
         public MetropolitanArea? MetropolitanArea { get; set; }
+
+        public ICollection<Election> Elections { get; set; } = [];
     }
 }

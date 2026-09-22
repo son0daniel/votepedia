@@ -21,5 +21,7 @@ namespace elections.Models.Entities
         public Macroregion Macroregion { get; set; } = default!;
 
         public ICollection<Municipality> Municipalities { get; set; } = [];
+
+        public ICollection<Election> Elections { get; set; } = [];
     }
 }
