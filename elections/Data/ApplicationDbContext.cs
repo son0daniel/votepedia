@@ -14,6 +14,9 @@ namespace elections.Data
         public DbSet<State> States { get; set; }
         public DbSet<Municipality> Municipalities { get; set; }
         public DbSet<MetropolitanArea> MetropolitanAreas { get; set; }
+        public DbSet<Candidate> Candidates { get; set; }
+        public DbSet<Party> Parties { get; set; }
+        public DbSet<CandidateParty> CandidateParties { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
