@@ -164,7 +164,7 @@ namespace elections.Migrations.Seeder
                     { 6, Guid.NewGuid().ToString(), "Partido do Movimento Democrático Brasileiro", "PMDB", 15, false, new DateOnly(1980, 1, 15), new DateOnly(1981, 6, 30), new DateOnly(2018, 5, 15) },
                     { 7, Guid.NewGuid().ToString(), "Partido Republicano Brasileiro", "PRB", 10, false, new DateOnly(2003, 10, 6), new DateOnly(2005, 8, 10), new DateOnly(2019, 8, 15) },
                     { 8, Guid.NewGuid().ToString(), "Partido da Frente Liberal", "PFL", 25, false, new DateOnly(1985, 1, 24), new DateOnly(1986, 9, 11), new DateOnly(2007, 6, 12) },
-                    { 9, Guid.NewGuid().ToString(), "Democratas", "DEM", 25, false, null, new DateOnly(2007, 6, 12), new DateOnly(2022, 2, 8) },
+                    { 9, Guid.NewGuid().ToString(), "Democratas", "DEM", 25, false, new DateOnly(1985, 1, 24), new DateOnly(2007, 6, 12), new DateOnly(2022, 2, 8) },
                     { 10, Guid.NewGuid().ToString(), "Partido Social Liberal", "PSL", 17, false, new DateOnly(1994, 10, 30), new DateOnly(1998, 6, 2), new DateOnly(2022, 2, 8) },
                     { 11, Guid.NewGuid().ToString(), "Partido Renovador Trabalhista Brasileiro", "PRTB", 28, true, new DateOnly(1994, 11, 27), new DateOnly(1995, 3, 28), null },
                     { 12, Guid.NewGuid().ToString(), "Partido Comunista do Brasil", "PCdoB", 65, true, new DateOnly(1962, 2, 18), new DateOnly(1988, 6, 23), null },
