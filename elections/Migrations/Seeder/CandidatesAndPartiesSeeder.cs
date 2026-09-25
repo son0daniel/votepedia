@@ -156,7 +156,7 @@ namespace elections.Migrations.Seeder
                 columns: ["id", "uid", "name", "abbr", "nr_voteable", "is_active", "founded_at", "registered_at", "dissolved_at"],
                 values: new object?[,]
                 {
-                    { 1, Guid.NewGuid().ToString(), "Partido da Reconstrução Nacional", "PRN", 36, false, null, new DateOnly(1989, 2, 2), new DateOnly(2001, 4, 24) },
+                    { 1, Guid.NewGuid().ToString(), "Partido da Reconstrução Nacional", "PRN", 36, false, null, new DateOnly(1989, 5, 11), new DateOnly(2001, 4, 24) },
                     { 2, Guid.NewGuid().ToString(), "Partido dos Trabalhadores", "PT", 13, true, new DateOnly(1980, 2, 10), new DateOnly(1982, 2, 11), null },
                     { 3, Guid.NewGuid().ToString(), "Partido Socialista Brasileiro", "PSB", 40, true, new DateOnly(1985, 7, 2), new DateOnly(1988, 7, 1), null },
                     { 4, Guid.NewGuid().ToString(), "Partido Liberal", "PL", 22, false, null, new DateOnly(1985, 6, 23), new DateOnly(2006, 10, 26) },
