@@ -23,6 +23,30 @@
 
         }
 
+        public static class Color
+        {
+            public const string Blue = "Blue";
+            public const string Red = "Red";
+            public const string Green = "Green";
+            public const string DarkBlue = "DarkBlue";
+            public const string Yellow = "Yellow";
+            public const string Orange = "Orange";
+            public const string Purple = "Purple";
+            public const string Grey = "Grey";
+
+            public static readonly string[] All =
+            [
+                Blue,
+                Red,
+                Green,
+                DarkBlue,
+                Yellow,
+                Orange,
+                Purple,
+                Grey
+            ];
+        }
+
         public static class MetropolitanAreaType
         {
             public const string Standard = "REGIÃO METROPOLITANA";

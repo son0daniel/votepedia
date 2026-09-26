@@ -19,5 +19,7 @@ namespace elections.Models.Entities
         public long ElectionId { get; set; }
 
         public Election Election { get; set; } = default!;
+
+        public ICollection<TicketElectionRound> TicketElectionRounds { get; set; } = [];
     }
 }

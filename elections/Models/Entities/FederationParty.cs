@@ -3,21 +3,19 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace elections.Models.Entities
 {
-    [Table("candidate_party")]
-    public class CandidateParty : BaseEntity
+    [Table("federation_party")]
+    public class FederationParty : BaseEntity
     {
-        [Column("candidate_id")]
+        [Column("federation_id")]
         [Required]
-        public long CandidateId { get; set; }
+        public long FederationId { get; set; }
 
         [Column("party_id")]
         [Required]
         public long PartyId { get; set; }
 
-        public Candidate Candidate { get; set; } = default!;
+        public Federation Federation { get; set; } = default!;
 
         public Party Party { get; set; } = default!;
-
-        public ICollection<TicketCandidateParty> TicketCandidateParties { get; set; } = [];
     }
 }
