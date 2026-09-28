@@ -23,5 +23,7 @@ namespace elections.Models.Entities
         public ICollection<Municipality> Municipalities { get; set; } = [];
 
         public ICollection<Election> Elections { get; set; } = [];
+
+        public ICollection<TicketElectionRoundStatistic> TicketElectionRoundStatistics { get; set; } = [];
     }
 }

@@ -33,5 +33,7 @@ namespace elections.Models.Entities
         public MetropolitanArea? MetropolitanArea { get; set; }
 
         public ICollection<Election> Elections { get; set; } = [];
+
+        public ICollection<TicketElectionRoundStatistic> TicketElectionRoundStatistics { get; set; } = [];
     }
 }

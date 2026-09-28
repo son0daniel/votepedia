@@ -15,5 +15,7 @@ namespace elections.Models.Entities
         public string Abbr { get; set; } = string.Empty;
 
         public ICollection<State> States { get; set; } = [];
+
+        public ICollection<TicketElectionRoundStatistic> TicketElectionRoundStatistics { get; set; } = [];
     }
 }

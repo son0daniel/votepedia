@@ -26,6 +26,7 @@ namespace elections.Data
         public DbSet<TicketElectionRound> TicketElectionRounds { get; set; }
         public DbSet<Coalition> Coalitions { get; set; }
         public DbSet<CoalitionMember> CoalitionMembers { get; set; }
+        public DbSet<TicketElectionRoundStatistic> TicketElectionRoundStatistics { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

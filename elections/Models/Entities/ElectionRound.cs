@@ -21,5 +21,7 @@ namespace elections.Models.Entities
         public Election Election { get; set; } = default!;
 
         public ICollection<TicketElectionRound> TicketElectionRounds { get; set; } = [];
+
+        public ICollection<TicketElectionRoundStatistic> TicketElectionRoundStatistics { get; set; } = [];
     }
 }

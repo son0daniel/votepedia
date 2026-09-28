@@ -21,6 +21,12 @@
                 public const string CityCouncilor = "VEREADOR";
             }
 
+            public static class Status
+            {
+                public const string Elected = "ELEITO";
+                public const string NotElected = "NÃO ELEITO";
+                public const string Runoff = "2º TURNO";
+            }
         }
 
         public static class Color
