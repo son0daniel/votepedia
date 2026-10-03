@@ -59,10 +59,7 @@ namespace elections.Data.Configurations
             builder.Property(x => x.AnulledVotesRegisteredPp).HasComment("Porcentagem de votos anulados relativa aos inscritos.");
             builder.Property(x => x.ElectoralAlienationPp).HasComment("Porcentagem da alienação eleitoral relativa ao total de inscritos.");
 
-            builder.HasIndex(x => new { x.TicketId, x.ElectionRoundId, x.MunicipalityId }).IsUnique().HasDatabaseName("IX_ticket_election_round_statistic_municipality");
-            builder.HasIndex(x => new { x.TicketId, x.ElectionRoundId, x.MetropolitanAreaId }).IsUnique().HasDatabaseName("IX_ticket_election_round_statistic_metropolitan_area");
-            builder.HasIndex(x => new { x.TicketId, x.ElectionRoundId, x.StateId }).IsUnique().HasDatabaseName("IX_ticket_election_round_statistic_state");
-            builder.HasIndex(x => new { x.TicketId, x.ElectionRoundId, x.MacroregionId }).IsUnique().HasDatabaseName("IX_ticket_election_round_statistic_macroregion");
+            builder.HasIndex(x => new { x.TicketId, x.ElectionRoundId, x.MunicipalityId, x.MetropolitanAreaId, x.StateId, x.MacroregionId }).IsUnique().HasDatabaseName("IX_ticket_election_round_statistic");
 
             builder.HasOne(x => x.Ticket)
                 .WithMany(x => x.TicketElectionRoundStatistics)

@@ -12,7 +12,7 @@ using elections.Data;
 namespace elections.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20261003052857_ElectionResultsTable")]
+    [Migration("20261003070103_ElectionResultsTable")]
     partial class ElectionResultsTable
     {
         /// <inheritdoc />
@@ -1052,21 +1052,9 @@ namespace elections.Migrations
 
                     b.HasIndex("StateId");
 
-                    b.HasIndex("TicketId", "ElectionRoundId", "MacroregionId")
+                    b.HasIndex("TicketId", "ElectionRoundId", "MunicipalityId", "MetropolitanAreaId", "StateId", "MacroregionId")
                         .IsUnique()
-                        .HasDatabaseName("IX_ticket_election_round_statistic_macroregion");
-
-                    b.HasIndex("TicketId", "ElectionRoundId", "MetropolitanAreaId")
-                        .IsUnique()
-                        .HasDatabaseName("IX_ticket_election_round_statistic_metropolitan_area");
-
-                    b.HasIndex("TicketId", "ElectionRoundId", "MunicipalityId")
-                        .IsUnique()
-                        .HasDatabaseName("IX_ticket_election_round_statistic_municipality");
-
-                    b.HasIndex("TicketId", "ElectionRoundId", "StateId")
-                        .IsUnique()
-                        .HasDatabaseName("IX_ticket_election_round_statistic_state");
+                        .HasDatabaseName("IX_ticket_election_round_statistic");
 
                     b.ToTable("ticket_election_round_statistic", t =>
                         {

@@ -99,15 +99,15 @@ namespace elections.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
+                name: "IX_ticket_election_round_statistic",
+                table: "ticket_election_round_statistic",
+                columns: new[] { "ticket_id", "election_round_id", "municipality_id", "metropolitan_area_id", "state_id", "macroregion_id" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ticket_election_round_statistic_election_round_id",
                 table: "ticket_election_round_statistic",
                 column: "election_round_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ticket_election_round_statistic_macroregion",
-                table: "ticket_election_round_statistic",
-                columns: new[] { "ticket_id", "election_round_id", "macroregion_id" },
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ticket_election_round_statistic_macroregion_id",
@@ -115,32 +115,14 @@ namespace elections.Migrations
                 column: "macroregion_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ticket_election_round_statistic_metropolitan_area",
-                table: "ticket_election_round_statistic",
-                columns: new[] { "ticket_id", "election_round_id", "metropolitan_area_id" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ticket_election_round_statistic_metropolitan_area_id",
                 table: "ticket_election_round_statistic",
                 column: "metropolitan_area_id");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ticket_election_round_statistic_municipality",
-                table: "ticket_election_round_statistic",
-                columns: new[] { "ticket_id", "election_round_id", "municipality_id" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ticket_election_round_statistic_municipality_id",
                 table: "ticket_election_round_statistic",
                 column: "municipality_id");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ticket_election_round_statistic_state",
-                table: "ticket_election_round_statistic",
-                columns: new[] { "ticket_id", "election_round_id", "state_id" },
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_ticket_election_round_statistic_state_id",
