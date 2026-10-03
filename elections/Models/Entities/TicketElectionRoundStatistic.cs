@@ -96,36 +96,36 @@ namespace elections.Models.Entities
         [Required]
         public float AbstentionPp { get; set; }
 
-        [Column("valid_votes_total_votes_pp")]
-        public float? ValidVotesTotalVotesPp { get; set; }
+        [Column("valid_votes_pp")]
+        public float? ValidVotesPp { get; set; }
 
         [Column("valid_votes_registered_pp")]
         [Required]
         public float ValidVotesRegisteredPp { get; set; }
 
-        [Column("invalid_votes_total_votes_pp")]
-        public float? InvalidVotesTotalVotesPp { get; set; }
+        [Column("invalid_votes_pp")]
+        public float? InvalidVotesPp { get; set; }
 
         [Column("invalid_votes_registered_pp")]
         [Required]
         public float InvalidVotesRegisteredPp { get; set; }
 
-        [Column("null_votes_total_votes_pp")]
-        public float? NullVotesTotalVotesPp { get; set; }
+        [Column("null_votes_pp")]
+        public float? NullVotesPp { get; set; }
 
         [Column("null_votes_registered_pp")]
         [Required]
         public float NullVotesRegisteredPp { get; set; }
 
-        [Column("blank_votes_total_votes_pp")]
-        public float? BlankVotesTotalVotesPp { get; set; }
+        [Column("blank_votes_pp")]
+        public float? BlankVotesPp { get; set; }
 
         [Column("blank_votes_registered_pp")]
         [Required]
         public float BlankVotesRegisteredPp { get; set; }
 
-        [Column("anulled_votes_total_votes_pp")]
-        public float? AnulledVotesTotalVotesPp { get; set; }
+        [Column("anulled_votes_pp")]
+        public float? AnulledVotesPp { get; set; }
 
         [Column("anulled_votes_registered_pp")]
         [Required]

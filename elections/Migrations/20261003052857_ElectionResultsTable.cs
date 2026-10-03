@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace elections.Migrations
 {
     /// <inheritdoc />
-    public partial class ElectionResultTable : Migration
+    public partial class ElectionResultsTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,8 +17,8 @@ namespace elections.Migrations
                 {
                     id = table.Column<long>(type: "bigint", nullable: false, comment: "ID interno das estatísticas.")
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    ticket_id = table.Column<long>(type: "bigint", nullable: false, comment: "ID interno do turno da eleição."),
-                    election_round_id = table.Column<long>(type: "bigint", nullable: false),
+                    ticket_id = table.Column<long>(type: "bigint", nullable: false, comment: "ID interno do turno da chapa eleitoral."),
+                    election_round_id = table.Column<long>(type: "bigint", nullable: false, comment: "ID interno do turno da eleição."),
                     municipality_id = table.Column<long>(type: "bigint", nullable: true, comment: "ID interno do Município."),
                     metropolitan_area_id = table.Column<long>(type: "bigint", nullable: true, comment: "ID interno da Região Metropolitana."),
                     state_id = table.Column<long>(type: "bigint", nullable: true, comment: "ID interno da UF."),
@@ -40,15 +40,15 @@ namespace elections.Migrations
                     candidates_count = table.Column<int>(type: "int", nullable: false, comment: "Contagem de candidatos. Invariável independente do nível de agregação."),
                     turnout_pp = table.Column<float>(type: "float", nullable: false, comment: "Porcentagem de comparecimento. Relativa ao total de inscritos."),
                     abstention_pp = table.Column<float>(type: "float", nullable: false, comment: "Porcentagem de abstenção. Relativa ao total de inscritos."),
-                    valid_votes_total_votes_pp = table.Column<float>(type: "float", nullable: true, comment: "Porcentagem de votos válidos relativa ao total de votos."),
+                    valid_votes_pp = table.Column<float>(type: "float", nullable: true, comment: "Porcentagem de votos válidos relativa ao total de votos."),
                     valid_votes_registered_pp = table.Column<float>(type: "float", nullable: false, comment: "Porcentagem de votos válidos relativa aos inscritos."),
-                    invalid_votes_total_votes_pp = table.Column<float>(type: "float", nullable: true, comment: "Porcentagem de votos inválidos relativa ao total de votos."),
+                    invalid_votes_pp = table.Column<float>(type: "float", nullable: true, comment: "Porcentagem de votos inválidos relativa ao total de votos."),
                     invalid_votes_registered_pp = table.Column<float>(type: "float", nullable: false, comment: "Porcentagem de votos inválidos relativa aos inscritos."),
-                    null_votes_total_votes_pp = table.Column<float>(type: "float", nullable: true, comment: "Porcentagem de votos nulos relativa ao total de votos."),
+                    null_votes_pp = table.Column<float>(type: "float", nullable: true, comment: "Porcentagem de votos nulos relativa ao total de votos."),
                     null_votes_registered_pp = table.Column<float>(type: "float", nullable: false, comment: "Porcentagem de votos nulos relativa aos inscritos."),
-                    blank_votes_total_votes_pp = table.Column<float>(type: "float", nullable: true, comment: "Porcentagem de votos em branco relativa ao total de votos."),
+                    blank_votes_pp = table.Column<float>(type: "float", nullable: true, comment: "Porcentagem de votos em branco relativa ao total de votos."),
                     blank_votes_registered_pp = table.Column<float>(type: "float", nullable: false, comment: "Porcentagem de votos em branco relativa aos inscritos."),
-                    anulled_votes_total_votes_pp = table.Column<float>(type: "float", nullable: true, comment: "Porcentagem de votos anulados relativa ao total de votos."),
+                    anulled_votes_pp = table.Column<float>(type: "float", nullable: true, comment: "Porcentagem de votos anulados relativa ao total de votos."),
                     anulled_votes_registered_pp = table.Column<float>(type: "float", nullable: false, comment: "Porcentagem de votos anulados relativa aos inscritos."),
                     electoral_alienation_pp = table.Column<float>(type: "float", nullable: false, comment: "Porcentagem da alienação eleitoral relativa ao total de inscritos."),
                     ticket_status = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false, comment: "Status da chapa eleitoral no turno da eleição.Tem sempre o mesmo valor independente do nível de agregação (localidade).")

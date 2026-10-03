@@ -23,7 +23,8 @@ namespace elections.Data.Configurations
                 ));
 
             builder.Property(x => x.Id).HasComment("ID interno das estatísticas.");
-            builder.Property(x => x.TicketId).HasComment("ID interno do turno da eleição.");
+            builder.Property(x => x.TicketId).HasComment("ID interno do turno da chapa eleitoral.");
+            builder.Property(x => x.ElectionRoundId).HasComment("ID interno do turno da eleição.");
             builder.Property(x => x.MunicipalityId).HasComment("ID interno do Município.");
             builder.Property(x => x.MetropolitanAreaId).HasComment("ID interno da Região Metropolitana.");
             builder.Property(x => x.StateId).HasComment("ID interno da UF.");
@@ -46,15 +47,15 @@ namespace elections.Data.Configurations
             builder.Property(x => x.CandidatesCount).HasComment("Contagem de candidatos. Invariável independente do nível de agregação.");
             builder.Property(x => x.TurnoutPp).HasComment("Porcentagem de comparecimento. Relativa ao total de inscritos.");
             builder.Property(x => x.AbstentionPp).HasComment("Porcentagem de abstenção. Relativa ao total de inscritos.");
-            builder.Property(x => x.ValidVotesTotalVotesPp).HasComment("Porcentagem de votos válidos relativa ao total de votos.");
+            builder.Property(x => x.ValidVotesPp).HasComment("Porcentagem de votos válidos relativa ao total de votos.");
             builder.Property(x => x.ValidVotesRegisteredPp).HasComment("Porcentagem de votos válidos relativa aos inscritos.");
-            builder.Property(x => x.InvalidVotesTotalVotesPp).HasComment("Porcentagem de votos inválidos relativa ao total de votos.");
+            builder.Property(x => x.InvalidVotesPp).HasComment("Porcentagem de votos inválidos relativa ao total de votos.");
             builder.Property(x => x.InvalidVotesRegisteredPp).HasComment("Porcentagem de votos inválidos relativa aos inscritos.");
-            builder.Property(x => x.NullVotesTotalVotesPp).HasComment("Porcentagem de votos nulos relativa ao total de votos.");
+            builder.Property(x => x.NullVotesPp).HasComment("Porcentagem de votos nulos relativa ao total de votos.");
             builder.Property(x => x.NullVotesRegisteredPp).HasComment("Porcentagem de votos nulos relativa aos inscritos.");
-            builder.Property(x => x.BlankVotesTotalVotesPp).HasComment("Porcentagem de votos em branco relativa ao total de votos.");
+            builder.Property(x => x.BlankVotesPp).HasComment("Porcentagem de votos em branco relativa ao total de votos.");
             builder.Property(x => x.BlankVotesRegisteredPp).HasComment("Porcentagem de votos em branco relativa aos inscritos.");
-            builder.Property(x => x.AnulledVotesTotalVotesPp).HasComment("Porcentagem de votos anulados relativa ao total de votos.");
+            builder.Property(x => x.AnulledVotesPp).HasComment("Porcentagem de votos anulados relativa ao total de votos.");
             builder.Property(x => x.AnulledVotesRegisteredPp).HasComment("Porcentagem de votos anulados relativa aos inscritos.");
             builder.Property(x => x.ElectoralAlienationPp).HasComment("Porcentagem da alienação eleitoral relativa ao total de inscritos.");
 

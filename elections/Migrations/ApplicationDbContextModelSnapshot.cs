@@ -875,30 +875,30 @@ namespace elections.Migrations
                         .HasColumnName("anulled_votes_count")
                         .HasComment("Contagem de votos que foram anulados por decisão da Justiça Eleitoral.");
 
+                    b.Property<float?>("AnulledVotesPp")
+                        .HasColumnType("float")
+                        .HasColumnName("anulled_votes_pp")
+                        .HasComment("Porcentagem de votos anulados relativa ao total de votos.");
+
                     b.Property<float>("AnulledVotesRegisteredPp")
                         .HasColumnType("float")
                         .HasColumnName("anulled_votes_registered_pp")
                         .HasComment("Porcentagem de votos anulados relativa aos inscritos.");
-
-                    b.Property<float?>("AnulledVotesTotalVotesPp")
-                        .HasColumnType("float")
-                        .HasColumnName("anulled_votes_total_votes_pp")
-                        .HasComment("Porcentagem de votos anulados relativa ao total de votos.");
 
                     b.Property<int>("BlankVotesCount")
                         .HasColumnType("int")
                         .HasColumnName("blank_votes_count")
                         .HasComment("Contagem de votos em branco.");
 
+                    b.Property<float?>("BlankVotesPp")
+                        .HasColumnType("float")
+                        .HasColumnName("blank_votes_pp")
+                        .HasComment("Porcentagem de votos em branco relativa ao total de votos.");
+
                     b.Property<float>("BlankVotesRegisteredPp")
                         .HasColumnType("float")
                         .HasColumnName("blank_votes_registered_pp")
                         .HasComment("Porcentagem de votos em branco relativa aos inscritos.");
-
-                    b.Property<float?>("BlankVotesTotalVotesPp")
-                        .HasColumnType("float")
-                        .HasColumnName("blank_votes_total_votes_pp")
-                        .HasComment("Porcentagem de votos em branco relativa ao total de votos.");
 
                     b.Property<int>("CandidatesCount")
                         .HasColumnType("int")
@@ -907,7 +907,8 @@ namespace elections.Migrations
 
                     b.Property<long>("ElectionRoundId")
                         .HasColumnType("bigint")
-                        .HasColumnName("election_round_id");
+                        .HasColumnName("election_round_id")
+                        .HasComment("ID interno do turno da eleição.");
 
                     b.Property<int>("ElectoralAlienationCount")
                         .HasColumnType("int")
@@ -924,15 +925,15 @@ namespace elections.Migrations
                         .HasColumnName("invalid_votes_count")
                         .HasComment("Contagem de votos inválidos.");
 
+                    b.Property<float?>("InvalidVotesPp")
+                        .HasColumnType("float")
+                        .HasColumnName("invalid_votes_pp")
+                        .HasComment("Porcentagem de votos inválidos relativa ao total de votos.");
+
                     b.Property<float>("InvalidVotesRegisteredPp")
                         .HasColumnType("float")
                         .HasColumnName("invalid_votes_registered_pp")
                         .HasComment("Porcentagem de votos inválidos relativa aos inscritos.");
-
-                    b.Property<float?>("InvalidVotesTotalVotesPp")
-                        .HasColumnType("float")
-                        .HasColumnName("invalid_votes_total_votes_pp")
-                        .HasComment("Porcentagem de votos inválidos relativa ao total de votos.");
 
                     b.Property<long?>("MacroregionId")
                         .HasColumnType("bigint")
@@ -954,15 +955,15 @@ namespace elections.Migrations
                         .HasColumnName("null_votes_count")
                         .HasComment("Contagem de votos nulos.");
 
+                    b.Property<float?>("NullVotesPp")
+                        .HasColumnType("float")
+                        .HasColumnName("null_votes_pp")
+                        .HasComment("Porcentagem de votos nulos relativa ao total de votos.");
+
                     b.Property<float>("NullVotesRegisteredPp")
                         .HasColumnType("float")
                         .HasColumnName("null_votes_registered_pp")
                         .HasComment("Porcentagem de votos nulos relativa aos inscritos.");
-
-                    b.Property<float?>("NullVotesTotalVotesPp")
-                        .HasColumnType("float")
-                        .HasColumnName("null_votes_total_votes_pp")
-                        .HasComment("Porcentagem de votos nulos relativa ao total de votos.");
 
                     b.Property<int>("RegisteredVotersCount")
                         .HasColumnType("int")
@@ -977,7 +978,7 @@ namespace elections.Migrations
                     b.Property<long>("TicketId")
                         .HasColumnType("bigint")
                         .HasColumnName("ticket_id")
-                        .HasComment("ID interno do turno da eleição.");
+                        .HasComment("ID interno do turno da chapa eleitoral.");
 
                     b.Property<int>("TicketPositionNr")
                         .HasColumnType("int")
@@ -1026,15 +1027,15 @@ namespace elections.Migrations
                         .HasColumnName("valid_votes_count")
                         .HasComment("Contagem de todos os votos válidos.");
 
+                    b.Property<float?>("ValidVotesPp")
+                        .HasColumnType("float")
+                        .HasColumnName("valid_votes_pp")
+                        .HasComment("Porcentagem de votos válidos relativa ao total de votos.");
+
                     b.Property<float>("ValidVotesRegisteredPp")
                         .HasColumnType("float")
                         .HasColumnName("valid_votes_registered_pp")
                         .HasComment("Porcentagem de votos válidos relativa aos inscritos.");
-
-                    b.Property<float?>("ValidVotesTotalVotesPp")
-                        .HasColumnType("float")
-                        .HasColumnName("valid_votes_total_votes_pp")
-                        .HasComment("Porcentagem de votos válidos relativa ao total de votos.");
 
                     b.HasKey("Id");
 
