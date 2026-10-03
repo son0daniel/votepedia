@@ -8,7 +8,7 @@ logger = logging.getLogger("brazil_gdf_as_dataframe")
 class BrazilGdfAsDataframe:
     def __init__(self):
         logger.info("Preparing to load Brazil municipality-level gdf")
-        path = "src/gdf/BR_municipalities_fixed.shp"
+        path = "src/gdf/BR_municipalities.shp"
         try:
             gdf = gpd.read_file(path)[[consts.GDF_IBGE_ID_COLUMN, consts.GDF_MUNICIPALTY_NAME_COLUMN, consts.GDF_STATE_ABBR_COLUMN, consts.GDF_METROPOLITAN_AREA_NAME_COLUMN]]
             self.df = pd.DataFrame(BrazilGdfAsDataframe.gdf_municipality_name_normalization_and_correction(gdf))
