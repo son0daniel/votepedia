@@ -16,6 +16,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped(typeof(IRepositoryWithUid<>), typeof(RepositoryWithUid<>));
+builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
 // Add services to the container.
 
 builder.Services.AddControllers();
