@@ -2,7 +2,7 @@
 
 namespace elections.Repositories
 {
-    public interface IRepositoryWithUid<TEntity> where TEntity : BaseEntityWithUid
+    public interface IRepositoryWithUid<TEntity> : IRepository<TEntity> where TEntity : BaseEntityWithUid
     {
         Task<TEntity?> GetByUid(string uid);
     }
