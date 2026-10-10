@@ -1,4 +1,4 @@
-﻿using elections.Constants;
+﻿using elections.Commons.Constants;
 using elections.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
