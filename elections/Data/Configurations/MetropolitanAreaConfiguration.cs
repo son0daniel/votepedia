@@ -1,7 +1,7 @@
 ﻿using elections.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using elections.Constants;
+using elections.Commons.Constants;
 
 namespace elections.Data.Configurations
 {

@@ -1,4 +1,4 @@
-﻿namespace elections.Constants
+﻿namespace elections.Commons.Constants
 {
     public static class Constant
     {
@@ -19,6 +19,8 @@
                 public const string HouseRepresentative = "DEPUTADO FEDERAL";
                 public const string StateRepresentative = "DEPUTADO ESTADUAL";
                 public const string CityCouncilor = "VEREADOR";
+
+                public static readonly List<string> Roles = [President, Governor, Mayor, Senator, HouseRepresentative, StateRepresentative, CityCouncilor];
             }
 
             public static class Status

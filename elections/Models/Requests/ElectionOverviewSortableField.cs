@@ -1,0 +1,33 @@
+﻿namespace elections.Models.Requests
+{
+    public enum ElectionOverviewSortableField
+    {
+        Year,
+        TicketVotesCount,
+        TicketValidVotesPp,
+        TicketTotalVotesPp,
+        TicketRegisteredVotesPp,
+        RegisteredVotersCount,
+        TurnoutCount,
+        TurnoutPp,
+        AbstentionCount,
+        AbstentionPp,
+        ElectoralAlienationCount,
+        ElectoralAlienationPp,
+        ValidVotesCount,
+        ValidVotesPp,
+        ValidVotesRegisteredPp,
+        InvalidVotesCount,
+        InvalidVotesPp,
+        InvalidVotesRegisteredPp,
+        NullVotesCount,
+        NullVotesPp,
+        NullVotesRegisteredPp,
+        BlankVotesCount,
+        BlankVotesPp,
+        BlankVotesRegisteredPp,
+        AnulledVotesCount,
+        AnulledVotesPp,
+        AnulledVotesRegisteredPp
+    }
+}

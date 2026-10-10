@@ -1,4 +1,4 @@
-﻿using elections.Constants;
+﻿using elections.Commons.Constants;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace elections.Migrations.Seeder
