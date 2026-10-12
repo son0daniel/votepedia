@@ -5,26 +5,21 @@ using elections.Models.DTOs.ElectionOverviews;
 using elections.Models.Entities;
 using elections.Models.Requests;
 using elections.Repositories;
-using elections.Services.ElectionResults;
 
 namespace elections.Services.Elections
 {
     public class ElectionService : IElectionService
     {
         private readonly IRepositoryManager _repository;
-        private readonly IElectionResultService _electionResultService;
 
-        public ElectionService(IRepositoryManager repository, IElectionResultService electionResultService)
+        public ElectionService(IRepositoryManager repository)
         {
             _repository = repository;
-            _electionResultService = electionResultService;
         }
 
-        public async Task<IEnumerable<ElectionOverview>> GetElectionOverviews(ElectionFilter electionFilter, string role, string? municipalityUid, string? stateAbbr)
+        public async Task<IEnumerable<ElectionOverview>> GetPresidentialElectionOverviews(ElectionOverviewFilter electionOverviewFilter, int? levelNr)
         {
-            var internalElectionFilter = await _electionResultService.ResolveElectionFilter(electionFilter, role, municipalityUid, stateAbbr);
-
-            var ticketElectionRoundStatistics = await _repository.TicketElectionRoundStatistic.GetElectedTicketElectionRoundStatisticsByRound(internalElectionFilter);
+            var ticketElectionRoundStatistics = await _repository.TicketElectionRoundStatistic.GetElectedTicketPresidentialElectionRoundStatistics(electionOverviewFilter.Year, electionOverviewFilter.Round);
 
             var electionRoundIds = ticketElectionRoundStatistics.Select(x => x.ElectionRoundId).ToList();
             var electionRounds = await _repository.ElectionRound.Get(x => electionRoundIds.Contains(x.Id));
@@ -34,7 +29,7 @@ namespace elections.Services.Elections
             var elections = await _repository.Election.Get(x => electionIds.Contains(x.Id));
 
             var ticketIds = ticketElectionRoundStatistics.Select(x => x.TicketId).ToList();
-            var ticketCandidateParties = (await _repository.TicketCandidateParty.Get(x => ticketIds.Contains(x.TicketId) && x.NrLevel == 1)).ToList();
+            var ticketCandidateParties = (await _repository.TicketCandidateParty.Get(x => ticketIds.Contains(x.TicketId) && x.NrLevel == (levelNr.HasValue ? levelNr.Value : 1))).ToList();
             var candidatePartyIds = ticketCandidateParties.Select(x => x.CandidatePartyId).ToList();
 
             var ticketElectionRoundStatisticsByRound = ticketElectionRoundStatistics.ToDictionary(x => x.ElectionRoundId);
@@ -72,7 +67,7 @@ namespace elections.Services.Elections
 
                 return ElectionOverview.New(election, electionRound, ticketElectionRoundStatistic, candidate, party);
 
-            }).Sort(electionFilter.SortBy, electionFilter.SortDirection);
+            }).Sort(electionOverviewFilter.SortBy, electionOverviewFilter.SortDirection);
         }
     }
 }

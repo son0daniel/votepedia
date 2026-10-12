@@ -5,6 +5,6 @@ namespace elections.Repositories.TicketElectionRoundStatistics
 {
     public interface ITicketElectionRoundStatisticRepository : IRepository<TicketElectionRoundStatistic>
     {
-        Task<IEnumerable<TicketElectionRoundStatistic>> GetElectedTicketElectionRoundStatisticsByRound(InternalElectionFilter internalElectionFilter);
+        Task<IEnumerable<TicketElectionRoundStatistic>> GetElectedTicketPresidentialElectionRoundStatistics(int? year, int? roundNr);
     }
 }

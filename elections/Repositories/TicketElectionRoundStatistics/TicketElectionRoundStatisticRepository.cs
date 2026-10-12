@@ -13,24 +13,57 @@ namespace elections.Repositories.TicketElectionRoundStatistics
         {
         }
 
-        private IQueryable<TicketElectionRoundStatistic> QueryTicketElectionRoundStatisticByStatus(string status)
+        private IQueryable<TicketElectionRoundStatistic> QueryTicketElectionRoundStatisticByStatus(IQueryable<TicketElectionRoundStatistic> query, string status)
         {
-            return _dbSet.Where(x => string.Equals(x.TicketStatus, status)).AsQueryable();
+            return query.Where(x => string.Equals(x.TicketStatus, status));
         }
 
-        public async Task<IEnumerable<TicketElectionRoundStatistic>> GetElectedTicketElectionRoundStatisticsByRound(InternalElectionFilter internalElectionFilter)
+        private IQueryable<TicketElectionRoundStatistic> QueryTicketElectionRoundByRole(IQueryable<TicketElectionRoundStatistic> query, string role)
         {
-            return await QueryTicketElectionRoundStatisticByStatus(Constant.Election.Status.Elected)
-                .Where(x => 
-                    !x.MunicipalityId.HasValue 
-                    && !x.MetropolitanAreaId.HasValue 
-                    && !x.StateId.HasValue && !x.MacroregionId.HasValue
-                    && (string.IsNullOrEmpty(internalElectionFilter.Role) || string.Equals(x.ElectionRound.Election.Role, internalElectionFilter.Role))
-                    && (!internalElectionFilter.Year.HasValue || x.ElectionRound.Election.Year == internalElectionFilter.Year)
-                    && (!internalElectionFilter.MunicipalityId.HasValue || x.ElectionRound.Election.MunicipalityId == internalElectionFilter.MunicipalityId)
-                    && (!internalElectionFilter.StateId.HasValue || x.ElectionRound.Election.StateId == internalElectionFilter.StateId)
-                    && (!internalElectionFilter.Round.HasValue || x.ElectionRound.NrRound == internalElectionFilter.Round))
-                .ToListAsync();
+            return query.Where(x => string.Equals(x.ElectionRound.Election.Role, role));
+        }
+
+        private IQueryable<TicketElectionRoundStatistic> QueryTicketElectionRoundByYear(IQueryable<TicketElectionRoundStatistic> query, int year)
+        {
+            return query.Where(x => x.ElectionRound.Election.Year == year);
+        }
+
+        private IQueryable<TicketElectionRoundStatistic> QueryTicketElectionRoundByRound(IQueryable<TicketElectionRoundStatistic> query, int roundNr)
+        {
+            return query.Where(x => x.ElectionRound.NrRound == roundNr);
+        }
+
+        private IQueryable<TicketElectionRoundStatistic> QueryBroadTicketElectionRoundStatistic(IQueryable<TicketElectionRoundStatistic> query)
+        {
+            return query
+                .Where(x =>
+                    !x.MunicipalityId.HasValue
+                    && !x.MetropolitanAreaId.HasValue
+                    && !x.StateId.HasValue
+                    && !x.MacroregionId.HasValue);
+        }
+
+        public async Task<IEnumerable<TicketElectionRoundStatistic>> GetElectedTicketPresidentialElectionRoundStatistics(int? year, int? roundNr)
+        {
+            var query = _dbSet.AsQueryable();
+
+            query = QueryTicketElectionRoundByRole(query, Constant.Election.Role.President);
+
+            query = QueryBroadTicketElectionRoundStatistic(query);
+
+            query = QueryTicketElectionRoundStatisticByStatus(query, Constant.Election.Status.Elected);
+
+            if (year.HasValue)
+            {
+                query = QueryTicketElectionRoundByYear(query, year.Value);
+            }
+
+            if (roundNr.HasValue)
+            {
+                query = QueryTicketElectionRoundByRound(query, roundNr.Value);
+            }
+
+            return await query.ToListAsync();
         }
     }
 }

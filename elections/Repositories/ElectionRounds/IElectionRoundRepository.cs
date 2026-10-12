@@ -4,5 +4,6 @@ namespace elections.Repositories.ElectionRounds
 {
     public interface IElectionRoundRepository : IRepositoryWithUid<ElectionRound>
     {
+        Task<IEnumerable<ElectionRound>> GetRoundsByElections(List<long> electionIds, int roundNr);
     }
 }

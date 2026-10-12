@@ -1,6 +1,6 @@
 ﻿namespace elections.Models.Requests
 {
-    public record ElectionFilter
+    public record ElectionOverviewFilter
     {
         public int? Year { get; init; }
         public int? Round { get; init; }

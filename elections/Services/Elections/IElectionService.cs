@@ -5,6 +5,6 @@ namespace elections.Services.Elections
 {
     public interface IElectionService
     {
-        Task<IEnumerable<ElectionOverview>> GetElectionOverviews(ElectionFilter electionFilter, string role, string? municipalityUid, string? stateAbbr );
+        Task<IEnumerable<ElectionOverview>> GetPresidentialElectionOverviews(ElectionOverviewFilter electionOverviewFilter, int? levelNr);
     }
 }

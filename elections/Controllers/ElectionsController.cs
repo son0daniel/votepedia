@@ -1,8 +1,5 @@
-﻿using elections.Commons.Constants;
-using elections.Commons.Utils;
-using elections.Models.DTOs.ElectionOverviews;
+﻿using elections.Models.DTOs.ElectionOverviews;
 using elections.Models.Requests;
-using elections.Services.ElectionResults;
 using elections.Services.Elections;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,11 +18,9 @@ namespace elections.Controllers
 
         [HttpGet]
         [Route("role/president/overview")]
-        public async Task<ActionResult<IEnumerable<ElectionOverview>>> GetElectionOverviews([FromQuery] ElectionFilter electionFilter)
+        public async Task<ActionResult<IEnumerable<ElectionOverview>>> GetElectionOverviews([FromQuery] ElectionOverviewFilter electionOverviewFilter, [FromQuery] int? level)
         {
-            var role = Constant.Election.Role.President;
-
-            var electionOverviews = await _electionService.GetElectionOverviews(electionFilter, role, municipalityUid: null, stateAbbr: null);
+            var electionOverviews = await _electionService.GetPresidentialElectionOverviews(electionOverviewFilter, level);
 
             return Ok(electionOverviews);
         }

@@ -1,5 +1,7 @@
 ﻿using elections.Data;
 using elections.Models.Entities;
+using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace elections.Repositories.CandidateParties
 {
@@ -7,6 +9,14 @@ namespace elections.Repositories.CandidateParties
     {
         public CandidatePartyRepository(ApplicationDbContext context) : base(context)
         {
+        }
+
+        public async Task<IEnumerable<CandidateParty>> GetCandidatesAndParties(Expression<Func<CandidateParty, bool>> expression)
+        {
+            return await _dbSet.Where(expression)
+            .Include(cp => cp.Candidate)
+            .Include(cp => cp.Party)
+            .ToListAsync();
         }
     }
 }
