@@ -1,12 +1,14 @@
-﻿using elections.Models.DTOs;
+﻿using elections.Commons.Constants;
+using elections.Models.DTOs;
+using elections.Models.DTOs.ElectionOverviews;
+using elections.Models.Pagination;
 using elections.Models.Requests;
 using elections.Services.Candidates;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace elections.Controllers
 {
-    [Route("api/[controller]")]
+    [Route(Routes.Candidates.Base)]
     [ApiController]
     public class CandidatesController : ControllerBase
     {
@@ -18,14 +20,13 @@ namespace elections.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CandidateDto>>> GetCandidates([FromQuery] CandidateFilter candidateFilter)
+        public async Task<ActionResult<PagedResponse<CandidateDto>>> GetCandidates([FromQuery] CandidateFilter candidateFilter, [FromQuery] PagedRequest pagedRequest)
         {
-            return Ok(await _candidateService.GetCandidates(candidateFilter));
+            return Ok(await _candidateService.GetCandidates(candidateFilter, pagedRequest));
         }
 
-        [HttpGet]
-        [Route("{uid:guid}/elections/role/president/overviews")]
-        public async Task<ActionResult<IEnumerable<CandidateDto>>> GetCandidates([FromRoute] string uid, [FromQuery] ElectionOverviewFilter electionOverviewFilter, [FromQuery] bool? isElected)
+        [HttpGet, Route(Routes.Candidates.PresidentialElectionOverviews)]
+        public async Task<ActionResult<IEnumerable<CandidateElectionOverview>>> GetCandidatePresidentialElectionOverviews([FromRoute] string uid, [FromQuery] ElectionOverviewFilter electionOverviewFilter, [FromQuery] bool? isElected)
         {
             return Ok(await _candidateService.GetCandidatePresidentialElectionOverviews(uid, electionOverviewFilter, isElected));
         }

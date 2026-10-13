@@ -3,9 +3,11 @@ using elections.Commons.Extensions;
 using elections.Commons.Utils;
 using elections.Models.DTOs;
 using elections.Models.DTOs.ElectionOverviews;
+using elections.Models.Pagination;
 using elections.Models.Requests;
 using elections.Repositories;
 using elections.Services.Elections;
+using Microsoft.EntityFrameworkCore;
 
 namespace elections.Services.Candidates
 {
@@ -18,11 +20,20 @@ namespace elections.Services.Candidates
             _repository = repository;
         }
 
-        public async Task<IEnumerable<CandidateDto>> GetCandidates(CandidateFilter candidateFilter)
+        public async Task<PagedResponse<CandidateDto>> GetCandidates(CandidateFilter candidateFilter, PagedRequest pagedRequest)
         {
-            var candidates = (await _repository.Candidate.Get(x => !candidateFilter.IsDeceased.HasValue || x.IsDeceased == candidateFilter.IsDeceased.Value)).ToList();
+            var nameQuery = candidateFilter.Name?.ToUpper();
 
-            return candidates.Select(x => new CandidateDto(x)).Sort(candidateFilter.SortBy, candidateFilter.SortDirection);
+            var queryCandidates = _repository.Candidate.GetQueryable(
+                x => (!candidateFilter.IsDeceased.HasValue || x.IsDeceased == candidateFilter.IsDeceased.Value) 
+                && (string.IsNullOrEmpty(nameQuery) || x.Name.ToUpper().Contains(nameQuery)));
+
+            var totalCount = await queryCandidates.CountAsync();
+
+            var candidates = (await _repository.Candidate.GetPaged(queryCandidates, pagedRequest)).ToList();
+            var items = candidates.Select(x => new CandidateDto(x)).Sort(candidateFilter.SortBy, candidateFilter.SortDirection).ToList();
+
+            return new PagedResponse<CandidateDto>(items, totalCount, pagedRequest);
         }
 
         public async Task<IEnumerable<CandidateElectionOverview>> GetCandidatePresidentialElectionOverviews(string candidateUid, ElectionOverviewFilter electionOverviewFilter, bool? isElected)

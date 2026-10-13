@@ -1,5 +1,4 @@
 using elections.Data;
-using elections.Models.Entities;
 using elections.Repositories;
 using elections.Services.Candidates;
 using elections.Services.Elections;

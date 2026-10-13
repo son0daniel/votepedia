@@ -1,12 +1,13 @@
 ﻿using elections.Models.DTOs;
 using elections.Models.DTOs.ElectionOverviews;
+using elections.Models.Pagination;
 using elections.Models.Requests;
 
 namespace elections.Services.Candidates
 {
     public interface ICandidateService
     {
-        Task<IEnumerable<CandidateDto>> GetCandidates(CandidateFilter candidateFilter);
+        Task<PagedResponse<CandidateDto>> GetCandidates(CandidateFilter candidateFilter, PagedRequest pagedRequest);
         Task<IEnumerable<CandidateElectionOverview>> GetCandidatePresidentialElectionOverviews(string candidateUid, ElectionOverviewFilter electionOverviewFilter, bool? isElected);
     }
 }

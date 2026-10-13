@@ -1,6 +1,7 @@
 ﻿
 using elections.Data;
 using elections.Models.Entities;
+using elections.Models.Pagination;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -25,6 +26,19 @@ namespace elections.Repositories
         public async Task<IEnumerable<TEntity>> Get(Expression<Func<TEntity, bool>> expression)
         {
             return await _dbSet.Where(expression).ToListAsync();
+        }
+
+        public IQueryable<TEntity> GetQueryable(Expression<Func<TEntity, bool>> expression)
+        {
+            return _dbSet.Where(expression);
+        }
+
+        public async Task<IEnumerable<TEntity>> GetPaged(IQueryable<TEntity> query, PagedRequest pagedRequest)
+        {
+            return await query
+                .Skip(pagedRequest.PageIndex * pagedRequest.PageSize)
+                .Take(pagedRequest.PageSize)
+                .ToListAsync();
         }
     }
 }
