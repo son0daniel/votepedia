@@ -1,6 +1,7 @@
 using elections.Data;
 using elections.Models.Entities;
 using elections.Repositories;
+using elections.Services.Candidates;
 using elections.Services.Elections;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,6 +20,7 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped(typeof(IRepositoryWithUid<>), typeof(RepositoryWithUid<>));
 builder.Services.AddScoped<IRepositoryManager, RepositoryManager>();
 builder.Services.AddScoped<IElectionService, ElectionService>();
+builder.Services.AddScoped<ICandidateService, CandidateService>();
 // Add services to the container.
 
 builder.Services.AddControllers();

@@ -4,6 +4,7 @@ using elections.Data;
 using elections.Models.Entities;
 using elections.Models.Requests;
 using Microsoft.EntityFrameworkCore;
+using static elections.Commons.Constants.Constant.Election;
 
 namespace elections.Repositories.TicketElectionRoundStatistics
 {
@@ -43,6 +44,13 @@ namespace elections.Repositories.TicketElectionRoundStatistics
                     && !x.MacroregionId.HasValue);
         }
 
+        private IQueryable<TicketElectionRoundStatistic> QueryTicketByCandidateId(IQueryable<TicketElectionRoundStatistic> query, long candidateId)
+        {
+            return query.Where(
+                x => x.Ticket.TicketCandidateParties.Any(
+                    tcp => tcp.CandidateParty.CandidateId == candidateId));
+        }
+
         public async Task<IEnumerable<TicketElectionRoundStatistic>> GetElectedTicketPresidentialElectionRoundStatistics(int? year, int? roundNr)
         {
             var query = _dbSet.AsQueryable();
@@ -52,6 +60,40 @@ namespace elections.Repositories.TicketElectionRoundStatistics
             query = QueryBroadTicketElectionRoundStatistic(query);
 
             query = QueryTicketElectionRoundStatisticByStatus(query, Constant.Election.Status.Elected);
+
+            if (year.HasValue)
+            {
+                query = QueryTicketElectionRoundByYear(query, year.Value);
+            }
+
+            if (roundNr.HasValue)
+            {
+                query = QueryTicketElectionRoundByRound(query, roundNr.Value);
+            }
+
+            return await query.ToListAsync();
+        }
+
+        public async Task<IEnumerable<TicketElectionRoundStatistic>> GetCandidateTicketPresidentialElectionRoundStatistics(long candidateId, int? year, int? roundNr, bool? isElected)
+        {
+            var query = _dbSet.AsQueryable();
+
+            query = QueryTicketElectionRoundByRole(query, Constant.Election.Role.President);
+
+            query = QueryBroadTicketElectionRoundStatistic(query);
+
+            query = QueryTicketByCandidateId(query, candidateId);
+
+            if (isElected.HasValue)
+            {
+                query = query.Where(x => string.Equals(x.TicketStatus, Constant.Election.Status.Elected) == isElected.Value);
+            }
+            else
+            {
+                query = query.Where(
+                    x => string.Equals(x.TicketStatus, Constant.Election.Status.Elected)
+                    || string.Equals(x.TicketStatus, Constant.Election.Status.NotElected));
+            }
 
             if (year.HasValue)
             {
