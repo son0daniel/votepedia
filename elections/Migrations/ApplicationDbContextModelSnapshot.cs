@@ -800,6 +800,8 @@ namespace elections.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CandidatePartyId");
+
                     b.HasIndex("TicketId", "CandidatePartyId")
                         .IsUnique()
                         .HasDatabaseName("IX_ticket_candidate_party");
@@ -1205,7 +1207,7 @@ namespace elections.Migrations
                 {
                     b.HasOne("elections.Models.Entities.CandidateParty", "CandidateParty")
                         .WithMany("TicketCandidateParties")
-                        .HasForeignKey("TicketId")
+                        .HasForeignKey("CandidatePartyId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired()
                         .HasConstraintName("FK_ticket_candidate_party_candidate_party_id");

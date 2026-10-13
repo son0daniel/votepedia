@@ -28,7 +28,7 @@ namespace elections.Data.Configurations
 
             builder.HasOne(x => x.CandidateParty)
                 .WithMany(x => x.TicketCandidateParties)
-                .HasForeignKey(x => x.TicketId)
+                .HasForeignKey(x => x.CandidatePartyId)
                 .OnDelete(DeleteBehavior.Restrict)
                 .HasConstraintName("FK_ticket_candidate_party_candidate_party_id");
         }
