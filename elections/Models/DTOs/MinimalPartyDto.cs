@@ -3,20 +3,10 @@ using System.Text.Json.Serialization;
 
 namespace elections.Models.DTOs
 {
-    public class MinimalPartyDto
+    public class MinimalPartyDto(Party party)
     {
-        public string Id { get; set; } = string.Empty;
-        public string Abbr { get; set; } = string.Empty;
-        [JsonPropertyName("registration_year")] public int RegistrationYear { get; set; }
-
-        public static MinimalPartyDto New(Party party)
-        {
-            return new MinimalPartyDto
-            {
-                Id = party.Uid,
-                Abbr = party.Abbr,
-                RegistrationYear = party.RegisteredAt.Year
-            };
-        }
+        public string Id { get; set; } = party.Uid;
+        public string Abbr { get; set; } = party.Abbr;
+        [JsonPropertyName("registration_year")] public int RegistrationYear { get; set; } = party.RegisteredAt.Year;
     }
 }

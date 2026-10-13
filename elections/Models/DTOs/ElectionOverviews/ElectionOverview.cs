@@ -11,8 +11,8 @@ namespace elections.Models.DTOs.ElectionOverviews
         {
            var response = New<ElectionOverview>(election, electionRound, ticketElectionRoundStatistic);
 
-            response.Candidate = MinimalCandidateDto.New(candidate);
-            response.Party = MinimalPartyDto.New(party);
+            response.Candidate = new MinimalCandidateDto(candidate);
+            response.Party = new MinimalPartyDto(party);
 
             return response;
         }
