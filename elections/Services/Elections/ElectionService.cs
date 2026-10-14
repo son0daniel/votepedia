@@ -65,7 +65,7 @@ namespace elections.Services.Elections
                 var candidate = candidateParty.Candidate;
                 var party = candidateParty.Party;
 
-                return ElectionOverview.New(election, electionRound, ticketElectionRoundStatistic, candidate, party);
+                return new ElectionOverview(election, electionRound, ticketElectionRoundStatistic, candidate, party);
 
             }).Sort(electionOverviewFilter.SortBy, electionOverviewFilter.SortDirection);
         }

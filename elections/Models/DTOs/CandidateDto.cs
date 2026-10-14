@@ -6,10 +6,10 @@ namespace elections.Models.DTOs
 {
     public class CandidateDto(Candidate candidate) : MinimalCandidateDto(candidate)
     {
-        public string Name { get; set; } = candidate.Name;
-        public string? Biography { get; set; } = candidate.Biography;
-        [JsonPropertyName("is_deceased")] public bool IsDeceased { get; set; } = candidate.IsDeceased;
-        [JsonPropertyName("birth_date")] public long? BirthDate { get; set; } = candidate.BirthDate?.ToUnixTimestamp();
-        [JsonPropertyName("death_date")] public long? DeathDate { get; set; } = candidate.DeathDate?.ToUnixTimestamp();
+        public string Name { get; } = candidate.Name;
+        public string? Biography { get; } = candidate.Biography;
+        [JsonPropertyName("is_deceased")] public bool IsDeceased { get; } = candidate.IsDeceased;
+        [JsonPropertyName("birth_date")] public long? BirthDate { get; } = candidate.BirthDate?.ToUnixTimestamp();
+        [JsonPropertyName("death_date")] public long? DeathDate { get; } = candidate.DeathDate?.ToUnixTimestamp();
     }
 }

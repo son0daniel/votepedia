@@ -93,7 +93,7 @@ namespace elections.Services.Candidates
 
                 var party = candidateParty.Party;
 
-                return CandidateElectionOverview.New(election, electionRound, ticketElectionRoundStatistic, officeRole, party);
+                return new CandidateElectionOverview(election, electionRound, ticketElectionRoundStatistic, officeRole, party);
 
             }).Sort(electionOverviewFilter.SortBy, electionOverviewFilter.SortDirection);
         }

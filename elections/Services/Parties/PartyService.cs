@@ -100,7 +100,7 @@ namespace elections.Services.Parties
                     candidates.Add(new TicketCandidateDto(candidate, officeRole));
                 }
 
-                return PartyElectionOverview.New(election, electionRound, ticketElectionRoundStatistic, candidates);
+                return new PartyElectionOverview(election, electionRound, ticketElectionRoundStatistic, candidates);
 
             }).Sort(electionOverviewFilter.SortBy, electionOverviewFilter.SortDirection);
         }
