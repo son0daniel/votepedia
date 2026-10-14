@@ -5,7 +5,7 @@ namespace elections.Commons.Extensions
 {
     public static class ElectionOverviewSorter
     {
-        public static IEnumerable<TOverview> Sort<TOverview>(this IEnumerable<TOverview> electionOverviews, ElectionOverviewSortableField sortBy, SortDirection sortDirection) where TOverview : BaseElectionOverview
+        public static IEnumerable<TOverview> Sort<TOverview>(this IEnumerable<TOverview> electionOverviews, ElectionOverviewSortableField? sortBy, SortDirection sortDirection) where TOverview : BaseElectionOverview
         {
             Func<TOverview, object?> keySelector = sortBy switch
             {

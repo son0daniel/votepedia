@@ -7,5 +7,6 @@ namespace elections.Repositories.CandidateParties
     {
         Task<IEnumerable<CandidateParty>> GetCandidatesAndParties(Expression<Func<CandidateParty, bool>> expression);
         Task<IEnumerable<CandidateParty>> GetParties(Expression<Func<CandidateParty, bool>> expression);
+        Task<IEnumerable<CandidateParty>> GetCandidates(Expression<Func<CandidateParty, bool>> expression);
     }
 }

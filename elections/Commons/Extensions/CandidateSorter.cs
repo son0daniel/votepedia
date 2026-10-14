@@ -5,7 +5,7 @@ namespace elections.Commons.Extensions
 {
     public static class CandidateSorter
     {
-        public static IEnumerable<CandidateDto> Sort(this IEnumerable<CandidateDto> candidates, CandidateSortableField sortBy, SortDirection sortDirection)
+        public static IEnumerable<CandidateDto> Sort(this IEnumerable<CandidateDto> candidates, CandidateSortableField? sortBy, SortDirection sortDirection)
         {
             Func<CandidateDto, object?> keySelector = sortBy switch
             {

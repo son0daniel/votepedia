@@ -25,5 +25,12 @@ namespace elections.Repositories.CandidateParties
             .Include(cp => cp.Party)
             .ToListAsync();
         }
+
+        public async Task<IEnumerable<CandidateParty>> GetCandidates(Expression<Func<CandidateParty, bool>> expression)
+        {
+            return await _dbSet.Where(expression)
+            .Include(cp => cp.Candidate)
+            .ToListAsync();
+        }
     }
 }
