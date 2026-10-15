@@ -14,5 +14,10 @@ namespace elections.Repositories
         {
             return await _dbSet.Where(x => x.Uid == uid).FirstOrDefaultAsync();
         }
+
+        public async Task<long?> GetIdByUid(string uid)
+        {
+            return await _dbSet.Where(x => x.Uid == uid).Select(x => x.Id).FirstOrDefaultAsync();
+        }
     }
 }
