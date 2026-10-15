@@ -92,12 +92,10 @@ namespace elections.Services.Parties
                     {
                         throw new InvalidOperationException($"Error while fetching candidate party from ticket candidate party with id {candidatePartyId}");
                     }
-
-                    var officeRole = RoleResolver.GetOfficeRole(Constant.Election.Role.President, ticketCandidateParty.NrLevel);
                     
                     var candidate = candidateParty.Candidate;
 
-                    candidates.Add(new TicketCandidateDto(candidate, officeRole));
+                    candidates.Add(new TicketCandidateDto(candidate, Constant.Election.Role.President, ticketCandidateParty.NrLevel));
                 }
 
                 return new PartyElectionOverview(election, electionRound, ticketElectionRoundStatistic, candidates);

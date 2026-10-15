@@ -9,13 +9,19 @@
         private const string _Role = "role";
         private const string _President = "president";
         private const string _Overviews = "overviews";
+        private const string _Overall = "overall";
+        private const string _Results = "results";
         private const string _Presidential = $"{_Role}/{_President}";
+        private const string _ElectionYear = "year/{year}";
+        private const string _ElectionRound = "round/{roundNr}";
+        private const string _PresidentialElectionRound = $"{_Presidential}/{_ElectionYear}/{_ElectionRound}";
         private const string _PresidentialOverviews = $"{_Presidential}/{_Overviews}";
 
         public static class Elections
         {
             public const string Base = $"api/{_Elections}";
             public const string PresidentialElectionOverviews = $"{_PresidentialOverviews}";
+            public const string PresidentialElectionRoundOverallResults = $"{_PresidentialElectionRound}/{_Overall}/{_Results}";
         }
 
         public static class Candidates

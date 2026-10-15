@@ -10,6 +10,16 @@ namespace elections.Repositories.ElectionRounds
         {
         }
 
+        public async Task<ElectionRound?> GetElectionRound(string role, int year, int roundNr, long? municipalityId, long? stateId)
+        {
+            return await _dbSet.Where(
+                x => x.NrRound == roundNr
+                && string.Equals(x.Election.Role, role)
+                && x.Election.Year == year
+                && (!municipalityId.HasValue || x.Election.MunicipalityId == municipalityId.Value)
+                && (!stateId.HasValue || x.Election.StateId == stateId.Value)).FirstOrDefaultAsync();
+        }
+
         public async Task<IEnumerable<ElectionRound>> GetRoundsByElections(List<long> electionIds, int roundNr)
         {
             return await _dbSet.Where(x => electionIds.Contains(x.Election.Id) && x.NrRound == roundNr).ToListAsync();

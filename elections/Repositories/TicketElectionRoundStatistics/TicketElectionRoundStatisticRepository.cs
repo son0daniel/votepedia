@@ -128,5 +128,16 @@ namespace elections.Repositories.TicketElectionRoundStatistics
 
             return await query.ToListAsync();
         }
+
+        public async Task<IEnumerable<TicketElectionRoundStatistic>> GetElectionRoundStatistics(long electionRoundId, long? municipalityId, long? metropolitanAreaId, long? stateId, long? macroregionId)
+        {
+            return await _dbSet.Where(
+                x => x.ElectionRoundId == electionRoundId
+                && x.MunicipalityId == municipalityId
+                && x.MetropolitanAreaId == metropolitanAreaId
+                && x.StateId == stateId
+                && x.MacroregionId == macroregionId)
+                .ToListAsync();
+        }
     }
 }

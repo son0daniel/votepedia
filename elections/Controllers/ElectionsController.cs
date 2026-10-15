@@ -1,4 +1,5 @@
 ﻿using elections.Commons.Constants;
+using elections.Models.DTOs;
 using elections.Models.DTOs.ElectionOverviews;
 using elections.Models.Requests;
 using elections.Services.Elections;
@@ -23,6 +24,19 @@ namespace elections.Controllers
             var electionOverviews = await _electionService.GetPresidentialElectionOverviews(electionOverviewFilter, level);
 
             return Ok(electionOverviews);
+        }
+
+        [HttpGet, Route(Routes.Elections.PresidentialElectionRoundOverallResults)]
+        public async Task<ActionResult<ElectionRoundDto>> GetPresidentialElectionOverallResults([FromRoute] int year, [FromRoute] int roundNr)
+        {
+            var electionResults = await _electionService.GetPresidentialElectionOverallResults(year, roundNr);
+
+            if (electionResults is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(electionResults);
         }
     }
 }
