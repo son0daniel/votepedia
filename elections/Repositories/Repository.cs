@@ -28,6 +28,11 @@ namespace elections.Repositories
             return await _dbSet.Where(expression).Select(x => x.Id).FirstOrDefaultAsync();
         }
 
+        public async Task<IEnumerable<long>> GetIds(Expression<Func<TEntity, bool>> expression)
+        {
+            return await _dbSet.Where(expression).Select(x => x.Id).ToListAsync();
+        }
+
         public async Task<IEnumerable<TEntity>> Get(Expression<Func<TEntity, bool>> expression)
         {
             return await _dbSet.Where(expression).ToListAsync();
