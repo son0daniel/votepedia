@@ -3,10 +3,12 @@ using elections.Commons.Extensions;
 using elections.Commons.Utils;
 using elections.Models.DTOs;
 using elections.Models.DTOs.ElectionOverviews;
+using elections.Models.Entities;
 using elections.Models.Pagination;
 using elections.Models.Requests;
 using elections.Repositories;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace elections.Services.Parties
 {
@@ -19,6 +21,20 @@ namespace elections.Services.Parties
             _repository = repository;
         }
 
+        private static Expression<Func<Party, object?>> ResolveKeySelector(PartySortableField? partySortableField)
+        {
+            return partySortableField switch
+            {
+                PartySortableField.Name => x => x.Name,
+                PartySortableField.Abbr => x => x.Abbr,
+                PartySortableField.Nr => x => x.NrVoteable,
+                PartySortableField.Registration => x => x.RegisteredAt,
+                PartySortableField.Foundation => x => x.FoundedAt,
+                PartySortableField.Dissolution => x => x.DissolvedAt,
+                _ => x => x.Name
+            };
+        }
+
         public async Task<PagedResponse<PartyDto>> GetParties(PartyFilter partyFilter, PagedRequest pagedRequest)
         {
             var queryParties = _repository.Party.GetQueryable(
@@ -29,7 +45,7 @@ namespace elections.Services.Parties
 
             var totalCount = await queryParties.CountAsync();
 
-            var parties = (await _repository.Party.GetPaged(queryParties, pagedRequest)).ToList();
+            var parties = (await _repository.Party.GetPaged(queryParties, pagedRequest, ResolveKeySelector(partyFilter.SortBy), partyFilter.SortDirection)).ToList();
             var items = parties.Select(x => new PartyDto(x)).Sort(partyFilter.SortBy, partyFilter.SortDirection).ToList();
 
             return new PagedResponse<PartyDto>(items, totalCount, pagedRequest);

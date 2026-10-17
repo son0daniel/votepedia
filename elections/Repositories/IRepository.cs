@@ -1,5 +1,6 @@
 ﻿using elections.Models.Entities;
 using elections.Models.Pagination;
+using elections.Models.Requests;
 using System.Linq.Expressions;
 
 namespace elections.Repositories
@@ -11,6 +12,6 @@ namespace elections.Repositories
         Task<IEnumerable<long>> GetIds(Expression<Func<TEntity, bool>> expression);
         Task<IEnumerable<TEntity>> Get(Expression<Func<TEntity, bool>> expression);
         IQueryable<TEntity> GetQueryable(Expression<Func<TEntity, bool>> expression);
-        Task<IEnumerable<TEntity>> GetPaged(IQueryable<TEntity> query, PagedRequest pagedRequest);
+        Task<IEnumerable<TEntity>> GetPaged(IQueryable<TEntity> query, PagedRequest pagedRequest, Expression<Func<TEntity, object?>>? keySelector, SortDirection sortDirection = SortDirection.Ascending);
     }
 }
