@@ -536,6 +536,38 @@ namespace elections.Migrations
                         });
                 });
 
+            modelBuilder.Entity("elections.Models.Entities.MetropolitanAreaState", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id")
+                        .HasComment("ID interno da relação.");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<long>("MetropolitanAreaId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("metropolitan_area_id")
+                        .HasComment("ID interno da Região Metropolitana.");
+
+                    b.Property<long>("StateId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("state_id")
+                        .HasComment("ID interno do Estado.");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MetropolitanAreaId");
+
+                    b.HasIndex("StateId");
+
+                    b.ToTable("metropolitan_area_state", t =>
+                        {
+                            t.HasComment("Tabela de relação entre Regiões Metropolitanas e Estados.");
+                        });
+                });
+
             modelBuilder.Entity("elections.Models.Entities.Municipality", b =>
                 {
                     b.Property<long>("Id")
@@ -1171,6 +1203,27 @@ namespace elections.Migrations
                     b.Navigation("Party");
                 });
 
+            modelBuilder.Entity("elections.Models.Entities.MetropolitanAreaState", b =>
+                {
+                    b.HasOne("elections.Models.Entities.MetropolitanArea", "MetropolitanArea")
+                        .WithMany("MetropolitanAreaStates")
+                        .HasForeignKey("MetropolitanAreaId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_metropolitan_area_state_metropolitan_area_id");
+
+                    b.HasOne("elections.Models.Entities.State", "State")
+                        .WithMany("MetropolitanAreaStates")
+                        .HasForeignKey("StateId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired()
+                        .HasConstraintName("FK_metropolitan_area_state_state_id");
+
+                    b.Navigation("MetropolitanArea");
+
+                    b.Navigation("State");
+                });
+
             modelBuilder.Entity("elections.Models.Entities.Municipality", b =>
                 {
                     b.HasOne("elections.Models.Entities.MetropolitanArea", "MetropolitanArea")
@@ -1336,6 +1389,8 @@ namespace elections.Migrations
 
             modelBuilder.Entity("elections.Models.Entities.MetropolitanArea", b =>
                 {
+                    b.Navigation("MetropolitanAreaStates");
+
                     b.Navigation("Municipalities");
 
                     b.Navigation("TicketElectionRoundStatistics");
@@ -1360,6 +1415,8 @@ namespace elections.Migrations
             modelBuilder.Entity("elections.Models.Entities.State", b =>
                 {
                     b.Navigation("Elections");
+
+                    b.Navigation("MetropolitanAreaStates");
 
                     b.Navigation("Municipalities");
 
