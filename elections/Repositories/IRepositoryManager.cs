@@ -8,6 +8,7 @@ using elections.Repositories.FederationParties;
 using elections.Repositories.Federations;
 using elections.Repositories.Macroregions;
 using elections.Repositories.MetropolitanAreas;
+using elections.Repositories.MetropolitanAreaStates;
 using elections.Repositories.Municipalities;
 using elections.Repositories.Parties;
 using elections.Repositories.States;
@@ -30,6 +31,7 @@ namespace elections.Repositories
         IFederationRepository Federation { get; }
         IMacroregionRepository Macroregion { get; }
         IMetropolitanAreaRepository MetropolitanArea { get; }
+        IMetropolitanAreaStateRepository MetropolitanAreaState { get; }
         IMunicipalityRepository Municipality { get; }
         IPartyRepository Party { get; }
         IStateRepository State { get; }

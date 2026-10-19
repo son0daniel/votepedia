@@ -9,6 +9,7 @@ using elections.Repositories.FederationParties;
 using elections.Repositories.Federations;
 using elections.Repositories.Macroregions;
 using elections.Repositories.MetropolitanAreas;
+using elections.Repositories.MetropolitanAreaStates;
 using elections.Repositories.Municipalities;
 using elections.Repositories.Parties;
 using elections.Repositories.States;
@@ -29,35 +30,21 @@ namespace elections.Repositories
         }
 
         private ICandidatePartyRepository? _candidateParty;
-
         private ICandidateRepository? _candidate;
-
         private ICoalitionMemberRepository? _coalitionMember;
-
         private ICoalitionRepository? _coalition;
-
         private IElectionRoundRepository? _electionRound;
-
         private IElectionRepository? _election;
-
         private IFederationPartyRepository? _federationParty;
-
         private IFederationRepository? _federation;
-
         private IMacroregionRepository? _macroregion;
-
         private IMetropolitanAreaRepository? _metropolitanArea;
-
+        private IMetropolitanAreaStateRepository? _metropolitanAreaState;
         private IMunicipalityRepository? _municipality;
-
         private IPartyRepository? _party;
-
         private IStateRepository? _state;
-
         private ITicketCandidatePartyRepository? _ticketCandidateParty;
-
         private ITicketElectionRoundRepository? _ticketElectionRound;
-
         private ITicketElectionRoundStatisticRepository? _ticketElectionRoundStatistic;
         private ITicketRepository? _ticket;
 
@@ -71,6 +58,7 @@ namespace elections.Repositories
         public IFederationRepository Federation => _federation ??= new FederationRepository(_context);
         public IMacroregionRepository Macroregion => _macroregion ??= new MacroregionRepository(_context);
         public IMetropolitanAreaRepository MetropolitanArea => _metropolitanArea ??= new MetropolitanAreaRepository(_context);
+        public IMetropolitanAreaStateRepository MetropolitanAreaState => _metropolitanAreaState ??= new MetropolitanAreaStateRepository(_context);
         public IMunicipalityRepository Municipality => _municipality ??= new MunicipalityRepository(_context);
         public IPartyRepository Party => _party ??= new PartyRepository(_context);
         public IStateRepository State => _state ??= new StateRepository(_context);
