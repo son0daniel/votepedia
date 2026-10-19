@@ -5,6 +5,7 @@
         private const string _Elections = "elections";
         private const string _Candidates = "candidates";
         private const string _Parties = "parties";
+        private const string _Municipalities = "municipalities";
         private const string _Uid = "{uid}";
         private const string _Role = "role";
         private const string _President = "president";
@@ -34,6 +35,11 @@
         {
             public const string Base = $"api/{_Parties}";
             public const string PresidentialElectionOverviews = $"{_Uid}/{_Elections}/{_PresidentialOverviews}";
+        }
+
+        public static class Municipalities
+        {
+            public const string Base = $"api/{_Municipalities}";
         }
     }
 }
