@@ -7,6 +7,7 @@
         private const string _Parties = "parties";
         private const string _Municipalities = "municipalities";
         private const string _MetropolitanAreas = "metropolitan-areas";
+        private const string _States = "states";
         private const string _Uid = "{uid}";
         private const string _Role = "role";
         private const string _President = "president";
@@ -46,6 +47,11 @@
         public static class MetropolitanAreas
         {
             public const string Base = $"api/{_MetropolitanAreas}";
+        }
+
+        public static class States
+        {
+            public const string Base = $"api/{_States}";
         }
     }
 }
