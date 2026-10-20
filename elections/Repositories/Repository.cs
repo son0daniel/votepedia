@@ -39,8 +39,13 @@ namespace elections.Repositories
             return await _dbSet.Where(expression).ToListAsync();
         }
 
-        public IQueryable<TEntity> GetQueryable(Expression<Func<TEntity, bool>> expression)
+        public IQueryable<TEntity> GetQueryable(Expression<Func<TEntity, bool>>? expression)
         {
+            if (expression is null)
+            {
+                return _dbSet;
+            }
+
             return _dbSet.Where(expression);
         }
 
