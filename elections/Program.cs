@@ -5,6 +5,7 @@ using elections.Services.Elections;
 using elections.Services.MetropolitanAreas;
 using elections.Services.Municipalities;
 using elections.Services.Parties;
+using elections.Services.States;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -26,6 +27,7 @@ builder.Services.AddScoped<ICandidateService, CandidateService>();
 builder.Services.AddScoped<IPartyService, PartyService>();
 builder.Services.AddScoped<IMunicipalityService, MunicipalityService>();
 builder.Services.AddScoped<IMetropolitanAreaService, MetropolitanAreaService>();
+builder.Services.AddScoped<IStateService, StateService>();
 // Add services to the container.
 
 builder.Services.AddControllers();
