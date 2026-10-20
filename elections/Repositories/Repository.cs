@@ -41,12 +41,7 @@ namespace elections.Repositories
 
         public IQueryable<TEntity> GetQueryable(Expression<Func<TEntity, bool>>? expression)
         {
-            if (expression is null)
-            {
-                return _dbSet;
-            }
-
-            return _dbSet.Where(expression);
+            return expression is null ? _dbSet : _dbSet.Where(expression);
         }
 
         public async Task<IEnumerable<TEntity>> GetPaged(IQueryable<TEntity> query, PagedRequest pagedRequest, Expression<Func<TEntity, object?>>? keySelector, SortDirection sortDirection = SortDirection.Ascending)
