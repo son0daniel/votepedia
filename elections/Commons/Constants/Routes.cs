@@ -8,6 +8,7 @@
         private const string _Municipalities = "municipalities";
         private const string _MetropolitanAreas = "metropolitan-areas";
         private const string _States = "states";
+        private const string _Macroregions = "macroregions";
         private const string _Uid = "{uid}";
         private const string _Role = "role";
         private const string _President = "president";
@@ -52,6 +53,11 @@
         public static class States
         {
             public const string Base = $"api/{_States}";
+        }
+
+        public static class Macroregions
+        {
+            public const string Base = $"api/{_Macroregions}";
         }
     }
 }
