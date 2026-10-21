@@ -6,6 +6,7 @@ using elections.Models.Requests;
 using elections.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using static elections.Commons.Constants.Routes;
 
 namespace elections.Services.MetropolitanAreas
 {
@@ -136,6 +137,34 @@ namespace elections.Services.MetropolitanAreas
             };
 
             return new PagedResponse<MetropolitanAreaDto>(items, totalCount, pagedRequest);
+        }
+
+        public async Task<MetropolitanAreaDto?> GetMetropolitanArea(string uid)
+        {
+            var metropolitanArea = await _repository.MetropolitanArea.GetByUid(uid);
+
+            if (metropolitanArea is null)
+            {
+                return null;
+            }
+
+            var metropolitanAreaStates = (await _repository.MetropolitanAreaState.Get(x => x.MetropolitanAreaId == metropolitanArea.Id)).ToList();
+            if (metropolitanAreaStates.Count == 0)
+            {
+                throw new InvalidOperationException($"Error fetching states from metropolitan area with id {metropolitanArea.Id}");
+            }
+
+            var stateIds = metropolitanAreaStates.Select(x => x.StateId).ToList();
+            var states = await _repository.State.Get(x => stateIds.Contains(x.Id));
+
+            var macroregionIds = states.Select(x => x.MacroregionId).ToList();
+            var macroregions = (await _repository.Macroregion.Get(x => macroregionIds.Contains(x.Id))).ToList();
+            if (macroregions.Count == 0)
+            {
+                throw new InvalidOperationException("Error fetching macroregions");
+            }
+
+            return new MetropolitanAreaDto(metropolitanArea, states.Select(x => x.Abbr), macroregions.Select(x => x.Abbr));
         }
     }
 }

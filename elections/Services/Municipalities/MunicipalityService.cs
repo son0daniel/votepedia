@@ -108,5 +108,32 @@ namespace elections.Services.Municipalities
 
             return new PagedResponse<MunicipalityDto>(items, totalCount, pagedRequest);
         }
+
+        public async Task<MunicipalityDto?> GetMunicipality(long tseId)
+        {
+            var municipality = await _repository.Municipality.GetMunicipalityByTseId(tseId);
+
+            if (municipality is null)
+            {
+                return null;
+            }
+
+            MetropolitanArea? metropolitanArea = null;
+            if (municipality.MetropolitanAreaId.HasValue)
+            {
+                metropolitanArea = await _repository.MetropolitanArea.GetById(municipality.MetropolitanAreaId.Value);
+
+                if (metropolitanArea is null)
+                {
+                    throw new InvalidOperationException($"Error fetching metropolitan area with id {municipality.MetropolitanAreaId.Value}");
+                }
+            }
+
+            var state = await _repository.State.GetById(municipality.StateId) ?? throw new InvalidOperationException($"Error fetching state with id {municipality.StateId}");
+
+            var macroregionAbbr = await _repository.Macroregion.GetMacroregionAbbr(state.MacroregionId) ??  throw new InvalidOperationException($"Error fetching macroregion with id {state.MacroregionId}"); ;
+
+            return new MunicipalityDto(municipality, metropolitanArea, state.Abbr, macroregionAbbr);
+        }
     }
 }

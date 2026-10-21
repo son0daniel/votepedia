@@ -51,6 +51,18 @@ namespace elections.Services.Parties
             return new PagedResponse<PartyDto>(items, totalCount, pagedRequest);
         }
 
+        public async Task<PartyDto?> GetParty(string uid)
+        {
+            var party = await _repository.Party.GetByUid(uid);
+
+            if (party is null)
+            {
+                return null;
+            }
+
+            return new PartyDto(party);
+        }
+
         public async Task<IEnumerable<PartyElectionOverview>> GetPartyPresidentialElectionOverviews(string partyUid, ElectionOverviewFilter electionOverviewFilter, bool? isElected)
         {
             var partyId = (await _repository.Party.GetByUid(partyUid))?.Id;

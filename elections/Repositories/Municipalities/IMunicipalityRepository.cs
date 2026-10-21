@@ -4,5 +4,6 @@ namespace elections.Repositories.Municipalities
 {
     public interface IMunicipalityRepository : IRepositoryWithUid<Municipality>
     {
+        Task<Municipality?> GetMunicipalityByTseId(long tseId);
     }
 }

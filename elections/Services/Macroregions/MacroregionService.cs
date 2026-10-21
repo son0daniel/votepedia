@@ -53,5 +53,12 @@ namespace elections.Services.Macroregions
 
             return new PagedResponse<MacroregionDto>(items, totalCount, pagedRequest);
         }
+
+        public async Task<MacroregionDto?> GetMacroregion(string abbr)
+        {
+            var macroregion = await _repository.Macroregion.GetMacroregionByAbbr(abbr);
+
+            return macroregion is null ? null : new MacroregionDto(macroregion);
+        }
     }
 }

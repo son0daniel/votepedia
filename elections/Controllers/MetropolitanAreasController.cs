@@ -25,5 +25,13 @@ namespace elections.Controllers
             return Ok(await _metropolitanAreaService.GetMetropolitanAreas(metropolitanAreaFilter, pagedRequest));
         }
 
+        [HttpGet, Route(Routes.MetropolitanAreas.GetOne)]
+        public async Task<ActionResult<MetropolitanAreaDto>> GetMetropolitanArea([FromRoute] string uid)
+        {
+            var metropolitanArea = await _metropolitanAreaService.GetMetropolitanArea(uid);
+
+            return metropolitanArea is null ? NotFound() : Ok(metropolitanArea);
+        }
+
     }
 }

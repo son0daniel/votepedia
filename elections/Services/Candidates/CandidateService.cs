@@ -50,6 +50,18 @@ namespace elections.Services.Candidates
             return new PagedResponse<CandidateDto>(items, totalCount, pagedRequest);
         }
 
+        public async Task<CandidateDto?> GetCandidate(string uid)
+        {
+            var candidate = await _repository.Candidate.GetByUid(uid);
+
+            if (candidate is null)
+            {
+                return null;
+            }
+
+            return new CandidateDto(candidate);
+        }
+
         public async Task<IEnumerable<CandidateElectionOverview>> GetCandidatePresidentialElectionOverviews(string candidateUid, ElectionOverviewFilter electionOverviewFilter, bool? isElected)
         {
             var candidateId = (await _repository.Candidate.GetByUid(candidateUid))?.Id;

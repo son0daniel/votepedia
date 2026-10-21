@@ -24,5 +24,13 @@ namespace elections.Controllers
         {
             return Ok(await _municipalityService.GetMunicipalities(municipalityFilter, pagedRequest));
         }
+
+        [HttpGet, Route(Routes.Municipalities.GetOne)]
+        public async Task<ActionResult<MunicipalityDto>> GetMunicipality([FromRoute] long tseId)
+        {
+            var municipality = await _municipalityService.GetMunicipality(tseId);
+
+            return municipality is null ? NotFound() : Ok(municipality);
+        }
     }
 }

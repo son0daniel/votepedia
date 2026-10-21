@@ -24,5 +24,13 @@ namespace elections.Controllers
         {
             return Ok(await _stateService.GetStates(stateFilter, pagedRequest));
         }
+
+        [HttpGet, Route(Routes.States.GetOne)]
+        public async Task<ActionResult<StateDto>> GetState([FromQuery] string abbr)
+        {
+            var state = await _stateService.GetState(abbr);
+
+            return state is null ? NotFound() : Ok(state);
+        }
     }
 }

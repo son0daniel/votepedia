@@ -7,5 +7,6 @@ namespace elections.Services.Municipalities
     public interface IMunicipalityService
     {
         Task<PagedResponse<MunicipalityDto>> GetMunicipalities(MunicipalityFilter municipalityFilter, PagedRequest pagedRequest);
+        Task<MunicipalityDto?> GetMunicipality(long tseId);
     }
 }

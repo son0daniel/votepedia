@@ -82,5 +82,19 @@ namespace elections.Services.States
 
             return new PagedResponse<StateDto>(items, totalCount, pagedRequest);
         }
+
+        public async Task<StateDto?> GetState(string abbr)
+        {
+            var state = await _repository.State.GetStateByAbbr(abbr);
+
+            if (state is null)
+            {
+                return null;
+            }
+
+            var macroregionAbbr = await _repository.Macroregion.GetMacroregionAbbr(state.MacroregionId) ?? throw new InvalidOperationException($"Error fetching macroregion with id {state.MacroregionId}");
+
+            return new StateDto(state, macroregionAbbr);
+        }
     }
 }

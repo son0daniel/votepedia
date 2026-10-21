@@ -8,6 +8,7 @@ namespace elections.Services.Parties
     public interface IPartyService
     {
         Task<PagedResponse<PartyDto>> GetParties(PartyFilter partyFilter, PagedRequest pagedRequest);
+        Task<PartyDto?> GetParty(string uid);
         Task<IEnumerable<PartyElectionOverview>> GetPartyPresidentialElectionOverviews(string partyUid, ElectionOverviewFilter electionOverviewFilter, bool? isElected);
     }
 }

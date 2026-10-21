@@ -25,6 +25,14 @@ namespace elections.Controllers
             return Ok(await _candidateService.GetCandidates(candidateFilter, pagedRequest));
         }
 
+        [HttpGet, Route(Routes.Candidates.GetOne)]
+        public async Task<ActionResult<CandidateDto>> GetCandidate([FromRoute] string uid)
+        {
+            var candidate = await _candidateService.GetCandidate(uid);
+
+            return candidate is null ? NotFound() : Ok(candidate);
+        }
+
         [HttpGet, Route(Routes.Candidates.PresidentialElectionOverviews)]
         public async Task<ActionResult<IEnumerable<CandidateElectionOverview>>> GetCandidatePresidentialElectionOverviews([FromRoute] string uid, [FromQuery] ElectionOverviewFilter electionOverviewFilter, [FromQuery] bool? isElected)
         {

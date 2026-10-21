@@ -24,5 +24,13 @@ namespace elections.Controllers
         {
             return Ok(await _macroregionService.GetMacroregions(macroregionFilter, pagedRequest));
         }
+
+        [HttpGet, Route(Routes.Macroregions.GetOne)]
+        public async Task<ActionResult<MacroregionDto>> GetMacroregion([FromRoute] string abbr)
+        {
+            var macroregion = await _macroregionService.GetMacroregion(abbr);
+
+            return macroregion is null ? NotFound() : Ok(macroregion);
+        }
     }
 }

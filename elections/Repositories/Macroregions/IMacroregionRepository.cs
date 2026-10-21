@@ -4,5 +4,7 @@ namespace elections.Repositories.Macroregions
 {
     public interface IMacroregionRepository : IRepositoryWithUid<Macroregion>
     {
+        Task<Macroregion?> GetMacroregionByAbbr(string abbr);
+        Task<string?> GetMacroregionAbbr(long id);
     }
 }

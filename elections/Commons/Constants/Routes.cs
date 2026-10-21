@@ -10,6 +10,8 @@
         private const string _States = "states";
         private const string _Macroregions = "macroregions";
         private const string _Uid = "{uid}";
+        private const string _TseId = "{tseId}";
+        private const string _Abbr = "{abbr}";
         private const string _Role = "role";
         private const string _President = "president";
         private const string _Overviews = "overviews";
@@ -31,33 +33,39 @@
         public static class Candidates
         {
             public const string Base = $"api/{_Candidates}";
+            public const string GetOne = _Uid;
             public const string PresidentialElectionOverviews = $"{_Uid}/{_Elections}/{_PresidentialOverviews}";
         }
 
         public static class Parties
         {
             public const string Base = $"api/{_Parties}";
+            public const string GetOne = _Uid;
             public const string PresidentialElectionOverviews = $"{_Uid}/{_Elections}/{_PresidentialOverviews}";
         }
 
         public static class Municipalities
         {
             public const string Base = $"api/{_Municipalities}";
+            public const string GetOne = _TseId;
         }
 
         public static class MetropolitanAreas
         {
             public const string Base = $"api/{_MetropolitanAreas}";
+            public const string GetOne = _Uid;
         }
 
         public static class States
         {
             public const string Base = $"api/{_States}";
+            public const string GetOne = _Abbr;
         }
 
         public static class Macroregions
         {
             public const string Base = $"api/{_Macroregions}";
+            public const string GetOne = _Abbr;
         }
     }
 }
