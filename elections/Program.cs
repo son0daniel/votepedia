@@ -2,6 +2,7 @@ using elections.Data;
 using elections.Repositories;
 using elections.Services.Candidates;
 using elections.Services.Elections;
+using elections.Services.Macroregions;
 using elections.Services.MetropolitanAreas;
 using elections.Services.Municipalities;
 using elections.Services.Parties;
@@ -28,6 +29,7 @@ builder.Services.AddScoped<IPartyService, PartyService>();
 builder.Services.AddScoped<IMunicipalityService, MunicipalityService>();
 builder.Services.AddScoped<IMetropolitanAreaService, MetropolitanAreaService>();
 builder.Services.AddScoped<IStateService, StateService>();
+builder.Services.AddScoped<IMacroregionService, MacroregionService>();
 // Add services to the container.
 
 builder.Services.AddControllers();
