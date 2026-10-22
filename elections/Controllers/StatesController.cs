@@ -26,7 +26,7 @@ namespace elections.Controllers
         }
 
         [HttpGet, Route(Routes.States.GetOne)]
-        public async Task<ActionResult<StateDto>> GetState([FromQuery] string abbr)
+        public async Task<ActionResult<StateDto>> GetState([FromRoute] string abbr)
         {
             var state = await _stateService.GetState(abbr);
 

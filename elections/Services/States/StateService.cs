@@ -36,8 +36,8 @@ namespace elections.Services.States
             if (stateFilter.Macroregions.Count > 0)
             {
                 macroregions = [.. await _repository.Macroregion.Get(x => stateFilter.Macroregions.Contains(x.Abbr) && !string.Equals(x.Abbr, "ZZ"))];
+                macroregionIds = [.. macroregions.Select(x => x.Id)];
             }
-            macroregionIds = [.. macroregions.Select(x => x.Id)];
 
             var queryStates = _repository.State.GetQueryable(
                 x => (!macroregionIds.Any() || macroregionIds.Contains(x.MacroregionId))
