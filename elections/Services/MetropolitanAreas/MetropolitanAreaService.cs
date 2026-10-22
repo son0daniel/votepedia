@@ -43,22 +43,28 @@ namespace elections.Services.MetropolitanAreas
             metropolitanAreaFilter.States = [.. metropolitanAreaFilter.States.Select(x => x.ToUpper())];
             metropolitanAreaFilter.Macroregions = [.. metropolitanAreaFilter.Macroregions.Select(x => x.ToUpper())];
 
+            List<State> states = [];
             List<long> stateIds = [];
+            List<Macroregion> macroregions = [];
             List<long> macroregionIds = [];
+            List<State> macroregionStates = [];
             List<long> macroregionStateIds = [];
 
             if (metropolitanAreaFilter.States.Count > 0)
             {
-                stateIds = [.. await _repository.State.GetIds(x => metropolitanAreaFilter.States.Contains(x.Abbr))];
+                states = [.. await _repository.State.Get(x => metropolitanAreaFilter.States.Contains(x.Abbr))];
+                stateIds = [.. states.Select(x => x.Id)];
             }
 
             if (metropolitanAreaFilter.Macroregions.Count > 0)
             {
-                macroregionIds = [.. await _repository.Macroregion.GetIds(x => metropolitanAreaFilter.Macroregions.Contains(x.Abbr))];
+                macroregions = [.. await _repository.Macroregion.Get(x => metropolitanAreaFilter.Macroregions.Contains(x.Abbr))];
+                macroregionIds = [.. macroregions.Select(x => x.Id)];
 
                 if (macroregionIds.Count > 0)
                 {
-                    macroregionStateIds = [.. await _repository.State.GetIds(x => macroregionIds.Contains(x.MacroregionId))];
+                    macroregionStates = [.. await _repository.State.Get(x => macroregionIds.Contains(x.MacroregionId))];
+                    macroregionStateIds = [.. macroregionStates.Select(x => x.Id)];
                 }
             }
 
@@ -91,11 +97,20 @@ namespace elections.Services.MetropolitanAreas
 
             var metropolitanAreas = (await _repository.MetropolitanArea.GetPaged(queryMetropolitanAreas, pagedRequest, ResolveKeySelector(metropolitanAreaFilter.SortBy), metropolitanAreaFilter.SortDirection)).ToList();
 
-            var metropolitanAreaStateIds = metropolitanAreaStates.Select(x => x.StateId).Distinct().ToList();
-            var states = (await _repository.State.Get(x => metropolitanAreaStateIds.Contains(x.Id))).ToDictionary(x => x.Id);
+            if (states.Count == 0 && macroregionStates.Count == 0)
+            {
+                var metropolitanAreaStateIds = metropolitanAreaStates.Select(x => x.StateId).Distinct().ToList();
+                states = [.. await _repository.State.Get(x => metropolitanAreaStateIds.Contains(x.Id))];
+            }
+            var statesDict = states.ToDictionary(x => x.Id);
+            var macroregionStatesDict = macroregionStates.ToDictionary(x => x.Id);
 
-            var metropolitanAreaMacroregionIds = states.Select(x => x.Value.MacroregionId).Distinct().ToList();
-            var macroregions = (await _repository.Macroregion.Get(x => metropolitanAreaMacroregionIds.Contains(x.Id))).ToDictionary(x => x.Id);
+            if (macroregions.Count == 0)
+            {
+                var metropolitanAreaMacroregionIds = states.Select(x => x.MacroregionId).Distinct().ToList();
+                macroregions = [.. await _repository.Macroregion.Get(x => metropolitanAreaMacroregionIds.Contains(x.Id))];
+            }
+            var macroregionsDict = macroregions.ToDictionary(x => x.Id);
 
             var metropolitanAreaStateByMetropolitanArea = metropolitanAreaStates
                 .GroupBy(x => x.MetropolitanAreaId)
@@ -116,12 +131,9 @@ namespace elections.Services.MetropolitanAreas
 
                 foreach (var stateId in metropolitanAreaStateIdsFromDict)
                 {
-                    if (!states.TryGetValue(stateId, out var state))
-                    {
-                        throw new InvalidOperationException($"Error fetching state with id {stateId}");
-                    }
+                    var state = (statesDict.GetValueOrDefault(stateId) ?? macroregionStatesDict.GetValueOrDefault(stateId)) ?? throw new InvalidOperationException($"Error fetching state with id {stateId}");
 
-                    if (!macroregions.TryGetValue(state.MacroregionId, out var macroregion))
+                    if (!macroregionsDict.TryGetValue(state.MacroregionId, out var macroregion))
                     {
                         throw new InvalidOperationException($"Error fetching macroregion with id {state.MacroregionId}");
                     }
