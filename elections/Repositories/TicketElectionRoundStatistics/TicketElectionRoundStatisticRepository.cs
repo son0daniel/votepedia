@@ -1,10 +1,7 @@
-﻿using elections.Commons.Constants;
-using elections.Data;
-using elections.Migrations;
+﻿using elections.Data;
 using elections.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 using static elections.Commons.Constants.Constant.Election;
-using static elections.Commons.Constants.Routes;
 
 namespace elections.Repositories.TicketElectionRoundStatistics
 {
@@ -62,19 +59,19 @@ namespace elections.Repositories.TicketElectionRoundStatistics
         {
             var query = _dbSet.AsQueryable();
 
-            query = QueryTicketElectionRoundByRole(query, Constant.Election.Role.President);
+            query = QueryTicketElectionRoundByRole(query, Role.President);
 
             query = QueryBroadTicketElectionRoundStatistic(query);
 
             if (isElected.HasValue)
             {
-                query = query.Where(x => string.Equals(x.TicketStatus, Constant.Election.Status.Elected) == isElected.Value);
+                query = query.Where(x => string.Equals(x.TicketStatus, Status.Elected) == isElected.Value);
             }
             else
             {
                 query = query.Where(
-                    x => string.Equals(x.TicketStatus, Constant.Election.Status.Elected)
-                    || string.Equals(x.TicketStatus, Constant.Election.Status.NotElected));
+                    x => string.Equals(x.TicketStatus, Status.Elected)
+                    || string.Equals(x.TicketStatus, Status.NotElected));
             }
 
             if (year.HasValue)
@@ -94,11 +91,11 @@ namespace elections.Repositories.TicketElectionRoundStatistics
         {
             var query = _dbSet.AsQueryable();
 
-            query = QueryTicketElectionRoundByRole(query, Constant.Election.Role.President);
+            query = QueryTicketElectionRoundByRole(query, Role.President);
 
             query = QueryBroadTicketElectionRoundStatistic(query);
 
-            query = QueryTicketElectionRoundStatisticByStatus(query, Constant.Election.Status.Elected);
+            query = QueryTicketElectionRoundStatisticByStatus(query, Status.Elected);
 
             if (year.HasValue)
             {
