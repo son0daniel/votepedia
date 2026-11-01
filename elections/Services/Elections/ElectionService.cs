@@ -14,12 +14,10 @@ namespace elections.Services.Elections
     public class ElectionService : IElectionService
     {
         private readonly IRepositoryManager _repository;
-        private readonly IGeographicQueryService _geographicQueryService;
 
-        public ElectionService(IRepositoryManager repository, IGeographicQueryService geographicQueryService)
+        public ElectionService(IRepositoryManager repository)
         {
             _repository = repository;
-            _geographicQueryService = geographicQueryService;
         }
 
         private async Task<(IEnumerable<Ticket>, IEnumerable<TicketCandidateParty>, IEnumerable<CandidateParty>)> GetTicketRelatedInformation(IEnumerable<TicketElectionRoundStatistic> ticketElectionRoundStatistics, int? levelNr)
@@ -237,6 +235,68 @@ namespace elections.Services.Elections
             }
 
             return electionRoundMunicipalities.Sort(municipalityElectionRoundFilter.SortBy, municipalityElectionRoundFilter.SortDirection);
+        }
+
+        public async Task<IEnumerable<MetropolitanAreaElectionRoundDto>?> GetPresidentialElectionMetropolitanAreaLevelResults(int year, int roundNr, MetropolitanAreaElectionRoundFilter metropolitanAreaElectionRoundFilter)
+        {
+            var electionRound = await _repository.ElectionRound.GetElectionRound(Role.President, year, roundNr, municipalityId: null, stateId: null);
+
+            if (electionRound is null)
+            {
+                return null;
+            }
+
+            long? macroregionId = null;
+            long? stateId = null;
+
+            var macroregionAbbr = metropolitanAreaElectionRoundFilter.Macroregion?.Trim().ToUpper();
+            if (!string.IsNullOrEmpty(macroregionAbbr))
+            {
+                macroregionId = await _repository.Macroregion.GetId(x => string.Equals(x.Abbr, macroregionAbbr));
+            }
+
+            var stateAbbr = metropolitanAreaElectionRoundFilter.State?.Trim().ToUpper();
+            if (!string.IsNullOrEmpty(stateAbbr))
+            {
+                stateId = await _repository.State.GetId(x => string.Equals(x.Abbr, stateAbbr));
+            }
+
+            var ticketElectionRoundStatistics = (await _repository.TicketElectionRoundStatistic.GetMetropolitanAreaLevelResults(electionRound.Id, stateId, macroregionId)).ToList();
+
+            var metropolitanAreaIds = ticketElectionRoundStatistics.Select(x => x.MetropolitanAreaId).ToList();
+            var metropolitanAreas = await _repository.MetropolitanArea.Get(x => metropolitanAreaIds.Contains(x.Id));
+
+            if (ticketElectionRoundStatistics.Count == 0)
+            {
+                return [];
+            }
+
+            var ticketIds = ticketElectionRoundStatistics.Select(x => x.TicketId).Distinct();
+            var tickets = (await _repository.Ticket.Get(x => ticketIds.Contains(x.Id))).ToDictionary(x => x.Id);
+
+            var statisticsByMetropolitanArea = ticketElectionRoundStatistics.GroupBy(x => x.MetropolitanAreaId).Select(g => new { MetropolitanAreaId = g.Key, Statistics = g.Select(x => x) }).ToDictionary(x => x.MetropolitanAreaId!.Value, x => x.Statistics);
+
+            List<MetropolitanAreaElectionRoundDto> electionRoundMetropolitanAreas = [];
+
+            foreach (var metropolitanArea in metropolitanAreas)
+            {
+                var metropolitanAreaStatistics = statisticsByMetropolitanArea.GetValueOrDefault(metropolitanArea.Id) ?? throw new InvalidOperationException($"Error fetching statistics from metropolitan area with id {metropolitanArea.Id}");
+
+                var summaryStatistic = metropolitanAreaStatistics.FirstOrDefault() ?? throw new InvalidOperationException("Election summary is missing.");
+
+                List<MinimalTicketDto> ticketDtos = [];
+
+                foreach (var ticketStatistic in metropolitanAreaStatistics)
+                {
+                    var ticket = tickets.GetValueOrDefault(ticketStatistic.TicketId) ?? throw new InvalidOperationException($"Ticket with id {ticketStatistic.TicketId} is missing");
+
+                    ticketDtos.Add(new MinimalTicketDto(ticket.Uid, ticketStatistic));
+                }
+
+                electionRoundMetropolitanAreas.Add(new MetropolitanAreaElectionRoundDto(ticketDtos, metropolitanArea, summaryStatistic));
+            }
+
+            return electionRoundMetropolitanAreas.Sort(metropolitanAreaElectionRoundFilter.SortBy, metropolitanAreaElectionRoundFilter.SortDirection);
         }
     }
 }

@@ -41,9 +41,9 @@ namespace elections.Controllers
         }
 
         [HttpGet, Route(Routes.Elections.PresidentialElectionRoundMunicipalityAggreationResults)]
-        public async Task<ActionResult<IEnumerable<MunicipalityElectionRoundDto>>> GetPresidentialElectionRoundMunicipalityResults([FromRoute] int year, [FromRoute] int roundNr, [FromQuery] MunicipalityElectionRoundFilter municipalityFilter)
+        public async Task<ActionResult<IEnumerable<MunicipalityElectionRoundDto>>> GetPresidentialElectionRoundMunicipalityResults([FromRoute] int year, [FromRoute] int roundNr, [FromQuery] MunicipalityElectionRoundFilter municipalityElectionRoundFilter)
         {
-            var presidentialElectionMunicipalityResults = await _electionService.GetPresidentialElectionMunicipalityLevelResults(year, roundNr, municipalityFilter);
+            var presidentialElectionMunicipalityResults = await _electionService.GetPresidentialElectionMunicipalityLevelResults(year, roundNr, municipalityElectionRoundFilter);
 
             if (presidentialElectionMunicipalityResults is null)
             {
@@ -51,6 +51,19 @@ namespace elections.Controllers
             }
 
             return Ok(presidentialElectionMunicipalityResults);
+        }
+
+        [HttpGet, Route(Routes.Elections.PresidentialElectionRoundMetropolitanAreaAggreationResults)]
+        public async Task<ActionResult<IEnumerable<MetropolitanAreaElectionRoundDto>>> GetPresidentialElectionRoundMwreopolitanAreaResults([FromRoute] int year, [FromRoute] int roundNr, [FromQuery] MetropolitanAreaElectionRoundFilter metropolitanAreaElectionRoundFilter)
+        {
+            var presidentialElectionMetropolitanAreaResults = await _electionService.GetPresidentialElectionMetropolitanAreaLevelResults(year, roundNr, metropolitanAreaElectionRoundFilter);
+
+            if (presidentialElectionMetropolitanAreaResults is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(presidentialElectionMetropolitanAreaResults);
         }
     }
 }
