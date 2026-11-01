@@ -67,7 +67,7 @@ namespace elections.Controllers
         }
 
         [HttpGet, Route(Routes.Elections.PresidentialElectionRoundStateAggreationResults)]
-        public async Task<ActionResult<IEnumerable<MetropolitanAreaElectionRoundDto>>> GetPresidentialElectionRoundMwreopolitanAreaResults([FromRoute] int year, [FromRoute] int roundNr, [FromQuery] StateElectionRoundFilter stateElectionRoundFilter)
+        public async Task<ActionResult<IEnumerable<MetropolitanAreaElectionRoundDto>>> GetPresidentialElectionRoundStateResults([FromRoute] int year, [FromRoute] int roundNr, [FromQuery] StateElectionRoundFilter stateElectionRoundFilter)
         {
             var presidentialElectionStateResults = await _electionService.GetPresidentialElectionStateLevelResults(year, roundNr, stateElectionRoundFilter);
 
