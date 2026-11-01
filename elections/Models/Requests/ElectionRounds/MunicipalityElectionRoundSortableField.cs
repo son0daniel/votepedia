@@ -1,0 +1,32 @@
+﻿namespace elections.Models.Requests.ElectionRounds
+{
+    public enum MunicipalityElectionRoundSortableField
+    {
+        Municipality,
+        IbgeId,
+        TseId,
+        State,
+        RegisteredVotersCount,
+        TurnoutCount,
+        TurnoutPp,
+        AbstentionCount,
+        AbstentionPp,
+        ElectoralAlienationCount,
+        ElectoralAlienationPp,
+        ValidVotesCount,
+        ValidVotesPp,
+        ValidVotesRegisteredPp,
+        InvalidVotesCount,
+        InvalidVotesPp,
+        InvalidVotesRegisteredPp,
+        NullVotesCount,
+        NullVotesPp,
+        NullVotesRegisteredPp,
+        BlankVotesCount,
+        BlankVotesPp,
+        BlankVotesRegisteredPp,
+        AnulledVotesCount,
+        AnulledVotesPp,
+        AnulledVotesRegisteredPp
+    }
+}

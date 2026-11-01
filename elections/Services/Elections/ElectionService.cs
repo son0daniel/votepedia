@@ -2,18 +2,37 @@
 using elections.Commons.Extensions;
 using elections.Models.DTOs;
 using elections.Models.DTOs.ElectionOverviews;
+using elections.Models.Entities;
 using elections.Models.Requests;
+using elections.Models.Requests.ElectionRounds;
 using elections.Repositories;
+using elections.Services.GeographicQueries;
+using static elections.Commons.Constants.Constant.Election;
 
 namespace elections.Services.Elections
 {
     public class ElectionService : IElectionService
     {
         private readonly IRepositoryManager _repository;
+        private readonly IGeographicQueryService _geographicQueryService;
 
-        public ElectionService(IRepositoryManager repository)
+        public ElectionService(IRepositoryManager repository, IGeographicQueryService geographicQueryService)
         {
             _repository = repository;
+            _geographicQueryService = geographicQueryService;
+        }
+
+        private async Task<(IEnumerable<Ticket>, IEnumerable<TicketCandidateParty>, IEnumerable<CandidateParty>)> GetTicketRelatedInformation(IEnumerable<TicketElectionRoundStatistic> ticketElectionRoundStatistics, int? levelNr)
+        {
+            var ticketIds = ticketElectionRoundStatistics.Select(x => x.TicketId).Distinct().ToList();
+            var tickets = await _repository.Ticket.Get(x => ticketIds.Contains(x.Id));
+
+            var ticketCandidateParties = await _repository.TicketCandidateParty.Get(x => ticketIds.Contains(x.TicketId) && (!levelNr.HasValue || x.NrLevel == levelNr.Value));
+
+            var candidatePartyIds = ticketCandidateParties.Select(x => x.CandidatePartyId).ToList();
+            var candidateParties = (await _repository.CandidateParty.GetCandidatesAndParties(x => candidatePartyIds.Contains(x.Id)));
+
+            return (tickets, ticketCandidateParties, candidateParties);
         }
 
         private async Task<ElectionRoundDto?> GetElectionOverallResults(string role, int ticketMembersCount, int year, int roundNr, long? municipalityId, long? stateId)
@@ -25,7 +44,7 @@ namespace elections.Services.Elections
                 return null;
             }
 
-            var ticketElectionRoundStatistics = await _repository.TicketElectionRoundStatistic.GetElectionRoundStatistics(electionRound.Id, municipalityId: null, metropolitanAreaId: null, stateId: null, macroregionId: null);
+            var ticketElectionRoundStatistics = await _repository.TicketElectionRoundStatistic.GetElectionRoundStatistics(electionRound.Id, municipalityId, metropolitanAreaId: null, stateId, macroregionId: null);
             var ticketElectionRoundStatistic = ticketElectionRoundStatistics.FirstOrDefault();
             if (ticketElectionRoundStatistic is null)
             {
@@ -34,15 +53,14 @@ namespace elections.Services.Elections
 
             var electionRoundStatisticByTicket = ticketElectionRoundStatistics.ToDictionary(x => x.TicketId);
 
-            var ticketIds = ticketElectionRoundStatistics.Select(x => x.TicketId).ToList();
-            var tickets = await _repository.Ticket.Get(x => ticketIds.Contains(x.Id));
+            (var tickets, var ticketCandidateParties, var candidateParties) = await GetTicketRelatedInformation(ticketElectionRoundStatistics, levelNr: null);
+
+            var ticketIds = tickets.Select(x => x.Id).ToList();
             var coalitions = (await _repository.Coalition.Get(x => ticketIds.Contains(x.TicketId))).ToDictionary(x => x.TicketId);
 
-            var ticketCandidateParties = await _repository.TicketCandidateParty.Get(x => ticketIds.Contains(x.TicketId));
             var ticketCandidatePartiesByTicket = ticketCandidateParties.ToLookup(x => x.TicketId);
 
-            var candidatePartyIds = ticketCandidateParties.Select(x => x.CandidatePartyId).ToList();
-            var candidateParties = (await _repository.CandidateParty.GetCandidatesAndParties(x => candidatePartyIds.Contains(x.Id))).ToDictionary(x => x.Id);
+            var candidatePartiesDict = candidateParties.ToDictionary(x => x.Id);
 
             List<TicketDto> ticketDtos = [];
 
@@ -66,7 +84,7 @@ namespace elections.Services.Elections
 
                 foreach (var ticketCandidateParty in ticketCandidatePartiesFromLookup)
                 {
-                    if (!candidateParties.TryGetValue(ticketCandidateParty.CandidatePartyId, out var candidateParty))
+                    if (!candidatePartiesDict.TryGetValue(ticketCandidateParty.CandidatePartyId, out var candidateParty))
                     {
                         throw new InvalidOperationException($"Error fetching candidate party with id {ticketCandidateParty.CandidatePartyId}");
                     }
@@ -103,15 +121,13 @@ namespace elections.Services.Elections
             var electionIds = electionRounds.Select(x => x.ElectionId).ToList();
             var elections = await _repository.Election.Get(x => electionIds.Contains(x.Id));
 
-            var ticketIds = ticketElectionRoundStatistics.Select(x => x.TicketId).ToList();
-            var ticketCandidateParties = (await _repository.TicketCandidateParty.Get(x => ticketIds.Contains(x.TicketId) && x.NrLevel == (levelNr.HasValue ? levelNr.Value : 1))).ToList();
-            var candidatePartyIds = ticketCandidateParties.Select(x => x.CandidatePartyId).ToList();
+            (var tickets, var ticketCandidateParties, var candidateParties) = await GetTicketRelatedInformation(ticketElectionRoundStatistics, levelNr);
 
             var ticketElectionRoundStatisticsByRound = ticketElectionRoundStatistics.ToDictionary(x => x.ElectionRoundId);
 
             var ticketCandidatePartiesByTicket = ticketCandidateParties.ToDictionary(x => x.TicketId);
 
-            var candidateParties = (await _repository.CandidateParty.GetCandidatesAndParties(x => candidatePartyIds.Contains(x.Id))).ToDictionary(x => x.Id);
+            var candidatePartiesDict = candidateParties.ToDictionary(x => x.Id);
 
             return elections.Select(election =>
             {
@@ -132,7 +148,7 @@ namespace elections.Services.Elections
                 }
 
                 var candidatePartyId = ticketCandidateParty.CandidatePartyId;
-                if (!candidateParties.TryGetValue(candidatePartyId, out var candidateParty))
+                if (!candidatePartiesDict.TryGetValue(candidatePartyId, out var candidateParty))
                 {
                     throw new InvalidOperationException($"Error while fetching candidate party from ticket candidate party with id {candidatePartyId}");
                 }
@@ -143,6 +159,84 @@ namespace elections.Services.Elections
                 return new ElectionOverview(election, electionRound, ticketElectionRoundStatistic, candidate, party);
 
             }).Sort(electionOverviewFilter.SortBy, electionOverviewFilter.SortDirection);
+        }
+
+        public async Task<IEnumerable<MunicipalityElectionRoundDto>?> GetPresidentialElectionMunicipalityLevelResults(int year, int roundNr, MunicipalityElectionRoundFilter municipalityElectionRoundFilter)
+        {
+            var electionRound = await _repository.ElectionRound.GetElectionRound(Role.President, year, roundNr, municipalityId: null, stateId: null);
+
+            if (electionRound is null)
+            {
+                return null;
+            }
+
+            long? metropolitanAreaId = null;
+            long? macroregionId = null;
+            State? stateFromRequest = null;
+
+            if (!string.IsNullOrEmpty(municipalityElectionRoundFilter.MetropolitanArea))
+            {
+                metropolitanAreaId = await _repository.MetropolitanArea.GetIdByUid(municipalityElectionRoundFilter.MetropolitanArea);
+            }
+
+            var macroregionAbbr = municipalityElectionRoundFilter.Macroregion?.Trim().ToUpper();
+            if (!string.IsNullOrEmpty(macroregionAbbr))
+            {
+                macroregionId = await _repository.Macroregion.GetId(x => string.Equals(x.Abbr, macroregionAbbr));
+            }
+
+            var stateAbbr = municipalityElectionRoundFilter.State?.Trim().ToUpper();
+            if (!string.IsNullOrEmpty(stateAbbr))
+            {
+                stateFromRequest = await _repository.State.GetStateByAbbr(stateAbbr);
+            }
+
+            var ticketElectionRoundStatistics = (await _repository.TicketElectionRoundStatistic.GetMunicipalityLevelResults(electionRound.Id, metropolitanAreaId, stateFromRequest?.Id, macroregionId)).ToList();
+
+            var municipalityIds = ticketElectionRoundStatistics.Select(x => x.MunicipalityId).ToList();
+            var municipalities = await _repository.Municipality.Get(x => municipalityIds.Contains(x.Id));
+
+            Dictionary<long, State>? statesDict = null;
+            if (stateFromRequest is null)
+            {
+                var stateIds = municipalities.Select(x => x.StateId).Distinct().ToList();
+                statesDict = (await _repository.State.Get(x => stateIds.Contains(x.Id))).ToDictionary(x => x.Id);
+            }
+            
+
+            if (ticketElectionRoundStatistics.Count == 0)
+            {
+                return [];
+            }
+
+            var ticketIds = ticketElectionRoundStatistics.Select(x => x.TicketId).Distinct();
+            var tickets = (await _repository.Ticket.Get(x => ticketIds.Contains(x.Id))).ToDictionary(x => x.Id);
+
+            var statisticsByMunicipality = ticketElectionRoundStatistics.GroupBy(x => x.MunicipalityId).Select(g => new { MunicipalityId = g.Key, Statistics = g.Select(x => x) }).ToDictionary(x => x.MunicipalityId!.Value, x => x.Statistics);
+
+            List<MunicipalityElectionRoundDto> electionRoundMunicipalities = [];
+
+            foreach (var municipality in municipalities)
+            {
+                var municipalityStatistics = statisticsByMunicipality.GetValueOrDefault(municipality.Id) ?? throw new InvalidOperationException($"Error fetching statistics from municipality with id {municipality.Id}");
+
+                var summaryStatistic = municipalityStatistics.FirstOrDefault() ?? throw new InvalidOperationException("Election summary is missing.");
+
+                var state = stateFromRequest ?? statesDict?.GetValueOrDefault(municipality.StateId) ?? throw new InvalidOperationException($"Error fetching state with id {municipality.StateId}");
+
+                List<MinimalTicketDto> ticketDtos = [];
+
+                foreach(var ticketStatistic in municipalityStatistics)
+                {
+                    var ticket = tickets.GetValueOrDefault(ticketStatistic.TicketId) ?? throw new InvalidOperationException($"Ticket with id {ticketStatistic.TicketId} is missing");
+
+                    ticketDtos.Add(new MinimalTicketDto(ticket.Uid, ticketStatistic));
+                }
+
+                electionRoundMunicipalities.Add(new MunicipalityElectionRoundDto(ticketDtos, municipality, state.Abbr, summaryStatistic));
+            }
+
+            return electionRoundMunicipalities.Sort(municipalityElectionRoundFilter.SortBy, municipalityElectionRoundFilter.SortDirection);
         }
     }
 }

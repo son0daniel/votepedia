@@ -3,6 +3,7 @@ using elections.Data;
 using elections.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 using static elections.Commons.Constants.Constant.Election;
+using static elections.Commons.Constants.Routes;
 
 namespace elections.Repositories.TicketElectionRoundStatistics
 {
@@ -138,6 +139,16 @@ namespace elections.Repositories.TicketElectionRoundStatistics
                 && x.StateId == stateId
                 && x.MacroregionId == macroregionId)
                 .ToListAsync();
+        }
+
+        public async Task<IEnumerable<TicketElectionRoundStatistic>> GetMunicipalityLevelResults(long electionRoundId, long? metropolitanAreaId, long? stateId, long? macroregionId)
+        {
+            return await _dbSet.Where(
+                x => x.ElectionRoundId == electionRoundId
+                && x.MunicipalityId.HasValue
+                && (!metropolitanAreaId.HasValue || x.MetropolitanAreaId == metropolitanAreaId.Value)
+                && (!stateId.HasValue || x.StateId == stateId.Value)
+                && (!macroregionId.HasValue || x.MacroregionId == macroregionId.Value)).ToListAsync();
         }
     }
 }

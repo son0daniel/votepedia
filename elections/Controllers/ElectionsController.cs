@@ -2,6 +2,7 @@
 using elections.Models.DTOs;
 using elections.Models.DTOs.ElectionOverviews;
 using elections.Models.Requests;
+using elections.Models.Requests.ElectionRounds;
 using elections.Services.Elections;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,6 +38,19 @@ namespace elections.Controllers
             }
 
             return Ok(electionResults);
+        }
+
+        [HttpGet, Route(Routes.Elections.PresidentialElectionRoundMunicipalityAggreationResults)]
+        public async Task<ActionResult<IEnumerable<MunicipalityElectionRoundDto>>> GetPresidentialElectionRoundMunicipalityResults([FromRoute] int year, [FromRoute] int roundNr, [FromQuery] MunicipalityElectionRoundFilter municipalityFilter)
+        {
+            var presidentialElectionMunicipalityResults = await _electionService.GetPresidentialElectionMunicipalityLevelResults(year, roundNr, municipalityFilter);
+
+            if (presidentialElectionMunicipalityResults is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(presidentialElectionMunicipalityResults);
         }
     }
 }

@@ -12,6 +12,7 @@
         private const string _Uid = "{uid}";
         private const string _TseId = "{tseId}";
         private const string _Abbr = "{abbr}";
+        private const string _Aggregation = "aggregation";
         private const string _Role = "role";
         private const string _President = "president";
         private const string _Overviews = "overviews";
@@ -27,7 +28,8 @@
         {
             public const string Base = $"api/{_Elections}";
             public const string PresidentialElectionOverviews = $"{_PresidentialOverviews}";
-            public const string PresidentialElectionRoundOverallResults = $"{_PresidentialElectionRound}/{_Overall}/{_Results}";
+            public const string PresidentialElectionRoundOverallResults = $"{_PresidentialElectionRound}/{_Aggregation}/{_Overall}/{_Results}";
+            public const string PresidentialElectionRoundMunicipalityAggreationResults = $"{_PresidentialElectionRound}/{_Aggregation}/{_Municipalities}/{_Results}";
         }
 
         public static class Candidates
