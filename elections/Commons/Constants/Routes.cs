@@ -31,6 +31,7 @@
             public const string PresidentialElectionRoundOverallResults = $"{_PresidentialElectionRound}/{_Aggregation}/{_Overall}/{_Results}";
             public const string PresidentialElectionRoundMunicipalityAggreationResults = $"{_PresidentialElectionRound}/{_Aggregation}/{_Municipalities}/{_Results}";
             public const string PresidentialElectionRoundMetropolitanAreaAggreationResults = $"{_PresidentialElectionRound}/{_Aggregation}/{_MetropolitanAreas}/{_Results}";
+            public const string PresidentialElectionRoundStateAggreationResults = $"{_PresidentialElectionRound}/{_Aggregation}/{_States}/{_Results}";
         }
 
         public static class Candidates

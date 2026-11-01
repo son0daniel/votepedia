@@ -6,7 +6,6 @@ using elections.Models.Entities;
 using elections.Models.Requests;
 using elections.Models.Requests.ElectionRounds;
 using elections.Repositories;
-using elections.Services.GeographicQueries;
 using static elections.Commons.Constants.Constant.Election;
 
 namespace elections.Services.Elections
@@ -297,6 +296,70 @@ namespace elections.Services.Elections
             }
 
             return electionRoundMetropolitanAreas.Sort(metropolitanAreaElectionRoundFilter.SortBy, metropolitanAreaElectionRoundFilter.SortDirection);
+        }
+
+        public async Task<IEnumerable<StateElectionRoundDto>?> GetPresidentialElectionStateLevelResults(int year, int roundNr, StateElectionRoundFilter stateElectionRoundFilter)
+        {
+            var electionRound = await _repository.ElectionRound.GetElectionRound(Role.President, year, roundNr, municipalityId: null, stateId: null);
+
+            if (electionRound is null)
+            {
+                return null;
+            }
+
+            Macroregion? macroregionFromRequest = null;
+
+            var macroregionAbbr = stateElectionRoundFilter.Macroregion?.Trim().ToUpper();
+            if (!string.IsNullOrEmpty(macroregionAbbr))
+            {
+                macroregionFromRequest = await _repository.Macroregion.GetMacroregionByAbbr(macroregionAbbr);
+            }
+
+            var ticketElectionRoundStatistics = (await _repository.TicketElectionRoundStatistic.GetStateLevelResults(electionRound.Id, macroregionFromRequest?.Id)).ToList();
+
+            if (ticketElectionRoundStatistics.Count == 0)
+            {
+                return [];
+            }
+
+            var stateIds = ticketElectionRoundStatistics.Select(x => x.StateId).Distinct().ToList();
+            var states = await _repository.State.Get(x => stateIds.Contains(x.Id));
+
+            Dictionary<long, Macroregion>? macroregionsDict = null;
+            if (macroregionFromRequest is null)
+            {
+                var macroregionIds = states.Select(x => x.Id).Distinct().ToList();
+                macroregionsDict = (await _repository.Macroregion.Get(x => macroregionIds.Contains(x.Id))).ToDictionary(x => x.Id);
+            }
+
+            var ticketIds = ticketElectionRoundStatistics.Select(x => x.TicketId).Distinct();
+            var tickets = (await _repository.Ticket.Get(x => ticketIds.Contains(x.Id))).ToDictionary(x => x.Id);
+
+            var statisticsByState = ticketElectionRoundStatistics.GroupBy(x => x.StateId).Select(g => new { StateId = g.Key, Statistics = g.Select(x => x) }).ToDictionary(x => x.StateId!.Value, x => x.Statistics);
+
+            List<StateElectionRoundDto> electionRoundStates = [];
+
+            foreach(var state in states)
+            {
+                var stateStatistics = statisticsByState.GetValueOrDefault(state.Id) ?? throw new InvalidOperationException($"Error fetching statistics from state with id {state.Id}");
+
+                var summaryStatistic = stateStatistics.FirstOrDefault() ?? throw new InvalidOperationException("Election summary is missing.");
+
+                var macroregion = macroregionFromRequest ?? macroregionsDict?.GetValueOrDefault(state.MacroregionId) ?? throw new InvalidOperationException($"Error fetching macroregion with id {state.MacroregionId}");
+
+                List<MinimalTicketDto> ticketDtos = [];
+
+                foreach (var ticketStatistic in stateStatistics)
+                {
+                    var ticket = tickets.GetValueOrDefault(ticketStatistic.TicketId) ?? throw new InvalidOperationException($"Ticket with id {ticketStatistic.TicketId} is missing");
+
+                    ticketDtos.Add(new MinimalTicketDto(ticket.Uid, ticketStatistic));
+                }
+
+                electionRoundStates.Add(new StateElectionRoundDto(ticketDtos, state, macroregion.Abbr, summaryStatistic));
+            }
+
+            return electionRoundStates.Sort(stateElectionRoundFilter.SortBy, stateElectionRoundFilter.SortDirection);
         }
     }
 }

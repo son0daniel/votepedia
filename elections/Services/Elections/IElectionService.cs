@@ -11,5 +11,6 @@ namespace elections.Services.Elections
         Task<ElectionRoundDto?> GetPresidentialElectionOverallResults(int year, int roundNr);
         Task<IEnumerable<MunicipalityElectionRoundDto>?> GetPresidentialElectionMunicipalityLevelResults(int year, int roundNr, MunicipalityElectionRoundFilter municipalityElectionRoundFilter);
         Task<IEnumerable<MetropolitanAreaElectionRoundDto>?> GetPresidentialElectionMetropolitanAreaLevelResults(int year, int roundNr, MetropolitanAreaElectionRoundFilter metropolitanAreaElectionRoundFilter);
+        Task<IEnumerable<StateElectionRoundDto>?> GetPresidentialElectionStateLevelResults(int year, int roundNr, StateElectionRoundFilter stateElectionRoundFilter);
     }
 }

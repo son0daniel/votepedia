@@ -158,5 +158,15 @@ namespace elections.Repositories.TicketElectionRoundStatistics
                 && (!stateId.HasValue || x.StateId == stateId.Value)
                 && (!macroregionId.HasValue || x.MacroregionId == macroregionId.Value)).ToListAsync();
         }
+
+        public async Task<IEnumerable<TicketElectionRoundStatistic>> GetStateLevelResults(long electionRoundId, long? macroregionId)
+        {
+            return await _dbSet.Where(
+                x => x.ElectionRoundId == electionRoundId
+                && !x.MunicipalityId.HasValue
+                && !x.MetropolitanAreaId.HasValue
+                && x.StateId.HasValue
+                && (!macroregionId.HasValue || x.MacroregionId == macroregionId.Value)).ToListAsync();
+        }
     }
 }
