@@ -3,6 +3,7 @@
     public record StateElectionRoundFilter : BaseRequest
     {
         public string? Macroregion { get; init; }
+        public bool OnlyNational { get; init; } = false;
         public StateElectionRoundSortableField? SortBy { get; init; }
     }
 }

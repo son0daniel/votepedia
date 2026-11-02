@@ -188,7 +188,7 @@ namespace elections.Services.Elections
                 stateFromRequest = await _repository.State.GetStateByAbbr(stateAbbr);
             }
 
-            var ticketElectionRoundStatistics = (await _repository.TicketElectionRoundStatistic.GetMunicipalityLevelResults(electionRound.Id, metropolitanAreaId, stateFromRequest?.Id, macroregionId)).ToList();
+            var ticketElectionRoundStatistics = (await _repository.TicketElectionRoundStatistic.GetMunicipalityLevelResults(electionRound.Id, metropolitanAreaId, stateFromRequest?.Id, macroregionId, municipalityElectionRoundFilter.OnlyNational)).ToList();
 
             var municipalityIds = ticketElectionRoundStatistics.Select(x => x.MunicipalityId).ToList();
             var municipalities = await _repository.Municipality.Get(x => municipalityIds.Contains(x.Id));
@@ -315,7 +315,7 @@ namespace elections.Services.Elections
                 macroregionFromRequest = await _repository.Macroregion.GetMacroregionByAbbr(macroregionAbbr);
             }
 
-            var ticketElectionRoundStatistics = (await _repository.TicketElectionRoundStatistic.GetStateLevelResults(electionRound.Id, macroregionFromRequest?.Id)).ToList();
+            var ticketElectionRoundStatistics = (await _repository.TicketElectionRoundStatistic.GetStateLevelResults(electionRound.Id, macroregionFromRequest?.Id, stateElectionRoundFilter.OnlyNational)).ToList();
 
             if (ticketElectionRoundStatistics.Count == 0)
             {

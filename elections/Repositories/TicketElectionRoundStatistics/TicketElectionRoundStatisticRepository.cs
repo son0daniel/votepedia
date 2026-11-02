@@ -140,14 +140,15 @@ namespace elections.Repositories.TicketElectionRoundStatistics
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<TicketElectionRoundStatistic>> GetMunicipalityLevelResults(long electionRoundId, long? metropolitanAreaId, long? stateId, long? macroregionId)
+        public async Task<IEnumerable<TicketElectionRoundStatistic>> GetMunicipalityLevelResults(long electionRoundId, long? metropolitanAreaId, long? stateId, long? macroregionId, bool onlyNational)
         {
             return await _dbSet.Where(
                 x => x.ElectionRoundId == electionRoundId
                 && x.MunicipalityId.HasValue
                 && (!metropolitanAreaId.HasValue || x.MetropolitanAreaId == metropolitanAreaId.Value)
                 && (!stateId.HasValue || x.StateId == stateId.Value)
-                && (!macroregionId.HasValue || x.MacroregionId == macroregionId.Value)).ToListAsync();
+                && (!macroregionId.HasValue || x.MacroregionId == macroregionId.Value)
+                && (!onlyNational || x.IsNationalStatistic.HasValue && x.IsNationalStatistic.Value)).ToListAsync();
         }
 
         public async Task<IEnumerable<TicketElectionRoundStatistic>> GetMetropolitanAreaLevelResults(long electionRoundId, long? stateId, long? macroregionId)
@@ -160,14 +161,15 @@ namespace elections.Repositories.TicketElectionRoundStatistics
                 && (!macroregionId.HasValue || x.MacroregionId == macroregionId.Value)).ToListAsync();
         }
 
-        public async Task<IEnumerable<TicketElectionRoundStatistic>> GetStateLevelResults(long electionRoundId, long? macroregionId)
+        public async Task<IEnumerable<TicketElectionRoundStatistic>> GetStateLevelResults(long electionRoundId, long? macroregionId, bool onlyNational)
         {
             return await _dbSet.Where(
                 x => x.ElectionRoundId == electionRoundId
                 && !x.MunicipalityId.HasValue
                 && !x.MetropolitanAreaId.HasValue
                 && x.StateId.HasValue
-                && (!macroregionId.HasValue || x.MacroregionId == macroregionId.Value)).ToListAsync();
+                && (!macroregionId.HasValue || x.MacroregionId == macroregionId.Value)
+                && (!onlyNational || x.IsNationalStatistic.HasValue && x.IsNationalStatistic.Value)).ToListAsync();
         }
 
         public async Task<IEnumerable<TicketElectionRoundStatistic>> GetMacroregionLevelResults(long electionRoundId, bool onlyNational)
