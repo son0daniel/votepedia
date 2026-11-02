@@ -29,6 +29,7 @@ namespace elections.Data.Configurations
             builder.Property(x => x.MetropolitanAreaId).HasComment("ID interno da Região Metropolitana.");
             builder.Property(x => x.StateId).HasComment("ID interno da UF.");
             builder.Property(x => x.MacroregionId).HasComment("ID interno da Macrorregião.");
+            builder.Property(x => x.IsNationalStatistic).HasComment("Determina se a estatística vem de uma agregação nacional. Resultados gerais de eleições presidenciais têm esse campo nulo.");
             builder.Property(x => x.TicketVotesCount).HasComment("Contagem de votos da chapa eleitoral.");
             builder.Property(x => x.TicketPositionNr).HasComment("Posição da chapa eleitoral.");
             builder.Property(x => x.TicketValidVotesPp).HasComment("Porcentagem de votos válidos da chapa eleitoral.");
@@ -57,7 +58,7 @@ namespace elections.Data.Configurations
             builder.Property(x => x.BlankVotesRegisteredPp).HasComment("Porcentagem de votos em branco relativa aos inscritos.");
             builder.Property(x => x.AnulledVotesPp).HasComment("Porcentagem de votos anulados relativa ao total de votos.");
             builder.Property(x => x.AnulledVotesRegisteredPp).HasComment("Porcentagem de votos anulados relativa aos inscritos.");
-            builder.Property(x => x.ElectoralAlienationPp).HasComment("Porcentagem da alienação eleitoral relativa ao total de inscritos.");
+            builder.Property(x => x.ElectoralAlienationPp).HasComment("Porcentagem da alienação eleitoral relativa ao total de inscritos.");        
 
             builder.HasIndex(x => new { x.TicketId, x.ElectionRoundId, x.MunicipalityId, x.MetropolitanAreaId, x.StateId, x.MacroregionId }).IsUnique().HasDatabaseName("IX_ticket_election_round_statistic");
 

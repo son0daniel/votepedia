@@ -16,6 +16,7 @@ namespace elections.Data.Configurations
             builder.Property(x => x.Uid).HasComment("ID externo do município.");
             builder.Property(x => x.Name).IsRequired().HasComment("Nome do município.");
             builder.Property(x => x.IsCapital).HasComment("Determina se o município é a capital do Estado. Válido apenas para cidades brasileiras.");
+            builder.Property(x => x.IsNational).IsRequired().HasComment("Determina se o munícipio é brasileiro ou não.");
             builder.Property(x => x.TseId).HasComment("Código do TSE ligado ao município que pode ser visto nos arquivos de resultados.");
             builder.Property(x => x.IbgeId).HasComment("ID do município no IBGE.");
             builder.Property(x => x.StateId).HasComment("ID interno da UF na qual o município está localizado.");

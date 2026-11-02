@@ -1,6 +1,6 @@
 import logging
 import yaml
-import constants as consts
+import utils.constants as consts
 
 logger = logging.getLogger("load_election_context")
 

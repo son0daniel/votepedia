@@ -45,6 +45,8 @@ DF_PP_TICKET_TOTAL_VOTES_COLUMN = "pp_votos_totais_chapa"
 DF_PP_TICKET_REGISTERED_VOTES_COLUMN = "pp_votos_validos_inscritos_chapa"
 DF_ELECTION_ROUND_ID_COLUMN = "id_eleicao"
 DF_QT_CANDIDATES_COLUMN = "qt_candidatos"
+DF_IS_NATIONAL_STATISTIC = "estatistica_nacional"
+DF_IS_NATIONAL = "nacional"
 
 
 GDF_IBGE_ID_COLUMN = "CD_MUN"

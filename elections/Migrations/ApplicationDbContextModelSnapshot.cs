@@ -588,6 +588,11 @@ namespace elections.Migrations
                         .HasColumnName("is_capital")
                         .HasComment("Determina se o município é a capital do Estado. Válido apenas para cidades brasileiras.");
 
+                    b.Property<bool>("IsNational")
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("is_national")
+                        .HasComment("Determina se o munícipio é brasileiro ou não.");
+
                     b.Property<long?>("MetropolitanAreaId")
                         .HasColumnType("bigint")
                         .HasColumnName("metropolitan_area_id")
@@ -968,6 +973,11 @@ namespace elections.Migrations
                         .HasColumnType("float")
                         .HasColumnName("invalid_votes_registered_pp")
                         .HasComment("Porcentagem de votos inválidos relativa aos inscritos.");
+
+                    b.Property<bool?>("IsNationalStatistic")
+                        .HasColumnType("tinyint(1)")
+                        .HasColumnName("is_national_statistic")
+                        .HasComment("Determina se a estatística vem de uma agregação nacional. Resultados gerais de eleições presidenciais têm esse campo nulo.");
 
                     b.Property<long?>("MacroregionId")
                         .HasColumnType("bigint")

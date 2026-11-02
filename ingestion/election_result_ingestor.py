@@ -43,6 +43,7 @@ if __name__ == "__main__":
         df_municipalities_votes[consts.DF_METROPOLITAN_AREA_ID_COLUMN] = (df_municipalities_votes[consts.DF_TSE_ID_COLUMN].map(municipalities_infos).str[1])
         df_municipalities_votes[consts.DF_STATE_ID_COLUMN] = (df_municipalities_votes[consts.DF_TSE_ID_COLUMN].map(municipalities_infos).str[2])
 
+
         df_municipalities_registered_voters[consts.DF_MUNICIPALTY_ID_COLUMN] = (df_municipalities_registered_voters[consts.DF_TSE_ID_COLUMN].map(municipalities_infos).str[0])
         df_municipalities_registered_voters[consts.DF_METROPOLITAN_AREA_ID_COLUMN] = (df_municipalities_registered_voters[consts.DF_TSE_ID_COLUMN].map(municipalities_infos).str[1])
         df_municipalities_registered_voters[consts.DF_STATE_ID_COLUMN] = (df_municipalities_registered_voters[consts.DF_TSE_ID_COLUMN].map(municipalities_infos).str[2])
@@ -91,6 +92,9 @@ if __name__ == "__main__":
             except KeyError:
                 logger.exception(f"Couldn't find location at {key} with level {level.name}")
                 raise
+
+            state_id = location_dict.get(consts.DF_STATE_ID_COLUMN, np.nan)
+            macroregion_id = location_dict.get(consts.DF_MACROREGION_ID_COLUMN, np.nan)
             
             qt_votes = df[consts.DF_QT_VOTES_COLUMN].sum()
             qt_valid_votes = dict_valid_votes.get(key, 0)
@@ -124,8 +128,9 @@ if __name__ == "__main__":
             grouped_df_as_dict = {
                 consts.DF_MUNICIPALTY_ID_COLUMN: location_dict.get(consts.DF_MUNICIPALTY_ID_COLUMN, np.nan),
                 consts.DF_METROPOLITAN_AREA_ID_COLUMN: location_dict.get(consts.DF_METROPOLITAN_AREA_ID_COLUMN, np.nan),
-                consts.DF_STATE_ID_COLUMN: location_dict.get(consts.DF_STATE_ID_COLUMN, np.nan),
-                consts.DF_MACROREGION_ID_COLUMN: location_dict.get(consts.DF_MACROREGION_ID_COLUMN, np.nan),
+                consts.DF_STATE_ID_COLUMN: state_id,
+                consts.DF_MACROREGION_ID_COLUMN: macroregion_id,
+                consts.DF_IS_NATIONAL_STATISTIC: np.nan if key is None else not (state_id == 28 or macroregion_id == 6),
                 consts.DF_TICKET_ID_COLUMN: ticket_id,
                 consts.DF_CANDIDATE_BIRTH_DATE_COLUMN: birth_date,
                 consts.DF_QT_VOTES_COLUMN: qt_votes,

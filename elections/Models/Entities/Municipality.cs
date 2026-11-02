@@ -21,6 +21,10 @@ namespace elections.Models.Entities
         [Required]
         public bool IsCapital { get; set; }
 
+        [Column("is_national")]
+        [Required]
+        public bool IsNational { get; set; }
+
         [Column("state_id")]
         [Required]
         public long StateId { get; set; }

@@ -26,6 +26,9 @@ namespace elections.Models.Entities
         [Column("macroregion_id")]
         public long? MacroregionId { get; set; }
 
+        [Column("is_national_statistic")]
+        public bool? IsNationalStatistic { get; set; }
+
         [Column("ticket_votes_count")]
         [Required]
         public int TicketVotesCount { get; set; }

@@ -174,15 +174,15 @@ class MySqlManager:
         return { name: id_ for id_, name in metropolitan_areas}
 
     def insert_municipalities(self, df_municipalities_to_add: pd.DataFrame):
-        df_municipalities_to_add = df_municipalities_to_add[[consts.DF_TSE_ID_COLUMN, consts.DF_IBGE_ID_COLUMN, consts.DF_MUNICIPALTY_NAME_COLUMN, consts.DF_METROPOLITAN_AREA_ID_COLUMN, consts.DF_STATE_ID_COLUMN, consts.DF_IS_CAPITAL_COLUMN]]
+        df_municipalities_to_add = df_municipalities_to_add[[consts.DF_TSE_ID_COLUMN, consts.DF_IBGE_ID_COLUMN, consts.DF_MUNICIPALTY_NAME_COLUMN, consts.DF_METROPOLITAN_AREA_ID_COLUMN, consts.DF_STATE_ID_COLUMN, consts.DF_IS_CAPITAL_COLUMN, consts.DF_IS_NATIONAL]]
 
         municipalities_to_add = [
-            (str(uuid.uuid4()), int(tse_id), int(ibge_id) if pd.notna(ibge_id) else None, str(name), int(metro_id) if pd.notna(metro_id) else None, int(state_id), bool(is_capital)) for tse_id, ibge_id, name, metro_id, state_id, is_capital in df_municipalities_to_add.itertuples(index=False, name=None)
+            (str(uuid.uuid4()), int(tse_id), int(ibge_id) if pd.notna(ibge_id) else None, str(name), int(metro_id) if pd.notna(metro_id) else None, int(state_id), bool(is_capital), bool(is_national)) for tse_id, ibge_id, name, metro_id, state_id, is_capital, is_national in df_municipalities_to_add.itertuples(index=False, name=None)
         ]
 
         query = """
-            INSERT INTO municipality (uid, tse_id, ibge_id, name, metropolitan_area_id, state_id, is_capital)
-            VALUES (%s, %s, %s, %s, %s, %s, %s)
+            INSERT INTO municipality (uid, tse_id, ibge_id, name, metropolitan_area_id, state_id, is_capital, is_national)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
         """
 
         self.batch_insert(query, municipalities_to_add)
@@ -206,6 +206,7 @@ class MySqlManager:
                 consts.DF_METROPOLITAN_AREA_ID_COLUMN,
                 consts.DF_STATE_ID_COLUMN,
                 consts.DF_MACROREGION_ID_COLUMN,
+                consts.DF_IS_NATIONAL_STATISTIC,
                 
                 consts.DF_QT_REGISTERED_VOTERS_COLUMN,
                 consts.DF_QT_TURNOUT_COLUMN,
@@ -254,6 +255,7 @@ class MySqlManager:
                 int(metropolitan_area_id) if pd.notna(metropolitan_area_id) else None,
                 int(state_id) if pd.notna(state_id) else None,
                 int(macroregion_id) if pd.notna(macroregion_id) else None,
+                bool(is_national_statistic) if pd.notna(is_national_statistic) else None,
 
                 qt_registered_voters,
                 qt_turnout,
@@ -300,6 +302,7 @@ class MySqlManager:
             metropolitan_area_id,
             state_id,
             macroregion_id,
+            is_national_statistic,
 
             qt_registered_voters,
             qt_turnout,
@@ -351,6 +354,7 @@ class MySqlManager:
             metropolitan_area_id, 
             state_id, 
             macroregion_id,
+            is_national_statistic,
 
             registered_voters_count, 
             turnout_count, 

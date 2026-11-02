@@ -36,4 +36,5 @@ if __name__ == "__main__":
             df_municipalities_to_add[consts.DF_STATE_ID_COLUMN] = df_municipalities_to_add[consts.DF_STATE_ABBR_COLUMN].map(state_id_by_abbr)
             df_municipalities_to_add[consts.DF_METROPOLITAN_AREA_ID_COLUMN] = df_municipalities_to_add[consts.DF_METROPOLITAN_AREA_NAME_COLUMN].map(metropolitan_area_id_by_name)
             df_municipalities_to_add[consts.DF_IS_CAPITAL_COLUMN] = df_municipalities_to_add[consts.DF_IBGE_ID_COLUMN].fillna(-1).astype(int).isin(consts.CAPITAL_IBGE_IDS)
+            df_municipalities_to_add[consts.DF_IS_NATIONAL] = df_municipalities_to_add[consts.DF_STATE_ID_COLUMN] != 28
             sql.insert_municipalities(df_municipalities_to_add)
