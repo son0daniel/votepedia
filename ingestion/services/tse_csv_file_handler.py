@@ -151,6 +151,7 @@ class TseCsvFileHandler:
                 "LUIZ FELIPE CHAVES D'AVILA": "LUIZ FELIPE CHAVES D'ÁVILA",
                 "VERA LUCIA PEREIRA DA SILVA SALGADO": "VERA LÚCIA PEREIRA DA SILVA SALGADO",
                 "JOSE MARIA EYMAEL": "JOSÉ MARIA EYMAEL",
+                "FLAVIO NANTES BOLSONARO": "FLÁVIO NANTES BOLSONARO"
             })
 
             return df
