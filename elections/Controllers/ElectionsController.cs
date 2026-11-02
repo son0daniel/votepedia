@@ -40,7 +40,7 @@ namespace elections.Controllers
             return Ok(electionResults);
         }
 
-        [HttpGet, Route(Routes.Elections.PresidentialElectionRoundMunicipalityAggreationResults)]
+        [HttpGet, Route(Routes.Elections.PresidentialElectionRoundMunicipalityAggregationResults)]
         public async Task<ActionResult<IEnumerable<MunicipalityElectionRoundDto>>> GetPresidentialElectionRoundMunicipalityResults([FromRoute] int year, [FromRoute] int roundNr, [FromQuery] MunicipalityElectionRoundFilter municipalityElectionRoundFilter)
         {
             var presidentialElectionMunicipalityResults = await _electionService.GetPresidentialElectionMunicipalityLevelResults(year, roundNr, municipalityElectionRoundFilter);
@@ -53,7 +53,7 @@ namespace elections.Controllers
             return Ok(presidentialElectionMunicipalityResults);
         }
 
-        [HttpGet, Route(Routes.Elections.PresidentialElectionRoundMetropolitanAreaAggreationResults)]
+        [HttpGet, Route(Routes.Elections.PresidentialElectionRoundMetropolitanAreaAggregationResults)]
         public async Task<ActionResult<IEnumerable<MetropolitanAreaElectionRoundDto>>> GetPresidentialElectionRoundMetropolitanAreaResults([FromRoute] int year, [FromRoute] int roundNr, [FromQuery] MetropolitanAreaElectionRoundFilter metropolitanAreaElectionRoundFilter)
         {
             var presidentialElectionMetropolitanAreaResults = await _electionService.GetPresidentialElectionMetropolitanAreaLevelResults(year, roundNr, metropolitanAreaElectionRoundFilter);
@@ -66,8 +66,8 @@ namespace elections.Controllers
             return Ok(presidentialElectionMetropolitanAreaResults);
         }
 
-        [HttpGet, Route(Routes.Elections.PresidentialElectionRoundStateAggreationResults)]
-        public async Task<ActionResult<IEnumerable<MetropolitanAreaElectionRoundDto>>> GetPresidentialElectionRoundStateResults([FromRoute] int year, [FromRoute] int roundNr, [FromQuery] StateElectionRoundFilter stateElectionRoundFilter)
+        [HttpGet, Route(Routes.Elections.PresidentialElectionRoundStateAggregationResults)]
+        public async Task<ActionResult<IEnumerable<StateElectionRoundDto>>> GetPresidentialElectionRoundStateResults([FromRoute] int year, [FromRoute] int roundNr, [FromQuery] StateElectionRoundFilter stateElectionRoundFilter)
         {
             var presidentialElectionStateResults = await _electionService.GetPresidentialElectionStateLevelResults(year, roundNr, stateElectionRoundFilter);
 
@@ -77,6 +77,19 @@ namespace elections.Controllers
             }
 
             return Ok(presidentialElectionStateResults);
+        }
+
+        [HttpGet, Route(Routes.Elections.PresidentialElectionRoundMacroregionAggregationResults)]
+        public async Task<ActionResult<IEnumerable<MacroregionElectionRoundDto>>> GetPresidentialElectionRoundMacroregionResults([FromRoute] int year, [FromRoute] int roundNr, [FromQuery] MacroregionElectionRoundFilter macroregionElectionRoundFilter)
+        {
+            var presidentialElectionMacroregionResults = await _electionService.GetPresidentialElectionMacroregionLevelResults(year, roundNr, macroregionElectionRoundFilter);
+
+            if (presidentialElectionMacroregionResults is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(presidentialElectionMacroregionResults);
         }
     }
 }

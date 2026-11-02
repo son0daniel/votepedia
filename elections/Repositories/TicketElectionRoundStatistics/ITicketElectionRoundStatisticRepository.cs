@@ -12,5 +12,6 @@ namespace elections.Repositories.TicketElectionRoundStatistics
         Task<IEnumerable<TicketElectionRoundStatistic>> GetMunicipalityLevelResults(long electionRoundId, long? metropolitanAreaId, long? stateId, long? macroregionId);
         Task<IEnumerable<TicketElectionRoundStatistic>> GetMetropolitanAreaLevelResults(long electionRoundId, long? stateId, long? macroregionId);
         Task<IEnumerable<TicketElectionRoundStatistic>> GetStateLevelResults(long electionRoundId, long? macroregionId);
+        Task<IEnumerable<TicketElectionRoundStatistic>> GetMacroregionLevelResults(long electionRoundId, bool onlyNational);
     }
 }
