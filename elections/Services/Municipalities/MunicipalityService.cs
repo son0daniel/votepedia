@@ -31,7 +31,6 @@ namespace elections.Services.Municipalities
             List<long> macroregionIds = [];
             List<State> macroregionStates = [];
             List<long> macroregionStateIds = [];
-            long? foreignMunicipalityStateId = null;
 
             if (municipalityFilter.MetropolitanAreas.Count > 0)
             {
@@ -57,16 +56,11 @@ namespace elections.Services.Municipalities
                 }                
             }
 
-            if (municipalityFilter.OnlyNational)
-            {
-                foreignMunicipalityStateId = await _repository.State.GetId(x => string.Equals(x.Abbr, "ZZ"));
-            }
-
             var queryMunicipalities = _repository.Municipality.GetQueryable(
                 x => (!metropolitanAreaIds.Any() || (x.MetropolitanAreaId.HasValue && metropolitanAreaIds.Contains(x.MetropolitanAreaId.Value)))
                 && (!stateIds.Any() || stateIds.Contains(x.StateId))
                 && (!macroregionStateIds.Any() || macroregionStateIds.Contains(x.StateId))
-                && (!foreignMunicipalityStateId.HasValue || x.StateId != foreignMunicipalityStateId.Value));
+                && (!municipalityFilter.OnlyNational || x.IsNational));
 
             var municipalityName = municipalityFilter.Name?.Trim().ToUpper();
             if (!string.IsNullOrEmpty(municipalityName))
