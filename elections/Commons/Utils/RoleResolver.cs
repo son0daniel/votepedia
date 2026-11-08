@@ -1,4 +1,4 @@
-﻿using elections.Commons.Constants;
+﻿using static elections.Commons.Constants.Constant.Election;
 
 namespace elections.Commons.Utils
 {
@@ -8,13 +8,13 @@ namespace elections.Commons.Utils
         {
             return role switch
             {
-                1 => Constant.Election.Role.President,
-                2 => Constant.Election.Role.Governor,
-                3 => Constant.Election.Role.Mayor,
-                4 => Constant.Election.Role.Senator,
-                5 => Constant.Election.Role.HouseRepresentative,
-                6 => Constant.Election.Role.StateRepresentative,
-                7 => Constant.Election.Role.CityCouncilor,
+                1 => Role.President,
+                2 => Role.Governor,
+                3 => Role.Mayor,
+                4 => Role.Senator,
+                5 => Role.HouseRepresentative,
+                6 => Role.StateRepresentative,
+                7 => Role.CityCouncilor,
                 _ => null
             };
         }
@@ -33,12 +33,12 @@ namespace elections.Commons.Utils
 
         public static string GetOfficeRole(string role, int levelNr)
         {
-            if (string.Equals(role, Constant.Election.Role.President) || string.Equals(role, Constant.Election.Role.Governor) || string.Equals(role, Constant.Election.Role.Mayor))
+            if (string.Equals(role, Role.President) || string.Equals(role, Role.Governor) || string.Equals(role, Role.Mayor))
             {
                 return $"{(levelNr > 1 ? "VICE-" : string.Empty)}{role}";
             }
 
-            if (string.Equals(role, Constant.Election.Role.Senator))
+            if (string.Equals(role, Role.Senator))
             {
                 if (levelNr == 1)
                 {
@@ -48,7 +48,7 @@ namespace elections.Commons.Utils
                 return $"{levelNr - 1}º SUPLENTE";
             }
 
-            throw new InvalidOperationException($"Role must be one of majority office roles: {Constant.Election.Role.President}, {Constant.Election.Role.Governor}, {Constant.Election.Role.Mayor} or {Constant.Election.Role.Senator}.");
+            throw new InvalidOperationException($"Role must be one of majority office roles: {Role.President}, {Role.Governor}, {Role.Mayor} or {Role.Senator}.");
         }
     }
 }

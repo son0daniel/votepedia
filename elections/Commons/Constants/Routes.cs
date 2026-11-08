@@ -10,14 +10,18 @@
         private const string _States = "states";
         private const string _Macroregions = "macroregions";
         private const string _Uid = "{uid}";
+        private const string _MetropolitanAreaUid = "{metropolitanAreaUid}";
         private const string _TseId = "{tseId}";
         private const string _Abbr = "{abbr}";
+        private const string _StateAbbr = "{stateAbbr}";
+        private const string _MacroregionAbbr = "{macroregionAbbr}";
         private const string _Aggregation = "aggregation";
         private const string _Role = "role";
         private const string _President = "president";
         private const string _Overviews = "overviews";
         private const string _Overall = "overall";
         private const string _Results = "results";
+        private const string _Records = "records";
         private const string _Presidential = $"{_Role}/{_President}";
         private const string _ElectionYear = "year/{year}";
         private const string _ElectionRound = "round/{roundNr}";
@@ -40,6 +44,10 @@
             public const string Base = $"api/{_Candidates}";
             public const string GetOne = _Uid;
             public const string PresidentialElectionOverviews = $"{_Uid}/{_Elections}/{_PresidentialOverviews}";
+            public const string CandidateMunicipalityElectionRoundRecords = $"{_Uid}/{_Elections}/{_Aggregation}/{_Municipalities}/{_TseId}/{_Records}";
+            public const string CandidateMetropolitanAreaElectionRoundRecords = $"{_Uid}/{_Elections}/{_Aggregation}/{_MetropolitanAreas}/{_MetropolitanAreaUid}/{_Records}";
+            public const string CandidateStateElectionRoundRecords = $"{_Uid}/{_Elections}/{_Aggregation}/{_States}/{_StateAbbr}/{_Records}";
+            public const string CandidateMacroregionElectionRoundRecords = $"{_Uid}/{_Elections}/{_Aggregation}/{_Macroregions}/{_MacroregionAbbr}/{_Records}";
         }
 
         public static class Parties
@@ -47,6 +55,10 @@
             public const string Base = $"api/{_Parties}";
             public const string GetOne = _Uid;
             public const string PresidentialElectionOverviews = $"{_Uid}/{_Elections}/{_PresidentialOverviews}";
+            public const string PartyMunicipalityElectionRoundRecords = $"{_Uid}/{_Elections}/{_Aggregation}/{_Municipalities}/{_TseId}/{_Records}";
+            public const string PartyMetropolitanAreaElectionRoundRecords = $"{_Uid}/{_Elections}/{_Aggregation}/{_MetropolitanAreas}/{_MetropolitanAreaUid}/{_Records}";
+            public const string PartyStateElectionRoundRecords = $"{_Uid}/{_Elections}/{_Aggregation}/{_States}/{_StateAbbr}/{_Records}";
+            public const string PartyMacroregionElectionRoundRecords = $"{_Uid}/{_Elections}/{_Aggregation}/{_Macroregions}/{_MacroregionAbbr}/{_Records}";
         }
 
         public static class Municipalities

@@ -10,5 +10,9 @@ namespace elections.Services.Parties
         Task<PagedResponse<PartyDto>> GetParties(PartyFilter partyFilter, PagedRequest pagedRequest);
         Task<PartyDto?> GetParty(string uid);
         Task<IEnumerable<PartyElectionOverview>> GetPartyPresidentialElectionOverviews(string partyUid, ElectionOverviewFilter electionOverviewFilter, bool? isElected);
+        Task<IEnumerable<PartyElectionRoundRecord>?> GetPartyMunicipalityElectionRoundRecords(string partyUid, long tseId, ElectionRoundRecordFilter electionRoundRecordFilter);
+        Task<IEnumerable<PartyElectionRoundRecord>?> GetPartyMetropolitanAreaElectionRoundRecords(string partyUid, string metropolitanAreaUid, ElectionRoundRecordFilter electionRoundRecordFilter);
+        Task<IEnumerable<PartyElectionRoundRecord>?> GetPartyStateElectionRoundRecords(string partyUid, string stateAbbr, ElectionRoundRecordFilter electionRoundRecordFilter);
+        Task<IEnumerable<PartyElectionRoundRecord>?> GetPartyMacroregionElectionRoundRecords(string partyUid, string macroregionAbbr, ElectionRoundRecordFilter electionRoundRecordFilter);
     }
 }

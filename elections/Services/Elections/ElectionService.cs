@@ -41,7 +41,7 @@ namespace elections.Services.Elections
                 return null;
             }
 
-            var ticketElectionRoundStatistics = await _repository.TicketElectionRoundStatistic.GetElectionRoundStatistics(electionRound.Id, municipalityId, metropolitanAreaId: null, stateId, macroregionId: null);
+            var ticketElectionRoundStatistics = await _repository.TicketElectionRoundStatistic.GetElectionRoundStatistics(electionRound.Id);
             var ticketElectionRoundStatistic = ticketElectionRoundStatistics.FirstOrDefault();
             if (ticketElectionRoundStatistic is null)
             {

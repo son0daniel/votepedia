@@ -38,5 +38,57 @@ namespace elections.Controllers
         {
             return Ok(await _candidateService.GetCandidatePresidentialElectionOverviews(uid, electionOverviewFilter, isElected));
         }
+
+        [HttpGet, Route(Routes.Candidates.CandidateMunicipalityElectionRoundRecords)]
+        public async Task<ActionResult<IEnumerable<CandidateElectionRoundRecord>>> GetCandidateMunicipalityElectionRoundRecords([FromRoute] string uid, [FromRoute] long tseId, [FromQuery] ElectionRoundRecordFilter electionRoundRecordFilter)
+        {
+            var municipalityElectionRoundRecords = await _candidateService.GetCandidateMunicipalityElectionRoundRecords(uid, tseId, electionRoundRecordFilter);
+
+            if (municipalityElectionRoundRecords is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(municipalityElectionRoundRecords);
+        }
+
+        [HttpGet, Route(Routes.Candidates.CandidateMetropolitanAreaElectionRoundRecords)]
+        public async Task<ActionResult<IEnumerable<CandidateElectionRoundRecord>>> GetCandidateMetropolitanAreaElectionRoundRecords([FromRoute] string uid, [FromRoute] string metropolitanAreaUid, [FromQuery] ElectionRoundRecordFilter electionRoundRecordFilter)
+        {
+            var metropolitanAreaElectionRoundRecords = await _candidateService.GetCandidateMetropolitanAreaElectionRoundRecords(uid, metropolitanAreaUid, electionRoundRecordFilter);
+
+            if (metropolitanAreaElectionRoundRecords is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(metropolitanAreaElectionRoundRecords);
+        }
+
+        [HttpGet, Route(Routes.Candidates.CandidateStateElectionRoundRecords)]
+        public async Task<ActionResult<IEnumerable<CandidateElectionRoundRecord>>> GetCandidateStateElectionRoundRecords([FromRoute] string uid, [FromRoute] string stateAbbr, [FromQuery] ElectionRoundRecordFilter electionRoundRecordFilter)
+        {
+            var stateElectionRoundRecords = await _candidateService.GetCandidateStateElectionRoundRecords(uid, stateAbbr, electionRoundRecordFilter);
+
+            if (stateElectionRoundRecords is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(stateElectionRoundRecords);
+        }
+
+        [HttpGet, Route(Routes.Candidates.CandidateMacroregionElectionRoundRecords)]
+        public async Task<ActionResult<IEnumerable<CandidateElectionRoundRecord>>> GetCandidateMacroregionElectionRoundRecords([FromRoute] string uid, [FromRoute] string macroregionAbbr, [FromQuery] ElectionRoundRecordFilter electionRoundRecordFilter)
+        {
+            var macroregionElectionRoundRecords = await _candidateService.GetCandidateMacroregionElectionRoundRecords(uid, macroregionAbbr, electionRoundRecordFilter);
+
+            if (macroregionElectionRoundRecords is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(macroregionElectionRoundRecords);
+        }
     }
 }
