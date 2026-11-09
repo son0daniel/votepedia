@@ -90,5 +90,18 @@ namespace elections.Controllers
 
             return Ok(macroregionElectionRoundRecords);
         }
+
+        [HttpGet, Route(Routes.Parties.PartyPresidentialElectionRoundRecords)]
+        public async Task<ActionResult<IEnumerable<PartyElectionRoundRecord>>> GetPartyPresidentialElectionRoundRecords([FromRoute] string uid, [FromQuery] PresidentialElectionRoundRecordFilter presidentialElectionRoundRecordFilter)
+        {
+            var presidentialElectionRoundRecords = await _partyService.GetPartyPresidentialElectionRoundRecords(uid, presidentialElectionRoundRecordFilter);
+
+            if (presidentialElectionRoundRecords is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(presidentialElectionRoundRecords);
+        }
     }
 }

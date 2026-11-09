@@ -48,6 +48,7 @@
             public const string CandidateMetropolitanAreaElectionRoundRecords = $"{_Uid}/{_Elections}/{_Aggregation}/{_MetropolitanAreas}/{_MetropolitanAreaUid}/{_Records}";
             public const string CandidateStateElectionRoundRecords = $"{_Uid}/{_Elections}/{_Aggregation}/{_States}/{_StateAbbr}/{_Records}";
             public const string CandidateMacroregionElectionRoundRecords = $"{_Uid}/{_Elections}/{_Aggregation}/{_Macroregions}/{_MacroregionAbbr}/{_Records}";
+            public const string CandidatePresidentialElectionRoundRecords = $"{_Uid}/{_Elections}/{_Aggregation}/{_Overall}/{_Records}";
         }
 
         public static class Parties
@@ -59,6 +60,7 @@
             public const string PartyMetropolitanAreaElectionRoundRecords = $"{_Uid}/{_Elections}/{_Aggregation}/{_MetropolitanAreas}/{_MetropolitanAreaUid}/{_Records}";
             public const string PartyStateElectionRoundRecords = $"{_Uid}/{_Elections}/{_Aggregation}/{_States}/{_StateAbbr}/{_Records}";
             public const string PartyMacroregionElectionRoundRecords = $"{_Uid}/{_Elections}/{_Aggregation}/{_Macroregions}/{_MacroregionAbbr}/{_Records}";
+            public const string PartyPresidentialElectionRoundRecords = $"{_Uid}/{_Elections}/{_Aggregation}/{_Overall}/{_Records}";
         }
 
         public static class Municipalities

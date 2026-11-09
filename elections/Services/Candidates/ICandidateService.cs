@@ -14,5 +14,6 @@ namespace elections.Services.Candidates
         Task<IEnumerable<CandidateElectionRoundRecord>?> GetCandidateMetropolitanAreaElectionRoundRecords(string candidateUid, string metropolitanAreaUid, ElectionRoundRecordFilter electionRoundRecordFilter);
         Task<IEnumerable<CandidateElectionRoundRecord>?> GetCandidateStateElectionRoundRecords(string candidateUid, string stateAbbr, ElectionRoundRecordFilter electionRoundRecordFilter);
         Task<IEnumerable<CandidateElectionRoundRecord>?> GetCandidateMacroregionElectionRoundRecords(string candidateUid, string macroregionAbbr, ElectionRoundRecordFilter electionRoundRecordFilter);
+        Task<IEnumerable<CandidateElectionRoundRecord>?> GetCandidatePresidentialElectionRoundRecords(string candidateUid, PresidentialElectionRoundRecordFilter presidentialElectionRoundRecordFilter);
     }
 }

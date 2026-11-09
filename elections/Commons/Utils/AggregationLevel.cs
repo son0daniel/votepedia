@@ -6,6 +6,6 @@
         MetropolitanArea,
         State,
         Macroregion,
-        Country
+        Overall
     }
 }

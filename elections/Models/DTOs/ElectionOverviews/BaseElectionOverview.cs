@@ -9,7 +9,7 @@ namespace elections.Models.DTOs.ElectionOverviews
         public int Year { get; } = election.Year;
         [JsonPropertyName("round_nr")] public int RoundNr { get; } = electionRound.NrRound;
         [JsonPropertyName("ticket_votes_count")] public int TicketVotesCount { get; } = ticketElectionRoundStatistic.TicketVotesCount;
-        [JsonPropertyName("ticket_valid_votes_pp")] public float? TicketValidVotesPp { get; } = ticketElectionRoundStatistic.ValidVotesPp;
+        [JsonPropertyName("ticket_valid_votes_pp")] public float? TicketValidVotesPp { get; } = ticketElectionRoundStatistic.TicketValidVotesPp;
         [JsonPropertyName("ticket_total_votes_pp")] public float? TicketTotalVotesPp { get; } = ticketElectionRoundStatistic.TicketTotalVotesPp;
         [JsonPropertyName("ticket_registered_votes_pp")] public float TicketRegisteredVotesPp { get; } = ticketElectionRoundStatistic.TicketRegisteredVotesPp;
     }

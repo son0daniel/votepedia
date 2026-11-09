@@ -35,10 +35,10 @@ namespace elections.Services.Candidates
             };
         }
 
-        private async Task<IEnumerable<CandidateElectionRoundRecord>> GetCandidateElectionRoundRecords(long candidateId, ElectionRoundRecordFilter electionRoundRecordFilter, AggregationLevel aggregationLevel, long? municipalityId = null, long? metropolitanAreaId = null, long? stateId = null, long? macroregionId = null)
+        private async Task<IEnumerable<CandidateElectionRoundRecord>> GetCandidateElectionRoundRecords(long candidateId, BaseElectionRoundRecordFilter electionRoundRecordFilter, int? roleNr, AggregationLevel aggregationLevel, long? municipalityId = null, long? metropolitanAreaId = null, long? stateId = null, long? macroregionId = null)
         {
             var year = electionRoundRecordFilter.Year;
-            var role = RoleResolver.GetRole(electionRoundRecordFilter.Role);
+            var role = RoleResolver.GetRole(roleNr);
             var roundNr = electionRoundRecordFilter.Round;
             var levelNr = electionRoundRecordFilter.Level;
             var positionNr = electionRoundRecordFilter.Position;
@@ -87,6 +87,11 @@ namespace elections.Services.Candidates
                 ticketElectionRoundStatistics = [.. await _repository.TicketElectionRoundStatistic.GetCandidateMacroregionStatistics(candidateId, macroregionId.Value, year, role, roundNr, levelNr, positionNr, status)];
             }
 
+            if (aggregationLevel == AggregationLevel.Overall)
+            {
+                ticketElectionRoundStatistics = [.. await _repository.TicketElectionRoundStatistic.GetCandidateTicketPresidentialElectionRoundStatistics(candidateId, year, roundNr, levelNr, positionNr, status, isOverview: false)];
+            }
+
             if (ticketElectionRoundStatistics.Count == 0)
             {
                 return [];
@@ -127,7 +132,7 @@ namespace elections.Services.Candidates
 
                 var coalition = coalitions.GetValueOrDefault(ticketId);
 
-                electionRoundRecords.Add(new CandidateElectionRoundRecord(candidateParty.Party, electionRole, electionYear, electionRound.NrRound, coalition, ticketElectionRoundStatistic));
+                electionRoundRecords.Add(new CandidateElectionRoundRecord(candidateParty.Party, RoleResolver.GetOfficeRole(electionRole, ticketCandidateParty.NrLevel), electionYear, electionRound.NrRound, coalition, ticketElectionRoundStatistic));
             }
 
             return electionRoundRecords.Sort(electionRoundRecordFilter.SortBy, electionRoundRecordFilter.SortDirection);
@@ -224,7 +229,7 @@ namespace elections.Services.Candidates
                 return new CandidateElectionOverview(election, electionRound, ticketElectionRoundStatistic, officeRole, party);
 
             }).Sort(electionOverviewFilter.SortBy, electionOverviewFilter.SortDirection);
-        }
+        }        
 
         public async Task<IEnumerable<CandidateElectionRoundRecord>?> GetCandidateMunicipalityElectionRoundRecords(string candidateUid, long tseId, ElectionRoundRecordFilter electionRoundRecordFilter)
         {
@@ -242,7 +247,7 @@ namespace elections.Services.Candidates
                 return [];
             }
 
-            return await GetCandidateElectionRoundRecords(candidateId.Value, electionRoundRecordFilter, AggregationLevel.Municipality, municipalityId: municipalityId.Value);
+            return await GetCandidateElectionRoundRecords(candidateId.Value, electionRoundRecordFilter, electionRoundRecordFilter.Role, AggregationLevel.Municipality, municipalityId: municipalityId.Value);
         }
 
         public async Task<IEnumerable<CandidateElectionRoundRecord>?> GetCandidateMetropolitanAreaElectionRoundRecords(string candidateUid, string metropolitanAreaUid, ElectionRoundRecordFilter electionRoundRecordFilter)
@@ -261,7 +266,7 @@ namespace elections.Services.Candidates
                 return [];
             }
 
-            return await GetCandidateElectionRoundRecords(candidateId.Value, electionRoundRecordFilter, AggregationLevel.MetropolitanArea, metropolitanAreaId: metropolitanAreaId.Value);
+            return await GetCandidateElectionRoundRecords(candidateId.Value, electionRoundRecordFilter, electionRoundRecordFilter.Role, AggregationLevel.MetropolitanArea, metropolitanAreaId: metropolitanAreaId.Value);
         }
 
         public async Task<IEnumerable<CandidateElectionRoundRecord>?> GetCandidateStateElectionRoundRecords(string candidateUid, string stateAbbr, ElectionRoundRecordFilter electionRoundRecordFilter)
@@ -280,7 +285,7 @@ namespace elections.Services.Candidates
                 return [];
             }
 
-            return await GetCandidateElectionRoundRecords(candidateId.Value, electionRoundRecordFilter, AggregationLevel.State, stateId: stateId.Value);
+            return await GetCandidateElectionRoundRecords(candidateId.Value, electionRoundRecordFilter, electionRoundRecordFilter.Role, AggregationLevel.State, stateId: stateId.Value);
         }
 
         public async Task<IEnumerable<CandidateElectionRoundRecord>?> GetCandidateMacroregionElectionRoundRecords(string candidateUid, string macroregionAbbr, ElectionRoundRecordFilter electionRoundRecordFilter)
@@ -299,7 +304,19 @@ namespace elections.Services.Candidates
                 return [];
             }
 
-            return await GetCandidateElectionRoundRecords(candidateId.Value, electionRoundRecordFilter, AggregationLevel.Macroregion, macroregionId: macroregionId.Value);
+            return await GetCandidateElectionRoundRecords(candidateId.Value, electionRoundRecordFilter, electionRoundRecordFilter.Role, AggregationLevel.Macroregion, macroregionId: macroregionId.Value);
+        }
+
+        public async Task<IEnumerable<CandidateElectionRoundRecord>?> GetCandidatePresidentialElectionRoundRecords(string candidateUid, PresidentialElectionRoundRecordFilter presidentialElectionRoundRecordFilter)
+        {
+            var candidateId = await _repository.Candidate.GetIdByUid(candidateUid);
+
+            if (!candidateId.HasValue)
+            {
+                return null;
+            }
+
+            return await GetCandidateElectionRoundRecords(candidateId.Value, presidentialElectionRoundRecordFilter, roleNr: 1, AggregationLevel.Overall);
         }
     }
 }

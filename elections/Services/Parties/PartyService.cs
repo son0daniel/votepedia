@@ -36,10 +36,10 @@ namespace elections.Services.Parties
             };
         }
 
-        private async Task<IEnumerable<PartyElectionRoundRecord>> GetPartyElectionRoundRecords(long partyId, ElectionRoundRecordFilter electionRoundRecordFilter, AggregationLevel aggregationLevel, long? municipalityId = null, long? metropolitanAreaId = null, long? stateId = null, long? macroregionId = null)
+        private async Task<IEnumerable<PartyElectionRoundRecord>> GetPartyElectionRoundRecords(long partyId, BaseElectionRoundRecordFilter electionRoundRecordFilter, int? roleNr, AggregationLevel aggregationLevel, long? municipalityId = null, long? metropolitanAreaId = null, long? stateId = null, long? macroregionId = null)
         {
             var year = electionRoundRecordFilter.Year;
-            var role = RoleResolver.GetRole(electionRoundRecordFilter.Role);
+            var role = RoleResolver.GetRole(roleNr);
             var roundNr = electionRoundRecordFilter.Round;
             var levelNr = electionRoundRecordFilter.Level;
             var positionNr = electionRoundRecordFilter.Position;
@@ -86,6 +86,11 @@ namespace elections.Services.Parties
                 }
 
                 ticketElectionRoundStatistics = [.. await _repository.TicketElectionRoundStatistic.GetPartyMacroregionStatistics(partyId, macroregionId.Value, year, role, roundNr, levelNr, positionNr, status)];
+            }
+
+            if (aggregationLevel == AggregationLevel.Overall)
+            {
+                ticketElectionRoundStatistics = [.. await _repository.TicketElectionRoundStatistic.GetPartyTicketPresidentialElectionRoundStatistics(partyId, year, roundNr, levelNr, positionNr, status, isOverview: false)];
             }
 
             if (ticketElectionRoundStatistics.Count == 0)
@@ -254,7 +259,7 @@ namespace elections.Services.Parties
                 return [];
             }
 
-            return await GetPartyElectionRoundRecords(partyId.Value, electionRoundRecordFilter, AggregationLevel.Municipality, municipalityId: municipalityId.Value);
+            return await GetPartyElectionRoundRecords(partyId.Value, electionRoundRecordFilter, electionRoundRecordFilter.Role, AggregationLevel.Municipality, municipalityId: municipalityId.Value);
         }
 
         public async Task<IEnumerable<PartyElectionRoundRecord>?> GetPartyMetropolitanAreaElectionRoundRecords(string partyUid, string metropolitanAreaUid, ElectionRoundRecordFilter electionRoundRecordFilter)
@@ -273,7 +278,7 @@ namespace elections.Services.Parties
                 return [];
             }
 
-            return await GetPartyElectionRoundRecords(partyId.Value, electionRoundRecordFilter, AggregationLevel.MetropolitanArea, metropolitanAreaId: metropolitanAreaId.Value);
+            return await GetPartyElectionRoundRecords(partyId.Value, electionRoundRecordFilter, electionRoundRecordFilter.Role, AggregationLevel.MetropolitanArea, metropolitanAreaId: metropolitanAreaId.Value);
         }
 
         public async Task<IEnumerable<PartyElectionRoundRecord>?> GetPartyStateElectionRoundRecords(string partyUid, string stateAbbr, ElectionRoundRecordFilter electionRoundRecordFilter)
@@ -292,7 +297,7 @@ namespace elections.Services.Parties
                 return [];
             }
 
-            return await GetPartyElectionRoundRecords(partyId.Value, electionRoundRecordFilter, AggregationLevel.State, stateId: stateId.Value);
+            return await GetPartyElectionRoundRecords(partyId.Value, electionRoundRecordFilter, electionRoundRecordFilter.Role, AggregationLevel.State, stateId: stateId.Value);
         }
 
         public async Task<IEnumerable<PartyElectionRoundRecord>?> GetPartyMacroregionElectionRoundRecords(string partyUid, string macroregionAbbr, ElectionRoundRecordFilter electionRoundRecordFilter)
@@ -311,8 +316,19 @@ namespace elections.Services.Parties
                 return [];
             }
 
-            return await GetPartyElectionRoundRecords(partyId.Value, electionRoundRecordFilter, AggregationLevel.Macroregion, macroregionId: macroregionId.Value);
+            return await GetPartyElectionRoundRecords(partyId.Value, electionRoundRecordFilter, electionRoundRecordFilter.Role, AggregationLevel.Macroregion, macroregionId: macroregionId.Value);
         }
-        
+
+        public async Task<IEnumerable<PartyElectionRoundRecord>?> GetPartyPresidentialElectionRoundRecords(string partyUid, PresidentialElectionRoundRecordFilter presidentialElectionRoundRecordFilter)
+        {
+            var partyId = await _repository.Party.GetIdByUid(partyUid);
+
+            if (!partyId.HasValue)
+            {
+                return null;
+            }
+
+            return await GetPartyElectionRoundRecords(partyId.Value, presidentialElectionRoundRecordFilter, roleNr: 1, AggregationLevel.Overall);
+        }
     }
 }
