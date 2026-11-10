@@ -37,6 +37,7 @@
             public const string PresidentialElectionRoundMetropolitanAreaAggregationResults = $"{_PresidentialElectionRound}/{_Aggregation}/{_MetropolitanAreas}/{_Results}";
             public const string PresidentialElectionRoundStateAggregationResults = $"{_PresidentialElectionRound}/{_Aggregation}/{_States}/{_Results}";
             public const string PresidentialElectionRoundMacroregionAggregationResults = $"{_PresidentialElectionRound}/{_Aggregation}/{_Macroregions}/{_Results}";
+            public const string ElectionRoundRecords = $"{_Aggregation}/{_Overall}/{_Records}";
         }
 
         public static class Candidates
@@ -67,24 +68,28 @@
         {
             public const string Base = $"api/{_Municipalities}";
             public const string GetOne = _TseId;
+            public const string ElectionRoundRecords = $"{_TseId}/{_Elections}/{_Records}";
         }
 
         public static class MetropolitanAreas
         {
             public const string Base = $"api/{_MetropolitanAreas}";
             public const string GetOne = _Uid;
+            public const string ElectionRoundRecords = $"{_Uid}/{_Elections}/{_Records}";
         }
 
         public static class States
         {
             public const string Base = $"api/{_States}";
             public const string GetOne = _Abbr;
+            public const string ElectionRoundRecords = $"{_Abbr}/{_Elections}/{_Records}";
         }
 
         public static class Macroregions
         {
             public const string Base = $"api/{_Macroregions}";
             public const string GetOne = _Abbr;
+            public const string ElectionRoundRecords = $"{_Abbr}/{_Elections}/{_Records}";
         }
     }
 }

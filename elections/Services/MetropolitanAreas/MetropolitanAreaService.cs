@@ -1,22 +1,25 @@
 ﻿using elections.Commons.Constants;
+using elections.Commons.Utils;
 using elections.Models.DTOs;
 using elections.Models.Entities;
 using elections.Models.Pagination;
 using elections.Models.Requests;
 using elections.Repositories;
+using elections.Services.ElectionRoundRecords;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
-using static elections.Commons.Constants.Routes;
 
 namespace elections.Services.MetropolitanAreas
 {
     public class MetropolitanAreaService : IMetropolitanAreaService
     {
         private readonly IRepositoryManager _repository;
+        private readonly IElectionRoundRecordService _electionRoundRecord;
 
-        public MetropolitanAreaService(IRepositoryManager repository)
+        public MetropolitanAreaService(IRepositoryManager repository, IElectionRoundRecordService electionRoundRecord)
         {
             _repository = repository;
+            _electionRoundRecord = electionRoundRecord;
         }
 
         private static Expression<Func<MetropolitanArea, object?>> ResolveKeySelector(MetropolitanAreaSortableField? sortBy)
@@ -177,6 +180,18 @@ namespace elections.Services.MetropolitanAreas
             }
 
             return new MetropolitanAreaDto(metropolitanArea, states.Select(x => x.Abbr), macroregions.Select(x => x.Abbr));
+        }
+
+        public async Task<IEnumerable<CandidatePartyElectionRoundRecord>?> GetMetropolitanAreaElectionRoundRecords(string uid, ElectionRoundRecordFilter electionRoundRecordFilter)
+        {
+            var metropolitanAreaId = await _repository.MetropolitanArea.GetIdByUid(uid);
+
+            if (!metropolitanAreaId.HasValue)
+            {
+                return null;
+            }
+
+            return await _electionRoundRecord.GetElectionRoundRecordsByLocation(electionRoundRecordFilter, electionRoundRecordFilter.Role, AggregationLevel.MetropolitanArea, metropolitanAreaId: metropolitanAreaId.Value);
         }
     }
 }

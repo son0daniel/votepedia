@@ -1,9 +1,11 @@
 ﻿using elections.Commons.Extensions;
+using elections.Commons.Utils;
 using elections.Models.DTOs;
 using elections.Models.Entities;
 using elections.Models.Pagination;
 using elections.Models.Requests;
 using elections.Repositories;
+using elections.Services.ElectionRoundRecords;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -12,10 +14,12 @@ namespace elections.Services.States
     public class StateService : IStateService
     {
         private readonly IRepositoryManager _repository;
+        private readonly IElectionRoundRecordService _electionRoundRecord;
 
-        public StateService(IRepositoryManager repository)
+        public StateService(IRepositoryManager repository, IElectionRoundRecordService electionRoundRecord)
         {
             _repository = repository;
+            _electionRoundRecord = electionRoundRecord;
         }
 
         private static Expression<Func<State, object?>> ResolveKeySelector(StateSortableField? sortBy)
@@ -95,6 +99,18 @@ namespace elections.Services.States
             var macroregionAbbr = await _repository.Macroregion.GetMacroregionAbbr(state.MacroregionId) ?? throw new InvalidOperationException($"Error fetching macroregion with id {state.MacroregionId}");
 
             return new StateDto(state, macroregionAbbr);
+        }
+
+        public async Task<IEnumerable<CandidatePartyElectionRoundRecord>?> GetStateElectionRoundRecords(string stateAbbr, ElectionRoundRecordFilter electionRoundRecordFilter)
+        {
+            var stateId = await _repository.State.GetId(x => string.Equals(x.Abbr, stateAbbr));
+
+            if (!stateId.HasValue)
+            {
+                return null;
+            }
+
+            return await _electionRoundRecord.GetElectionRoundRecordsByLocation(electionRoundRecordFilter, electionRoundRecordFilter.Role, AggregationLevel.State, stateId: stateId.Value);
         }
     }
 }

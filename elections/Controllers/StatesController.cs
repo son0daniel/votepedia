@@ -32,5 +32,13 @@ namespace elections.Controllers
 
             return state is null ? NotFound() : Ok(state);
         }
+
+        [HttpGet, Route(Routes.States.ElectionRoundRecords)]
+        public async Task<ActionResult<IEnumerable<CandidatePartyElectionRoundRecord>>> GetElectionRoundRecords([FromRoute] string abbr, [FromQuery] ElectionRoundRecordFilter electionRoundRecordFilter)
+        {
+            var electionRoundRecords = await _stateService.GetStateElectionRoundRecords(abbr, electionRoundRecordFilter);
+
+            return electionRoundRecords is null ? NotFound() : Ok(electionRoundRecords);
+        }
     }
 }

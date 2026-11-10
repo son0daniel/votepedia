@@ -1,9 +1,11 @@
 ﻿using elections.Commons.Extensions;
+using elections.Commons.Utils;
 using elections.Models.DTOs;
 using elections.Models.Entities;
 using elections.Models.Pagination;
 using elections.Models.Requests;
 using elections.Repositories;
+using elections.Services.ElectionRoundRecords;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -12,10 +14,12 @@ namespace elections.Services.Macroregions
     public class MacroregionService : IMacroregionService
     {
         private readonly IRepositoryManager _repository;
+        private readonly IElectionRoundRecordService _electionRoundRecord;
 
-        public MacroregionService(IRepositoryManager repository)
+        public MacroregionService(IRepositoryManager repository, IElectionRoundRecordService electionRoundRecord)
         {
             _repository = repository;
+            _electionRoundRecord = electionRoundRecord;
         }
 
         private static Expression<Func<Macroregion, object?>> ResolveKeySelector(MacroregionSortableField? sortBy)
@@ -59,6 +63,18 @@ namespace elections.Services.Macroregions
             var macroregion = await _repository.Macroregion.GetMacroregionByAbbr(abbr);
 
             return macroregion is null ? null : new MacroregionDto(macroregion);
+        }
+
+        public async Task<IEnumerable<CandidatePartyElectionRoundRecord>?> GetMacroregionElectionRoundRecords(string macroregionAbbr, ElectionRoundRecordFilter electionRoundRecordFilter)
+        {
+            var macroregionId = await _repository.Macroregion.GetId(x => string.Equals(x.Abbr, macroregionAbbr));
+
+            if (!macroregionId.HasValue)
+            {
+                return null;
+            }
+
+            return await _electionRoundRecord.GetElectionRoundRecordsByLocation(electionRoundRecordFilter, electionRoundRecordFilter.Role, AggregationLevel.Macroregion, macroregionId: macroregionId.Value);
         }
     }
 }

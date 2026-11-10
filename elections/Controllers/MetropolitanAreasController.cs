@@ -33,5 +33,13 @@ namespace elections.Controllers
             return metropolitanArea is null ? NotFound() : Ok(metropolitanArea);
         }
 
+        [HttpGet, Route(Routes.MetropolitanAreas.ElectionRoundRecords)]
+        public async Task<ActionResult<IEnumerable<CandidatePartyElectionRoundRecord>>> GetElectionRoundRecords([FromRoute] string uid, [FromQuery] ElectionRoundRecordFilter electionRoundRecordFilter)
+        {
+            var electionRoundRecords = await _metropolitanAreaService.GetMetropolitanAreaElectionRoundRecords(uid, electionRoundRecordFilter);
+
+            return electionRoundRecords is null ? NotFound() : Ok(electionRoundRecords);
+        }
+
     }
 }

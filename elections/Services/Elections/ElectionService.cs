@@ -1,11 +1,13 @@
 ﻿using elections.Commons.Constants;
 using elections.Commons.Extensions;
+using elections.Commons.Utils;
 using elections.Models.DTOs;
 using elections.Models.DTOs.ElectionOverviews;
 using elections.Models.Entities;
 using elections.Models.Requests;
 using elections.Models.Requests.ElectionRounds;
 using elections.Repositories;
+using elections.Services.ElectionRoundRecords;
 using static elections.Commons.Constants.Constant.Election;
 
 namespace elections.Services.Elections
@@ -13,10 +15,12 @@ namespace elections.Services.Elections
     public class ElectionService : IElectionService
     {
         private readonly IRepositoryManager _repository;
+        private readonly IElectionRoundRecordService _electionRoundRecord;
 
-        public ElectionService(IRepositoryManager repository)
+        public ElectionService(IRepositoryManager repository, IElectionRoundRecordService electionRoundRecord)
         {
             _repository = repository;
+            _electionRoundRecord = electionRoundRecord;
         }
 
         private async Task<(IEnumerable<Ticket>, IEnumerable<TicketCandidateParty>, IEnumerable<CandidateParty>)> GetTicketRelatedInformation(IEnumerable<TicketElectionRoundStatistic> ticketElectionRoundStatistics, int? levelNr)
@@ -407,6 +411,11 @@ namespace elections.Services.Elections
             }
 
             return electionRoundMacroregions.Sort(macroregionElectionRoundFilter.SortBy, macroregionElectionRoundFilter.SortDirection);
+        }
+
+        public async Task<IEnumerable<CandidatePartyElectionRoundRecord>> GetPresidentialElectionRoundRecords(PresidentialElectionRoundRecordFilter presidentialElectionRoundRecordFilter)
+        {
+            return await _electionRoundRecord.GetElectionRoundRecordsByLocation(presidentialElectionRoundRecordFilter, 1, AggregationLevel.Overall);
         }
     }
 }

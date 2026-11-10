@@ -32,5 +32,13 @@ namespace elections.Controllers
 
             return macroregion is null ? NotFound() : Ok(macroregion);
         }
+
+        [HttpGet, Route(Routes.Macroregions.ElectionRoundRecords)]
+        public async Task<ActionResult<IEnumerable<CandidatePartyElectionRoundRecord>>> GetElectionRoundRecords([FromRoute] string abbr, [FromQuery] ElectionRoundRecordFilter electionRoundRecordFilter)
+        {
+            var electionRoundRecords = await _macroregionService.GetMacroregionElectionRoundRecords(abbr, electionRoundRecordFilter);
+
+            return electionRoundRecords is null ? NotFound() : Ok(electionRoundRecords);
+        }
     }
 }

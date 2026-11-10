@@ -8,5 +8,6 @@ namespace elections.Services.MetropolitanAreas
     {
         Task<PagedResponse<MetropolitanAreaDto>> GetMetropolitanAreas(MetropolitanAreaFilter metropolitanAreaFilter, PagedRequest pagedRequest);
         Task<MetropolitanAreaDto?> GetMetropolitanArea(string uid);
+        Task<IEnumerable<CandidatePartyElectionRoundRecord>?> GetMetropolitanAreaElectionRoundRecords(string uid, ElectionRoundRecordFilter electionRoundRecordFilter);
     }
 }

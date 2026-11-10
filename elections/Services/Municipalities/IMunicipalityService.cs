@@ -8,5 +8,6 @@ namespace elections.Services.Municipalities
     {
         Task<PagedResponse<MunicipalityDto>> GetMunicipalities(MunicipalityFilter municipalityFilter, PagedRequest pagedRequest);
         Task<MunicipalityDto?> GetMunicipality(long tseId);
+        Task<IEnumerable<CandidatePartyElectionRoundRecord>?> GetMunicipalityElectionRoundRecords(long tseId, ElectionRoundRecordFilter electionRoundRecordFilter);
     }
 }

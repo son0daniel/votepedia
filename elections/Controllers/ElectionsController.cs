@@ -91,5 +91,11 @@ namespace elections.Controllers
 
             return Ok(presidentialElectionMacroregionResults);
         }
+
+        [HttpGet, Route(Routes.Elections.ElectionRoundRecords)]
+        public async Task<ActionResult<IEnumerable<CandidateElectionRoundRecord>>> GetPresidentialElectionRoundRecords([FromQuery] PresidentialElectionRoundRecordFilter presidentialElectionRoundRecordFilter)
+        {
+            return Ok(await _electionService.GetPresidentialElectionRoundRecords(presidentialElectionRoundRecordFilter));
+        }
     }
 }

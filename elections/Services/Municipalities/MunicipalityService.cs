@@ -1,9 +1,11 @@
 ﻿using elections.Commons.Extensions;
+using elections.Commons.Utils;
 using elections.Models.DTOs;
 using elections.Models.Entities;
 using elections.Models.Pagination;
 using elections.Models.Requests;
 using elections.Repositories;
+using elections.Services.ElectionRoundRecords;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
@@ -12,10 +14,12 @@ namespace elections.Services.Municipalities
     public class MunicipalityService : IMunicipalityService
     {
         private readonly IRepositoryManager _repository;
+        private readonly IElectionRoundRecordService _electionRoundRecord;
 
-        public MunicipalityService(IRepositoryManager repository)
+        public MunicipalityService(IRepositoryManager repository, IElectionRoundRecordService electionRoundRecord)
         {
             _repository = repository;
+            _electionRoundRecord = electionRoundRecord;
         }
 
         public async Task<PagedResponse<MunicipalityDto>> GetMunicipalities(MunicipalityFilter municipalityFilter, PagedRequest pagedRequest)
@@ -146,6 +150,18 @@ namespace elections.Services.Municipalities
             var macroregionAbbr = await _repository.Macroregion.GetMacroregionAbbr(state.MacroregionId) ??  throw new InvalidOperationException($"Error fetching macroregion with id {state.MacroregionId}"); ;
 
             return new MunicipalityDto(municipality, metropolitanArea, state.Abbr, macroregionAbbr);
+        }
+
+        public async Task<IEnumerable<CandidatePartyElectionRoundRecord>?> GetMunicipalityElectionRoundRecords(long tseId, ElectionRoundRecordFilter electionRoundRecordFilter)
+        {
+            var municipalityId = await _repository.Municipality.GetId(x => x.TseId == tseId);
+
+            if (!municipalityId.HasValue)
+            {
+                return null;
+            }
+
+            return await _electionRoundRecord.GetElectionRoundRecordsByLocation(electionRoundRecordFilter, electionRoundRecordFilter.Role, AggregationLevel.Municipality, municipalityId: municipalityId.Value);
         }
     }
 }

@@ -7,7 +7,7 @@ namespace elections.Commons.Extensions
     {
         public static IEnumerable<MunicipalityDto> Sort(this IEnumerable<MunicipalityDto> municipalities, MunicipalitySortableField? SortBy, SortDirection sortDirection)
         {
-            Func<MunicipalityDto, object?> keyselector = SortBy switch
+            Func<MunicipalityDto, object?> keySelector = SortBy switch
             {
                 MunicipalitySortableField.Name => x => x.Name,
                 MunicipalitySortableField.MetropolitanArea => x => x.MetropolitanArea?.Name,
@@ -16,7 +16,7 @@ namespace elections.Commons.Extensions
                 _ => x => x.Name
             };
 
-            return sortDirection == SortDirection.Ascending ? municipalities.OrderBy(keyselector) : municipalities.OrderByDescending(keyselector);
+            return sortDirection == SortDirection.Ascending ? municipalities.OrderBy(keySelector) : municipalities.OrderByDescending(keySelector);
         }
     }
 }

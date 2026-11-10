@@ -320,5 +320,48 @@ namespace elections.Repositories.TicketElectionRoundStatistics
 
             return await partyStatisticsQuery.ToListAsync();
         }
+
+        public async Task<IEnumerable<TicketElectionRoundStatistic>> GetMunicipalityStatistics(long municipalityId, int? year, string? role, int? roundNr, int? positionNr, string? status)
+        {
+            var query = QueryElectionRoundRecords(year, role, roundNr, positionNr, status, isOverview: false);
+
+            query = QueryTicketElectionRoundStatisticByMunicipality(query, municipalityId);
+
+            return await query.ToListAsync();
+        }
+
+        public async Task<IEnumerable<TicketElectionRoundStatistic>> GetMetropolitanAreaStatistics(long metropolitanAreaId, int? year, string? role, int? roundNr, int? positionNr, string? status)
+        {
+            var query = QueryElectionRoundRecords(year, role, roundNr, positionNr, status, isOverview: false);
+
+            query = QueryTicketElectionRoundStatisticByMetropolitanArea(query, metropolitanAreaId);
+
+            return await query.ToListAsync();
+        }
+
+        public async Task<IEnumerable<TicketElectionRoundStatistic>> GetStateStatistics(long stateId, int? year, string? role, int? roundNr, int? positionNr, string? status)
+        {
+            var query = QueryElectionRoundRecords(year, role, roundNr, positionNr, status, isOverview: false);
+
+            query = QueryTicketElectionRoundStatisticByState(query, stateId);
+
+            return await query.ToListAsync();
+        }
+
+        public async Task<IEnumerable<TicketElectionRoundStatistic>> GetMacroregionStatistics(long macroregionId, int? year, string? role, int? roundNr, int? positionNr, string? status)
+        {
+            var query = QueryElectionRoundRecords(year, role, roundNr, positionNr, status, isOverview: false);
+
+            query = QueryTicketElectionRoundStatisticByMacroregion(query, macroregionId);
+
+            return await query.ToListAsync();
+        }
+
+        public async Task<IEnumerable<TicketElectionRoundStatistic>> GetPresidentialElectionStatistics(int? year, int? roundNr, int? positionNr, string? status)
+        {
+            var query = GetTicketPresidentialElectionRoundStatistics(year, roundNr, positionNr, status, isOverview: false);
+
+            return await query.ToListAsync();
+        }
     }
 }
