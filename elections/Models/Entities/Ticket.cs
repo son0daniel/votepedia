@@ -6,11 +6,13 @@ namespace elections.Models.Entities
     [Table("ticket")]
     public class Ticket : BaseEntityWithUid
     {
-        [Column("color")]
-        public string? Color { get; set; }
-
         [Column("description")]
         public string? Description { get; set; }
+
+        [Column("ticket_color_id")]
+        public long? TicketColorId { get; set; }
+
+        public TicketColor? TicketColor { get; set; }
 
         public Coalition? Coalition { get; set; }
 

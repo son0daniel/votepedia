@@ -778,17 +778,17 @@ namespace elections.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
 
-                    b.Property<string>("Color")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("color")
-                        .HasComment("Cor usada para representar a chapa em mapas eleitorais.");
-
                     b.Property<string>("Description")
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)")
                         .HasColumnName("description")
                         .HasComment("Campo opcional usado para contextualizar o registro da chapa eleitoral.");
+
+                    b.Property<long?>("TicketColorId")
+                        .HasMaxLength(50)
+                        .HasColumnType("bigint")
+                        .HasColumnName("ticket_color_id")
+                        .HasComment("ID interno da cor usada para representar a chapa em mapas eleitorais.");
 
                     b.Property<string>("Uid")
                         .IsRequired()
@@ -797,6 +797,8 @@ namespace elections.Migrations
                         .HasComment("ID externo da chapa.");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TicketColorId");
 
                     b.HasIndex("Uid")
                         .IsUnique()
@@ -852,6 +854,68 @@ namespace elections.Migrations
                             t.HasComment("Tabela de relação entre a chapa eleitoral e o candidato com filiação partidária.");
 
                             t.HasCheckConstraint("CK_ticket_candidate_party_nr_level", "nr_level IN (1, 2, 3)");
+                        });
+                });
+
+            modelBuilder.Entity("elections.Models.Entities.TicketColor", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id")
+                        .HasComment("ID interno da cor.");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<long>("Id"));
+
+                    b.Property<string>("DarkestHex")
+                        .IsRequired()
+                        .HasMaxLength(6)
+                        .HasColumnType("char(6)")
+                        .HasColumnName("darkest_hex")
+                        .IsFixedLength()
+                        .HasComment("Código hexadecimal do tom mais escuro da cor exibido em mapas eleitorais.");
+
+                    b.Property<string>("LightestHex")
+                        .IsRequired()
+                        .HasMaxLength(6)
+                        .HasColumnType("char(6)")
+                        .HasColumnName("lightest_hex")
+                        .IsFixedLength()
+                        .HasComment("Código hexadecimal do tom mais claro da cor exibido em mapas eleitorais.");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("name")
+                        .HasComment("Nome da cor.");
+
+                    b.Property<string>("StandardHex")
+                        .IsRequired()
+                        .HasMaxLength(6)
+                        .HasColumnType("char(6)")
+                        .HasColumnName("standard_hex")
+                        .IsFixedLength()
+                        .HasComment("Código hexadecimal padrão da cor.");
+
+                    b.Property<string>("Uid")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)")
+                        .HasColumnName("uid")
+                        .HasComment("ID externo da cor.");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Name")
+                        .IsUnique()
+                        .HasDatabaseName("IX_ticket_color_name");
+
+                    b.HasIndex("Uid")
+                        .IsUnique()
+                        .HasDatabaseName("IX_ticket_color_uid");
+
+                    b.ToTable("ticket_color", t =>
+                        {
+                            t.HasComment("Tabela com as cores em hexadecimal utilizadas nos mapas eleitorais.");
                         });
                 });
 
@@ -1266,6 +1330,17 @@ namespace elections.Migrations
                     b.Navigation("Macroregion");
                 });
 
+            modelBuilder.Entity("elections.Models.Entities.Ticket", b =>
+                {
+                    b.HasOne("elections.Models.Entities.TicketColor", "TicketColor")
+                        .WithMany("Tickets")
+                        .HasForeignKey("TicketColorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("FK_ticket_color");
+
+                    b.Navigation("TicketColor");
+                });
+
             modelBuilder.Entity("elections.Models.Entities.TicketCandidateParty", b =>
                 {
                     b.HasOne("elections.Models.Entities.CandidateParty", "CandidateParty")
@@ -1442,6 +1517,11 @@ namespace elections.Migrations
                     b.Navigation("TicketElectionRoundStatistics");
 
                     b.Navigation("TicketElectionRounds");
+                });
+
+            modelBuilder.Entity("elections.Models.Entities.TicketColor", b =>
+                {
+                    b.Navigation("Tickets");
                 });
 #pragma warning restore 612, 618
         }

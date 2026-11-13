@@ -18,11 +18,18 @@ namespace elections.Data.Configurations
                  """));
 
             builder.Property(x => x.Id).HasComment("ID interno da chapa.");
-            builder.Property(x => x.Uid).HasComment("ID externo da chapa.");
-            builder.Property(x => x.Color).HasMaxLength(50).HasComment("Cor usada para representar a chapa em mapas eleitorais.");
+            builder.Property(x => x.Uid).HasComment("ID externo da chapa.");            
             builder.Property(x => x.Description).HasMaxLength(50).HasComment("Campo opcional usado para contextualizar o registro da chapa eleitoral.");
+            builder.Property(x => x.TicketColorId).HasMaxLength(50).HasComment("ID interno da cor usada para representar a chapa em mapas eleitorais.");
 
-            builder.HasIndex(x => x.Uid).IsUnique().HasDatabaseName("IX_ticket_uid");;
+            builder.HasIndex(x => x.Uid).IsUnique().HasDatabaseName("IX_ticket_uid");
+
+            builder.HasOne(x => x.TicketColor)
+                .WithMany(x => x.Tickets)
+                .HasForeignKey(x => x.TicketColorId)
+                .IsRequired(false)
+                .OnDelete(DeleteBehavior.Restrict)
+                .HasConstraintName("FK_ticket_color");
         }
     }
 }
