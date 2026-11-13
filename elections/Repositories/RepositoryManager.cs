@@ -14,6 +14,7 @@ using elections.Repositories.Municipalities;
 using elections.Repositories.Parties;
 using elections.Repositories.States;
 using elections.Repositories.TicketCandidateParties;
+using elections.Repositories.TicketColors;
 using elections.Repositories.TicketElectionRounds;
 using elections.Repositories.TicketElectionRoundStatistics;
 using elections.Repositories.Tickets;
@@ -47,6 +48,7 @@ namespace elections.Repositories
         private ITicketElectionRoundRepository? _ticketElectionRound;
         private ITicketElectionRoundStatisticRepository? _ticketElectionRoundStatistic;
         private ITicketRepository? _ticket;
+        private ITicketColorRepository? _ticketColor;
 
         public ICandidatePartyRepository CandidateParty => _candidateParty ??= new CandidatePartyRepository(_context);
         public ICandidateRepository Candidate => _candidate ??= new CandidateRepository(_context);
@@ -66,6 +68,7 @@ namespace elections.Repositories
         public ITicketElectionRoundRepository TicketElectionRound => _ticketElectionRound ??= new TicketElectionRoundRepository(_context);
         public ITicketElectionRoundStatisticRepository TicketElectionRoundStatistic => _ticketElectionRoundStatistic ??= new TicketElectionRoundStatisticRepository(_context);
         public ITicketRepository Ticket => _ticket ??= new TicketRepository(_context);
+        public ITicketColorRepository TicketColor => _ticketColor ??= new TicketColorRepository(_context);
 
     }
 }

@@ -13,6 +13,7 @@ using elections.Repositories.Municipalities;
 using elections.Repositories.Parties;
 using elections.Repositories.States;
 using elections.Repositories.TicketCandidateParties;
+using elections.Repositories.TicketColors;
 using elections.Repositories.TicketElectionRounds;
 using elections.Repositories.TicketElectionRoundStatistics;
 using elections.Repositories.Tickets;
@@ -39,5 +40,6 @@ namespace elections.Repositories
         ITicketElectionRoundRepository TicketElectionRound { get; }
         ITicketElectionRoundStatisticRepository TicketElectionRoundStatistic { get; }
         ITicketRepository Ticket { get; }
+        ITicketColorRepository TicketColor { get; }
     }
 }
