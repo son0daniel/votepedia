@@ -9,5 +9,6 @@ namespace elections.Services.Macroregions
         Task<PagedResponse<MacroregionDto>> GetMacroregions(MacroregionFilter macroregionFilter, PagedRequest pagedRequest);
         Task<MacroregionDto?> GetMacroregion(string abbr);
         Task<IEnumerable<CandidatePartyElectionRoundRecord>?> GetMacroregionElectionRoundRecords(string macroregionAbbr, ElectionRoundRecordFilter electionRoundRecordFilter);
+        Task<ElectionRoundDto?> GetMacroregionPresidentialElectionRoundResults(string abbr, int year, int roundNr);
     }
 }

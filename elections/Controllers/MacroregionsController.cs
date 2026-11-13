@@ -40,5 +40,11 @@ namespace elections.Controllers
 
             return electionRoundRecords is null ? NotFound() : Ok(electionRoundRecords);
         }
+
+        [HttpGet, Route(Routes.Macroregions.PresidentialElectionRoundResults)]
+        public async Task<ActionResult<ElectionRoundDto?>> GetMunicipalityPresidentialElectionRoundResults([FromRoute] string abbr, [FromRoute] int year, [FromRoute] int roundNr)
+        {
+            return await _macroregionService.GetMacroregionPresidentialElectionRoundResults(abbr, year, roundNr);
+        }
     }
 }

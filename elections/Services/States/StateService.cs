@@ -8,15 +8,16 @@ using elections.Repositories;
 using elections.Services.ElectionRoundRecords;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
+using static elections.Commons.Constants.Constant.Election;
 
 namespace elections.Services.States
 {
     public class StateService : IStateService
     {
         private readonly IRepositoryManager _repository;
-        private readonly IElectionRoundRecordService _electionRoundRecord;
+        private readonly IElectionRoundService _electionRoundRecord;
 
-        public StateService(IRepositoryManager repository, IElectionRoundRecordService electionRoundRecord)
+        public StateService(IRepositoryManager repository, IElectionRoundService electionRoundRecord)
         {
             _repository = repository;
             _electionRoundRecord = electionRoundRecord;
@@ -111,6 +112,25 @@ namespace elections.Services.States
             }
 
             return await _electionRoundRecord.GetElectionRoundRecordsByLocation(electionRoundRecordFilter, electionRoundRecordFilter.Role, AggregationLevel.State, stateId: stateId.Value);
+        }
+
+        public async Task<ElectionRoundDto?> GetStatePresidentialElectionRoundResults(string abbr, int year, int roundNr)
+        {
+            var stateId = await _repository.State.GetId(x => string.Equals(x.Abbr, abbr));
+
+            if (!stateId.HasValue)
+            {
+                return null;
+            }
+
+            var electionRound = await _repository.ElectionRound.GetElectionRound(Role.President, year, roundNr, municipalityId: null, stateId: null);
+
+            if (electionRound is null)
+            {
+                return null;
+            }
+
+            return await _electionRoundRecord.GetElectionOverallResults(electionRound, Role.President, AggregationLevel.State, 2, stateId: stateId.Value);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using elections.Models.DTOs;
+﻿using elections.Commons.Utils;
+using elections.Models.DTOs;
+using elections.Models.Entities;
 using elections.Models.Pagination;
 using elections.Models.Requests;
 
@@ -9,5 +11,6 @@ namespace elections.Services.Municipalities
         Task<PagedResponse<MunicipalityDto>> GetMunicipalities(MunicipalityFilter municipalityFilter, PagedRequest pagedRequest);
         Task<MunicipalityDto?> GetMunicipality(long tseId);
         Task<IEnumerable<CandidatePartyElectionRoundRecord>?> GetMunicipalityElectionRoundRecords(long tseId, ElectionRoundRecordFilter electionRoundRecordFilter);
+        Task<ElectionRoundDto?> GetMunicipalityPresidentialElectionRoundResults(long tseId, int year, int roundNr);
     }
 }

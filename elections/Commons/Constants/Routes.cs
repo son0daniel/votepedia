@@ -17,6 +17,7 @@
         private const string _MacroregionAbbr = "{macroregionAbbr}";
         private const string _Aggregation = "aggregation";
         private const string _Role = "role";
+        private const string _RoleNr = "{roleNr}";
         private const string _President = "president";
         private const string _Overviews = "overviews";
         private const string _Overall = "overall";
@@ -69,6 +70,7 @@
             public const string Base = $"api/{_Municipalities}";
             public const string GetOne = _TseId;
             public const string ElectionRoundRecords = $"{_TseId}/{_Elections}/{_Records}";
+            public const string PresidentialElectionRoundResults = $"{_TseId}/{_Elections}/{_PresidentialElectionRound}/{_Results}";
         }
 
         public static class MetropolitanAreas
@@ -76,6 +78,8 @@
             public const string Base = $"api/{_MetropolitanAreas}";
             public const string GetOne = _Uid;
             public const string ElectionRoundRecords = $"{_Uid}/{_Elections}/{_Records}";
+            public const string ElectionRoundResults = $"{_Uid}/{_Elections}/{_Role}/{_RoleNr}/{_ElectionYear}/{_ElectionRound}";
+            public const string PresidentialElectionRoundResults = $"{_Uid}/{_Elections}/{_PresidentialElectionRound}/{_Results}";
         }
 
         public static class States
@@ -83,6 +87,8 @@
             public const string Base = $"api/{_States}";
             public const string GetOne = _Abbr;
             public const string ElectionRoundRecords = $"{_Abbr}/{_Elections}/{_Records}";
+            public const string ElectionRoundResults = $"{_Abbr}/{_Elections}/{_Role}/{_RoleNr}/{_ElectionYear}/{_ElectionRound}";
+            public const string PresidentialElectionRoundResults = $"{_Abbr}/{_Elections}/{_PresidentialElectionRound}/{_Results}";
         }
 
         public static class Macroregions
@@ -90,6 +96,8 @@
             public const string Base = $"api/{_Macroregions}";
             public const string GetOne = _Abbr;
             public const string ElectionRoundRecords = $"{_Abbr}/{_Elections}/{_Records}";
+            public const string ElectionRoundResults = $"{_Abbr}/{_Elections}/{_Role}/{_RoleNr}/{_ElectionYear}/{_ElectionRound}";
+            public const string PresidentialElectionRoundResults = $"{_Abbr}/{_Elections}/{_PresidentialElectionRound}/{_Results}";
         }
     }
 }

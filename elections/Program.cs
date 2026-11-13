@@ -31,7 +31,7 @@ builder.Services.AddScoped<IMunicipalityService, MunicipalityService>();
 builder.Services.AddScoped<IMetropolitanAreaService, MetropolitanAreaService>();
 builder.Services.AddScoped<IStateService, StateService>();
 builder.Services.AddScoped<IMacroregionService, MacroregionService>();
-builder.Services.AddScoped<IElectionRoundRecordService, ElectionRoundRecordService>();
+builder.Services.AddScoped<IElectionRoundService, ElectionRoundService>();
 // Add services to the container.
 
 builder.Services.AddControllers();

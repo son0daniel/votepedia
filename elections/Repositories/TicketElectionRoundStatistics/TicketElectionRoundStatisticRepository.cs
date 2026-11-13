@@ -4,6 +4,7 @@ using elections.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 using static elections.Commons.Constants.Constant.Election;
 using static elections.Commons.Constants.Routes;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace elections.Repositories.TicketElectionRoundStatistics
 {
@@ -362,6 +363,34 @@ namespace elections.Repositories.TicketElectionRoundStatistics
             var query = GetTicketPresidentialElectionRoundStatistics(year, roundNr, positionNr, status, isOverview: false);
 
             return await query.ToListAsync();
+        }
+
+        public async Task<IEnumerable<TicketElectionRoundStatistic>> GetMunicipalityStatisticsByElectionRound(long municipalityId, long electionRoundId)
+        {
+            var query = _dbSet.Where(x => x.ElectionRoundId == electionRoundId).AsQueryable();
+
+            return await QueryTicketElectionRoundStatisticByMunicipality(query, municipalityId).ToListAsync();
+        }
+
+        public async Task<IEnumerable<TicketElectionRoundStatistic>> GetMetropolitanAreaStatisticsByElectionRound(long metropolitanAreaId, long electionRoundId)
+        {
+            var query = _dbSet.Where(x => x.ElectionRoundId == electionRoundId).AsQueryable();
+
+            return await QueryTicketElectionRoundStatisticByMetropolitanArea(query, metropolitanAreaId).ToListAsync();
+        }
+
+        public async Task<IEnumerable<TicketElectionRoundStatistic>> GetStateStatisticsByElectionRound(long stateId, long electionRoundId)
+        {
+            var query = _dbSet.Where(x => x.ElectionRoundId == electionRoundId).AsQueryable();
+
+            return await QueryTicketElectionRoundStatisticByState(query, stateId).ToListAsync();
+        }
+
+        public async Task<IEnumerable<TicketElectionRoundStatistic>> GetMacroregionStatisticsByElectionRound(long macroregionId, long electionRoundId)
+        {
+            var query = _dbSet.Where(x => x.ElectionRoundId == electionRoundId).AsQueryable();
+
+            return await QueryTicketElectionRoundStatisticByMacroregion(query, macroregionId).ToListAsync();
         }
     }
 }
